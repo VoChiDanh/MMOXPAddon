@@ -1,0 +1,9 @@
+name: MMOXPAddon
+version: '${project.version}'
+main: net.danh.mmoxpaddon.MMOXPAddon
+api-version: 1.13
+authors: [ VoChiDanh ]
+depend: [ MythicMobs, MMOCore ]
+commands:
+  mmoxpaddon:
+    description: reload file

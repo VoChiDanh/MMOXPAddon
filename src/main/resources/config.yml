@@ -1,0 +1,10 @@
+MESSAGE:
+  LEVEL_SO_HIGH: "&cBạn cần dưới cấp độ &a%level%&c để có thể gây sát thương lên %mob%"
+  LEVEL_SO_LOW: "&cBạn cần đạt cấp độ &a%level%&c để có thể gây sát thương lên %mob%"
+XP-MIN: 0
+MOBS:
+  EXAMPLEMOB:
+    XP: 5
+    LEVEL:
+      MAX: 5
+      MIN: 1
