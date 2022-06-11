@@ -26,6 +26,9 @@ public class Damage implements Listener {
                 int level = PlayerData.get(p).getLevel();
                 int mob_level_max = File.getconfigfile().getInt("MOBS." + mob.getType().getInternalName().toUpperCase() + ".LEVEL.MAX");
                 int mob_level_min = File.getconfigfile().getInt("MOBS." + mob.getType().getInternalName().toUpperCase() + ".LEVEL.MIN");
+                if (mob_level_max == 0 && mob_level_min == 0) {
+                    return;
+                }
                 if (level >= mob_level_max) {
                     mob.getEntity().setHealth(mob.getEntity().getMaxHealth());
                     e.setCancelled(true);
@@ -33,7 +36,7 @@ public class Damage implements Listener {
                     mob.getEntity().setHealth(mob.getEntity().getMaxHealth());
                     sendPlayerMessageType(p, null, Objects.requireNonNull(File.getconfigfile().getString("MESSAGE.LEVEL_SO_HIGH"))
                             .replaceAll("%level%", String.valueOf(mob_level_max))
-                            .replaceAll("%mob%", mob.getDisplayName().replace("\n", " ")));
+                            .replaceAll("%mob%", mob.getDisplayName()));
                 } else if (level < mob_level_min) {
                     mob.getEntity().setHealth(mob.getEntity().getMaxHealth());
                     e.setCancelled(true);
@@ -41,7 +44,7 @@ public class Damage implements Listener {
                     mob.getEntity().setHealth(mob.getEntity().getMaxHealth());
                     sendPlayerMessageType(p, null, Objects.requireNonNull(File.getconfigfile().getString("MESSAGE.LEVEL_SO_LOW"))
                             .replaceAll("%level%", String.valueOf(mob_level_min))
-                            .replaceAll("%mob%", mob.getDisplayName().replace("\n", " ")));
+                            .replaceAll("%mob%", mob.getDisplayName()));
                 }
             }
         }

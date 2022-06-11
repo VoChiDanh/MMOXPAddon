@@ -11,13 +11,6 @@
 
     <name>MMOXPAddon</name>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>maven-snapshots</id>
-            <url>https://repository.apache.org/content/repositories/snapshots/</url>
-        </pluginRepository>
-    </pluginRepositories>
-
     <properties>
         <java.version>16</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -38,7 +31,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.1-SNAPSHOT</version>
+                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -114,13 +107,13 @@
         <dependency>
             <groupId>net.Indyuce</groupId>
             <artifactId>MMOCore</artifactId>
-            <version>1.9.2</version>
+            <version>1.9.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.D-x-Z</groupId>
             <artifactId>DCore</artifactId>
-            <version>a31d50e05c</version>
+            <version>5535515af6</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
