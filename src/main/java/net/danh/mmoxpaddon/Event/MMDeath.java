@@ -1,9 +1,6 @@
 package net.danh.mmoxpaddon.Event;
 
-import io.lumine.mythic.api.mobs.MythicMob;
-import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import io.lumine.mythic.bukkit.events.MythicMobDeathEvent;
-import io.lumine.mythic.core.mobs.ActiveMob;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.Indyuce.mmocore.api.player.PlayerData;
 import net.Indyuce.mmocore.experience.EXPSource;
@@ -20,15 +17,16 @@ public class MMDeath implements Listener {
     @EventHandler
     public void onMythicMobDeath(MythicMobDeathEvent event) {
         Player p = (Player) event.getKiller();
-        BukkitAPIHelper bukkitAPIHelper = new BukkitAPIHelper();
-        ActiveMob mobs = bukkitAPIHelper.getMythicMobInstance(event.getEntity());
+        if (p == null) {
+            return;
+        }
+        String mobs = event.getMob().getType().getInternalName();
         int player_level = PlayerData.get(p).getLevel();
-        int mob_level_max = File.getconfigfile().getInt("MOBS." + mobs.getType().getInternalName().toUpperCase() + ".LEVEL.MAX");
-        int mob_level_min = File.getconfigfile().getInt("MOBS." + mobs.getType().getInternalName().toUpperCase() + ".LEVEL.MIN");
-        MythicMob mob = event.getMobType();
+        int mob_level_max = File.getconfigfile().getInt("MOBS." + mobs + ".LEVEL.MAX");
+        int mob_level_min = File.getconfigfile().getInt("MOBS." + mobs + ".LEVEL.MIN");
         int level = (int) event.getMobLevel();
-        int xp = Math.max(File.getconfigfile().getInt("XP-MIN"), File.getconfigfile().getInt("MOBS." + mob + ".XP"));
-        if (player_level > mob_level_min && player_level < mob_level_max) {
+        int xp = Math.max(File.getconfigfile().getInt("XP-MIN"), File.getconfigfile().getInt("MOBS." + mobs + ".XP"));
+        if (player_level > mob_level_min && player_level <= mob_level_max) {
             PlayerData.get(p).giveExperience(level * xp, EXPSource.OTHER);
         } else {
             String c = (Objects.requireNonNull(File.getconfigfile().getString("FORMULA")).replaceAll("%player_level%", String.valueOf(player_level)).replaceAll("%mob_level%", String.valueOf(level)).replaceAll("%mob_xp%", String.valueOf(xp)));

@@ -5,6 +5,7 @@ XP-MIN: 0
 # %player_level% -> return player level
 # %mob_level% -> return mob level
 # %mob_xp% -> return mob xp
+# Placeholder with PlaceholderAPI support
 # Summation: "number1 + number 2" ; Ex: "1 + 2" ➙ 3
 # Subtraction: "number1 + number2" ; Ex: "5 - 3" ➙ 2
 # Multiplication: "number1 * number2" ; Ex: "3 * 2" ➙ 6
