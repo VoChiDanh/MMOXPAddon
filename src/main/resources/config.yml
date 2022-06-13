@@ -1,7 +1,3 @@
-MESSAGE:
-  LEVEL_SO_HIGH: "&cYou need level lower &a%level%&c to make damage to mob %mob%"
-  LEVEL_SO_LOW: "&cYou need Level higher &a%level%&c to make damage to mob %mob%"
-XP-MIN: 0
 # %player_level% -> return player level
 # %mob_level% -> return mob level
 # %mob_xp% -> return mob xp
@@ -14,9 +10,4 @@ XP-MIN: 0
 # Exponential: "number^exponent" ; Ex: "2^3" ➙ 8
 # Square Root: "@{number}" ; Ex: "@{16}" ➙ 4
 FORMULA: "%mob_level% / %mob_level% * 2" #formula for give less xp when kill mobs out of level range
-MOBS:
-  EXAMPLEMOB:
-    XP: 5
-    LEVEL:
-      MAX: 5
-      MIN: 1
+XP-MIN: 1

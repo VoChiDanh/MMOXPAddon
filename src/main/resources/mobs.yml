@@ -1,0 +1,6 @@
+MOBS:
+  EXAMPLEMOB:
+    XP: 5
+    LEVEL:
+      MAX: 5
+      MIN: 1

@@ -6,6 +6,7 @@ import net.danh.mmoxpaddon.Resource.File;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import static net.danh.dcore.DCore.RegisterDCore;
+import static net.danh.dcore.Utils.File.updateFile;
 
 public final class MMOXPAddon extends JavaPlugin {
 
@@ -22,10 +23,12 @@ public final class MMOXPAddon extends JavaPlugin {
         new CMD(this);
         getServer().getPluginManager().registerEvents(new MMDeath(), this);
         File.createfiles();
+        updateFile(this, File.getconfigfile(), "config.yml");
     }
 
     @Override
     public void onDisable() {
         File.saveconfig();
+        File.savemob();
     }
 }

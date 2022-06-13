@@ -22,18 +22,18 @@ public class MMDeath implements Listener {
         }
         String mobs = event.getMob().getType().getInternalName();
         int player_level = PlayerData.get(p).getLevel();
-        int mob_level_max = File.getconfigfile().getInt("MOBS." + mobs + ".LEVEL.MAX");
-        int mob_level_min = File.getconfigfile().getInt("MOBS." + mobs + ".LEVEL.MIN");
+        int mob_level_max = File.getmobfile().getInt("MOBS." + mobs + ".LEVEL.MAX");
+        int mob_level_min = File.getmobfile().getInt("MOBS." + mobs + ".LEVEL.MIN");
         int level = (int) event.getMobLevel();
-        int xp = Math.max(File.getconfigfile().getInt("XP-MIN"), File.getconfigfile().getInt("MOBS." + mobs + ".XP"));
+        int xp = Math.max(File.getconfigfile().getInt("XP-MIN"), File.getmobfile().getInt("MOBS." + mobs + ".XP"));
         if (player_level > mob_level_min && player_level <= mob_level_max) {
-            PlayerData.get(p).giveExperience(level * xp, EXPSource.OTHER);
+            PlayerData.get(p).giveExperience(level * xp, EXPSource.SOURCE);
         } else {
             String c = (Objects.requireNonNull(File.getconfigfile().getString("FORMULA")).replaceAll("%player_level%", String.valueOf(player_level)).replaceAll("%mob_level%", String.valueOf(level)).replaceAll("%mob_xp%", String.valueOf(xp)));
             String c2 = PlaceholderAPI.setPlaceholders(p, c);
             double formula = Double.parseDouble(Calculator.calculator(c2, -1));
             int xpf = (int) formula;
-            PlayerData.get(p).giveExperience(xpf, EXPSource.OTHER);
+            PlayerData.get(p).giveExperience(xpf, EXPSource.SOURCE);
         }
 
     }
