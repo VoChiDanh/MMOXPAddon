@@ -1,7 +1,6 @@
 package net.danh.mmoxpaddon;
 
 import net.danh.mmoxpaddon.Command.CMD;
-import net.danh.mmoxpaddon.Event.Damage;
 import net.danh.mmoxpaddon.Event.MMDeath;
 import net.danh.mmoxpaddon.Resource.File;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,7 +21,6 @@ public final class MMOXPAddon extends JavaPlugin {
         RegisterDCore(this);
         new CMD(this);
         getServer().getPluginManager().registerEvents(new MMDeath(), this);
-        getServer().getPluginManager().registerEvents(new Damage(), this);
         File.createfiles();
     }
 
