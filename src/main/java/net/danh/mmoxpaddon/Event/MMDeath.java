@@ -6,7 +6,6 @@ import net.Indyuce.mmocore.api.player.PlayerData;
 import net.Indyuce.mmocore.experience.EXPSource;
 import net.danh.dcore.Calculator.Calculator;
 import net.danh.mmoxpaddon.Resource.File;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,15 +24,14 @@ public class MMDeath implements Listener {
             int level = (int) event.getMobLevel();
             int xp = Math.max(File.getconfigfile().getInt("XP-MIN"), File.getmobfile().getInt("MOBS." + mobs + ".XP"));
             if (player_level >= mob_level_min && player_level <= mob_level_max) {
-                PlayerData.get(p).giveExperience(level * xp, EXPSource.SOURCE, event.getEntity().getLocation(), true);
+                PlayerData.get(p).giveExperience(level * xp, EXPSource.SOURCE, event.getEntity().getLocation().add(0, 1.5, 0), true);
             } else {
                 String c = (Objects.requireNonNull(File.getconfigfile().getString("FORMULA")).replaceAll("%player_level%", String.valueOf(player_level)).replaceAll("%mob_level%", String.valueOf(level)).replaceAll("%mob_xp%", String.valueOf(xp)));
                 String c2 = PlaceholderAPI.setPlaceholders(p, c);
                 double formula = Double.parseDouble(Calculator.calculator(c2, -1));
                 int xpf = (int) formula;
-                PlayerData.get(p).giveExperience(xpf, EXPSource.SOURCE, event.getEntity().getLocation(), true);
+                PlayerData.get(p).giveExperience(xpf, EXPSource.SOURCE, event.getEntity().getLocation().add(0, 1.5, 0), true);
             }
-
         }
     }
 }
