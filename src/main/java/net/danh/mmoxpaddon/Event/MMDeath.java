@@ -41,7 +41,7 @@ public class MMDeath implements Listener {
                 String c = (Objects.requireNonNull(File.getconfigfile().getString("FORMULA.WITHIN_LIMITS")).replaceAll("%player_level%", String.valueOf(player_level)).replaceAll("%mob_level%", String.valueOf(level)).replaceAll("%mob_xp%", String.valueOf(xp)));
                 String c2 = PlaceholderAPI.setPlaceholders(p, c);
                 debug("Formula:" + c2);
-                double formula = Double.parseDouble(Calculator.calculator(c2, -1));
+                double formula = Double.parseDouble(Calculator.calculator(c2, 0));
                 debug("Final XP:" + formula);
                 int xpf = (int) formula;
                 debug("XP give: " + xpf);
