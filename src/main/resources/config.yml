@@ -9,8 +9,9 @@
 # Division Remainder: "number1 % number2" ; Ex: "7 % 2" ➙ 1
 # Exponential: "number^exponent" ; Ex: "2^3" ➙ 8
 # Square Root: "@{number}" ; Ex: "@{16}" ➙ 4
+# Percent: "percent # number" ; Ex: 10 # 20 (10% of 20) ➙ 2
 FORMULA:
   OUT_OF_BOUNDS: "%mob_level% / %mob_level% * 2" #formula for give less xp when kill mobs out of level range
-  WITHIN_LIMITS: "%mob_level% * %mob_xp%" #formula for give xp when kill mob in level range
+  WITHIN_LIMITS: "%mob_xp% + %mmocore_stat_additional_experience% # %mob_xp%" #formula for give xp when kill mob in level range
 XP-MIN: 1
 DEBUG: false
