@@ -50,6 +50,9 @@ public class MMDeath implements Listener {
                 if (max_xp) {
                     debug("XP give: " + m_xp);
                     PlayerData.get(p).giveExperience(level * m_xp, EXPSource.SOURCE, event.getEntity().getLocation().add(0, 1.5, 0), true);
+                } else {
+                    debug("XP give: " + xpf);
+                    PlayerData.get(p).giveExperience(level * xpf, EXPSource.SOURCE, event.getEntity().getLocation().add(0, 1.5, 0), true);
                 }
             } else {
                 String c = (Objects.requireNonNull(File.getconfigfile().getString("FORMULA.OUT_OF_BOUNDS")).replaceAll("%player_level%", String.valueOf(player_level)).replaceAll("%mob_level%", String.valueOf(level)).replaceAll("%mob_xp%", String.valueOf(xp)));
