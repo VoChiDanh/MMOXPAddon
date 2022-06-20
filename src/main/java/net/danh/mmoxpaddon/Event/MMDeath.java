@@ -30,13 +30,15 @@ public class MMDeath implements Listener {
             int mob_level_max = File.getmobfile().getInt("MOBS." + mobs + ".LEVEL.MAX");
             int mob_level_min = File.getmobfile().getInt("MOBS." + mobs + ".LEVEL.MIN");
             int level = (int) event.getMobLevel();
-            int xp = Math.max(File.getconfigfile().getInt("XP-MIN"), File.getmobfile().getInt("MOBS." + mobs + ".XP"));
+            int xp = Math.max(File.getconfigfile().getInt("XP-MIN"), File.getmobfile().getInt("MOBS." + mobs + ".XP.DEFAULT"));
+            boolean max_xp = File.getconfigfile().getBoolean("SETTINGS.USE_MAX_XP_INSTEAD_OF_XP");
             debug("Player level: " + player_level);
             debug("Mob level max: " + mob_level_max);
             debug("Mob level min: " + mob_level_min);
             debug("Mob level: " + level);
             debug("Mob Name: " + mobs);
             debug("XP: " + xp);
+            debug("Max xp settings: " + max_xp);
             if (player_level >= mob_level_min && player_level <= mob_level_max) {
                 String c = (Objects.requireNonNull(File.getconfigfile().getString("FORMULA.WITHIN_LIMITS")).replaceAll("%player_level%", String.valueOf(player_level)).replaceAll("%mob_level%", String.valueOf(level)).replaceAll("%mob_xp%", String.valueOf(xp)));
                 String c2 = PlaceholderAPI.setPlaceholders(p, c);
@@ -44,8 +46,11 @@ public class MMDeath implements Listener {
                 double formula = Double.parseDouble(Calculator.calculator(c2, 0));
                 debug("Final XP:" + formula);
                 int xpf = (int) formula;
-                debug("XP give: " + xpf);
-                PlayerData.get(p).giveExperience(level * xpf, EXPSource.SOURCE, event.getEntity().getLocation().add(0, 1.5, 0), true);
+                int m_xp = Math.min(xpf, File.getmobfile().getInt("MOBS." + mobs + ".XP.MAX"));
+                if (max_xp) {
+                    debug("XP give: " + m_xp);
+                    PlayerData.get(p).giveExperience(level * m_xp, EXPSource.SOURCE, event.getEntity().getLocation().add(0, 1.5, 0), true);
+                }
             } else {
                 String c = (Objects.requireNonNull(File.getconfigfile().getString("FORMULA.OUT_OF_BOUNDS")).replaceAll("%player_level%", String.valueOf(player_level)).replaceAll("%mob_level%", String.valueOf(level)).replaceAll("%mob_xp%", String.valueOf(xp)));
                 String c2 = PlaceholderAPI.setPlaceholders(p, c);

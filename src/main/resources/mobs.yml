@@ -1,6 +1,8 @@
 MOBS:
   EXAMPLEMOB:
-    XP: 5
+    XP:
+      DEFAULT: 1
+      MAX: 5
     LEVEL:
       MAX: 5
       MIN: 1

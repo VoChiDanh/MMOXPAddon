@@ -14,4 +14,6 @@ FORMULA:
   OUT_OF_BOUNDS: "%mob_level% / %mob_level% * 2" #formula for give less xp when kill mobs out of level range
   WITHIN_LIMITS: "%mob_xp% + %mmocore_stat_additional_experience% # %mob_xp%" #formula for give xp when kill mob in level range
 XP-MIN: 1
+SETTINGS:
+  USE_MAX_XP: false #When this setting is true, if formula > max xp -> give max xp
 DEBUG: false
