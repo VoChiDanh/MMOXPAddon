@@ -36,7 +36,9 @@ public final class MMOXPAddon extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new MMDeath(), this);
         File.createfiles();
         updateFile(this, File.getconfigfile(), "config.yml");
-        loadMobs();
+        if (File.getconfigfile().getBoolean("USE_MANY_FILE")) {
+            loadMobs();
+        }
     }
 
     @Override

@@ -1,0 +1,19 @@
+EXAMPLE:
+  USE:
+    FORMULA: true
+    LIMITED_XP: false
+    COMMAND: false
+  COMMAND:
+    OUT_OF_BOUNDS:
+      - eco give %player_name% 10
+    WITHIN_LIMITS:
+      - eco give %player_name% 1000
+  FORMULA:
+    OUT_OF_BOUNDS: '%mob_level% / %mob_level% * 2'
+    WITHIN_LIMITS: '%mob_xp% * 2'
+  XP:
+    DEFAULT: 1
+    MAX: 1
+  LEVEL:
+    MAX: 5
+    MIN: 1

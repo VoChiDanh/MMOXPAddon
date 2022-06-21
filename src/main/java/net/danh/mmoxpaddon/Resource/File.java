@@ -7,19 +7,24 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.IOException;
 
+import static net.danh.mmoxpaddon.MMOXPAddon.loadMobs;
+
 public class File {
 
-    private static java.io.File configFile;
-    private static FileConfiguration config;
+    private static java.io.File configFile, mobFile;
+    private static FileConfiguration config, mob;
 
     public static void createfiles() {
         configFile = new java.io.File(MMOXPAddon.getInstance().getDataFolder(), "config.yml");
+        mobFile = new java.io.File(MMOXPAddon.getInstance().getDataFolder(), "mobs.yml");
         if (!configFile.exists()) MMOXPAddon.getInstance().saveResource("config.yml", false);
+        if (!mobFile.exists()) MMOXPAddon.getInstance().saveResource("mobs.yml", false);
         config = new YamlConfiguration();
+        mob = new YamlConfiguration();
 
         try {
             config.load(configFile);
-
+            mob.load(mobFile);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -29,15 +34,28 @@ public class File {
         return config;
     }
 
+    public static FileConfiguration getmobfile() {
+        return mob;
+    }
 
     public static void reloadfiles() {
         config = YamlConfiguration.loadConfiguration(configFile);
-        MMOXPAddon.loadMobs();
+        mob = YamlConfiguration.loadConfiguration(mobFile);
+        if (File.getconfigfile().getBoolean("USE_MANY_FILE")) {
+            loadMobs();
+        }
     }
 
     public static void saveconfig() {
         try {
             config.save(configFile);
+        } catch (IOException ignored) {
+        }
+    }
+
+    public static void savemob() {
+        try {
+            mob.save(mobFile);
         } catch (IOException ignored) {
         }
     }

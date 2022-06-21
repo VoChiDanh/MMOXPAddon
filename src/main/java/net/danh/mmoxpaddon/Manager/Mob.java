@@ -19,7 +19,7 @@ public class Mob {
 
     public Mob(String name) {
         this.name = name;
-        this.file = new File(MMOXPAddon.getInstance().getDataFolder() + File.separator + "Mobs", name.toUpperCase() + ".yml");
+        this.file = new File(MMOXPAddon.getInstance().getDataFolder() + File.separator + "Mobs", name + ".yml");
         this.config = YamlConfiguration.loadConfiguration(this.file);
     }
 
@@ -43,19 +43,19 @@ public class Mob {
             try {
                 List<String> command_a = new ArrayList<>();
                 List<String> command_b = new ArrayList<>();
-                config.set(name.toUpperCase() + ".USE.FORMULA", true);
-                config.set(name.toUpperCase() + ".USE.LIMITED_XP", false);
-                config.set(name.toUpperCase() + ".USE.COMMAND", false);
+                config.set(name + ".USE.FORMULA", true);
+                config.set(name + ".USE.LIMITED_XP", false);
+                config.set(name + ".USE.COMMAND", false);
                 command_a.add("eco give %player_name% 1000");
                 command_b.add("eco give %player_name% 10");
-                config.set(name.toUpperCase() + ".COMMAND.OUT_OF_BOUNDS", command_b);
-                config.set(name.toUpperCase() + ".COMMAND.WITHIN_LIMITS", command_a);
-                config.set(name.toUpperCase() + ".FORMULA.OUT_OF_BOUNDS", "%mob_level% / %mob_level% * 2");
-                config.set(name.toUpperCase() + ".FORMULA.WITHIN_LIMITS", "%mob_xp% * 2");
-                config.set(name.toUpperCase() + ".XP.DEFAULT", 1);
-                config.set(name.toUpperCase() + ".XP.MAX", 1);
-                config.set(name.toUpperCase() + ".LEVEL.MAX", 5);
-                config.set(name.toUpperCase() + ".LEVEL.MIN", 1);
+                config.set(name + ".COMMAND.OUT_OF_BOUNDS", command_b);
+                config.set(name + ".COMMAND.WITHIN_LIMITS", command_a);
+                config.set(name + ".FORMULA.OUT_OF_BOUNDS", "%mob_level% / %mob_level% * 2");
+                config.set(name + ".FORMULA.WITHIN_LIMITS", "%mob_xp% * 2");
+                config.set(name + ".XP.DEFAULT", 1);
+                config.set(name + ".XP.MAX", 1);
+                config.set(name + ".LEVEL.MAX", 5);
+                config.set(name + ".LEVEL.MIN", 1);
                 config.save(file);
                 MMOXPAddon.getInstance().getLogger().log(Level.INFO, "Create new file mob " + name + " complete!");
             } catch (IOException e) {
@@ -65,44 +65,23 @@ public class Mob {
     }
 
     public int getLevelMax() {
-        return getConfig().getInt(name.toUpperCase() + ".LEVEL.MAX");
+        return getConfig().getInt(name + ".LEVEL.MAX");
     }
 
     public int getLevelMin() {
-        return getConfig().getInt(name.toUpperCase() + ".LEVEL.MIN");
+        return getConfig().getInt(name + ".LEVEL.MIN");
     }
 
     public int getXPMax() {
-        return getConfig().getInt(name.toUpperCase() + ".XP.MAX");
+        return getConfig().getInt(name + ".XP.MAX");
     }
 
     public int getXPDefault() {
-        return getConfig().getInt(name.toUpperCase() + ".XP.DEFAULT");
+        return getConfig().getInt(name + ".XP.DEFAULT");
     }
 
-    /*
-        public int getFormulaWithinLimits(Player p) {
-            String calculator = getConfig().getString(name.toUpperCase() + ".FORMULA.WITHIN_LIMITS");
-            if (calculator == null) {
-                return 0;
-            }
-            String papi = PlaceholderAPI.setPlaceholders(p, calculator);
-            double formula = Double.parseDouble(Calculator.calculator(papi, 0));
-            return (int) formula;
-        }
-
-        public int getFormulaOutOfBound(Player p) {
-            String calculator = getConfig().getString(name.toUpperCase() + ".FORMULA.OUT_OF_BOUNDS");
-            if (calculator == null) {
-                return 0;
-            }
-            String papi = PlaceholderAPI.setPlaceholders(p, calculator);
-            double formula = Double.parseDouble(Calculator.calculator(papi, 0));
-            return (int) formula;
-        }
-    */
     public String getFormulaWithinLimitsWithoutPapi(Player p) {
-        String calculator = getConfig().getString(name.toUpperCase() + ".FORMULA.WITHIN_LIMITS");
+        String calculator = getConfig().getString(name + ".FORMULA.WITHIN_LIMITS");
         if (calculator == null) {
             return null;
         }
@@ -110,7 +89,7 @@ public class Mob {
     }
 
     public String getFormulaOutOfBoundWithoutPapi(Player p) {
-        String calculator = getConfig().getString(name.toUpperCase() + ".FORMULA.OUT_OF_BOUNDS");
+        String calculator = getConfig().getString(name + ".FORMULA.OUT_OF_BOUNDS");
         if (calculator == null) {
             return null;
         }
@@ -118,23 +97,23 @@ public class Mob {
     }
 
     public List<String> getCommandsOutOfBound() {
-        return getConfig().getStringList(name.toUpperCase() + ".COMMAND.OUT_OF_BOUNDS");
+        return getConfig().getStringList(name + ".COMMAND.OUT_OF_BOUNDS");
     }
 
     public List<String> getCommandsWithinLimits() {
-        return getConfig().getStringList(name.toUpperCase() + ".COMMAND.WITHIN_LIMITS");
+        return getConfig().getStringList(name + ".COMMAND.WITHIN_LIMITS");
     }
 
     public boolean useCommand() {
-        return getConfig().getBoolean(name.toUpperCase() + ".USE.COMMAND");
+        return getConfig().getBoolean(name + ".USE.COMMAND");
     }
 
     public boolean useLimitedXP() {
-        return getConfig().getBoolean(name.toUpperCase() + ".USE.LIMITED_XP");
+        return getConfig().getBoolean(name + ".USE.LIMITED_XP");
     }
 
     public boolean useFormula() {
-        return getConfig().getBoolean(name.toUpperCase() + ".USE.FORMULA");
+        return getConfig().getBoolean(name + ".USE.FORMULA");
     }
 
     public String getName() {
