@@ -17,3 +17,5 @@ XP-MIN: 1
 SETTINGS:
   USE_MAX_XP: false #When this setting is true, if formula > max xp -> give max xp
 DEBUG: false
+MOBS:
+  - EXAMPLE

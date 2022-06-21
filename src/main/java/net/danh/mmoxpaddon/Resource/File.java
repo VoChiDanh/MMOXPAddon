@@ -9,20 +9,17 @@ import java.io.IOException;
 
 public class File {
 
-    private static java.io.File configFile, mobFile;
-    private static FileConfiguration config, mob;
+    private static java.io.File configFile;
+    private static FileConfiguration config;
 
     public static void createfiles() {
         configFile = new java.io.File(MMOXPAddon.getInstance().getDataFolder(), "config.yml");
-        mobFile = new java.io.File(MMOXPAddon.getInstance().getDataFolder(), "mobs.yml");
         if (!configFile.exists()) MMOXPAddon.getInstance().saveResource("config.yml", false);
-        if (!mobFile.exists()) MMOXPAddon.getInstance().saveResource("mobs.yml", false);
         config = new YamlConfiguration();
-        mob = new YamlConfiguration();
 
         try {
             config.load(configFile);
-            mob.load(mobFile);
+
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -32,25 +29,15 @@ public class File {
         return config;
     }
 
-    public static FileConfiguration getmobfile() {
-        return mob;
-    }
 
     public static void reloadfiles() {
         config = YamlConfiguration.loadConfiguration(configFile);
-        mob = YamlConfiguration.loadConfiguration(mobFile);
+        MMOXPAddon.loadMobs();
     }
 
     public static void saveconfig() {
         try {
             config.save(configFile);
-        } catch (IOException ignored) {
-        }
-    }
-
-    public static void savemob() {
-        try {
-            mob.save(mobFile);
         } catch (IOException ignored) {
         }
     }
