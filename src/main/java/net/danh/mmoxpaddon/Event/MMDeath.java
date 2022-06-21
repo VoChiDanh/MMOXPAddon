@@ -45,11 +45,11 @@ public class MMDeath implements Listener {
                     String formula_out_of_bounds_without_papi = PlaceholderAPI.setPlaceholders(p, mob.getFormulaOutOfBoundWithoutPapi(p).replaceAll("%mob_level%", String.valueOf(e.getMobLevel())).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault())));
                     debug("Formula out of bounds: " + formula_out_of_bounds_without_papi);
                     String formula_out_of_bounds = Calculator.calculator(formula_out_of_bounds_without_papi, 0);
-                    debug("Formula of of bounds = " + formula_out_of_bounds);
+                    debug("Formula out of bounds = " + formula_out_of_bounds);
                     String formula_within_limits_without_papi = PlaceholderAPI.setPlaceholders(p, mob.getFormulaWithinLimitsWithoutPapi(p).replaceAll("%mob_level%", String.valueOf(e.getMobLevel())).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault())));
-                    debug("Formula out of bounds: " + formula_within_limits_without_papi);
+                    debug("Formula within limits: " + formula_within_limits_without_papi);
                     String formula_within_limits = Calculator.calculator(formula_within_limits_without_papi, 0);
-                    debug("Formula of of bounds = " + formula_within_limits);
+                    debug("Formula within limits = " + formula_within_limits);
                     int xp_default = mob.getXPDefault();
                     debug("Xp default: " + xp_default);
                     int xp_max = mob.getXPMax();
@@ -97,10 +97,10 @@ public class MMDeath implements Listener {
                             }
                         }
                         if (use_formula) {
-                            PlayerData.get(p).giveExperience(Integer.parseInt(formula_out_of_bounds) * mob_level, EXPSource.SOURCE, p.getLocation().add(0, 2, 0), true);
+                            PlayerData.get(p).giveExperience((int) Double.parseDouble(formula_out_of_bounds) * mob_level, EXPSource.SOURCE, p.getLocation().add(0, 2, 0), true);
                         }
                         if (use_limited_xp) {
-                            PlayerData.get(p).giveExperience(Math.min(Integer.parseInt(formula_out_of_bounds) * mob_level, xp_max), EXPSource.SOURCE, p.getLocation().add(0, 2, 0), true);
+                            PlayerData.get(p).giveExperience(Math.min((int) Double.parseDouble(formula_out_of_bounds) * mob_level, xp_max), EXPSource.SOURCE, p.getLocation().add(0, 2, 0), true);
                         }
                     }
                 } else {
@@ -124,11 +124,11 @@ public class MMDeath implements Listener {
                     String formula_out_of_bounds_without_papi = PlaceholderAPI.setPlaceholders(p, mob.getFormulaOutOfBoundWithoutPapi(p).replaceAll("%mob_level%", String.valueOf(e.getMobLevel())).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault())));
                     debug("Formula out of bounds: " + formula_out_of_bounds_without_papi);
                     String formula_out_of_bounds = Calculator.calculator(formula_out_of_bounds_without_papi, 0);
-                    debug("Formula of of bounds = " + formula_out_of_bounds);
+                    debug("Formula out of bounds = " + formula_out_of_bounds);
                     String formula_within_limits_without_papi = PlaceholderAPI.setPlaceholders(p, mob.getFormulaWithinLimitsWithoutPapi(p).replaceAll("%mob_level%", String.valueOf(e.getMobLevel())).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault())));
-                    debug("Formula out of bounds: " + formula_within_limits_without_papi);
+                    debug("Formula within limits: " + formula_within_limits_without_papi);
                     String formula_within_limits = Calculator.calculator(formula_within_limits_without_papi, 0);
-                    debug("Formula of of bounds = " + formula_within_limits);
+                    debug("Formula within limits = " + formula_within_limits);
                     int xp_default = mob.getXPDefault();
                     debug("Xp default: " + xp_default);
                     int xp_max = mob.getXPMax();
@@ -176,10 +176,10 @@ public class MMDeath implements Listener {
                             }
                         }
                         if (use_formula) {
-                            PlayerData.get(p).giveExperience(Integer.parseInt(formula_out_of_bounds) * mob_level, EXPSource.SOURCE, p.getLocation().add(0, 2, 0), true);
+                            PlayerData.get(p).giveExperience((int) Double.parseDouble(formula_out_of_bounds) * mob_level, EXPSource.SOURCE, p.getLocation().add(0, 2, 0), true);
                         }
                         if (use_limited_xp) {
-                            PlayerData.get(p).giveExperience(Math.min(Integer.parseInt(formula_out_of_bounds) * mob_level, xp_max), EXPSource.SOURCE, p.getLocation().add(0, 2, 0), true);
+                            PlayerData.get(p).giveExperience(Math.min((int) Double.parseDouble(formula_out_of_bounds) * mob_level, xp_max), EXPSource.SOURCE, p.getLocation().add(0, 2, 0), true);
                         }
                     }
                 }
