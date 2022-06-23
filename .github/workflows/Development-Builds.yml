@@ -42,4 +42,4 @@ jobs:
             
             ${{ github.event.head_commit.message }}
             
-            Download: [`Build #${{github.run_number}}`](https://nightly.link/${{github.repository}}/actions/runs/${{ github.run_id }}/[DevBuild]-MMOXPAddon.zip)
+            Download: [`Build #${{github.run_number}}`](https://nightly.link/VoChiDanh/MMOXPAddon/actions/runs/${{ github.run_id }}/%5BDevBuild%5D-MMOXPAddon.zip?h=afdf7d7fbfd33a6053c82ff02a5d90790e77c017)
