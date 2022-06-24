@@ -9,7 +9,9 @@ EXAMPLE:
     WITHIN_LIMITS:
       - eco give %player_name% 1000
   FORMULA:
-    OUT_OF_BOUNDS: '%mob_level% / %mob_level% * 2'
+    OUT_OF_BOUNDS:
+      LOWER: '%mob_xp%'
+      HIGHER: '%mob_xp% * 4'
     WITHIN_LIMITS: '%mob_xp% * 2'
   XP:
     DEFAULT: 1

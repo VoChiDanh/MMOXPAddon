@@ -50,7 +50,8 @@ public class Mob {
                 command_b.add("eco give %player_name% 10");
                 config.set(name + ".COMMAND.OUT_OF_BOUNDS", command_b);
                 config.set(name + ".COMMAND.WITHIN_LIMITS", command_a);
-                config.set(name + ".FORMULA.OUT_OF_BOUNDS", "%mob_level% / %mob_level% * 2");
+                config.set(name + ".FORMULA.OUT_OF_BOUNDS.HIGHER", "%mob_xp% * 4");
+                config.set(name + ".FORMULA.OUT_OF_BOUNDS.LOWER", "%mob_xp%");
                 config.set(name + ".FORMULA.WITHIN_LIMITS", "%mob_xp% * 2");
                 config.set(name + ".XP.DEFAULT", 1);
                 config.set(name + ".XP.MAX", 1);
@@ -88,8 +89,15 @@ public class Mob {
         return PlaceholderAPI.setPlaceholders(p, calculator);
     }
 
-    public String getFormulaOutOfBoundWithoutPapi(Player p) {
-        String calculator = getConfig().getString(name + ".FORMULA.OUT_OF_BOUNDS");
+    public String getFormulaOutOfBoundWithoutPapiHigher(Player p) {
+        String calculator = getConfig().getString(name + ".FORMULA.OUT_OF_BOUNDS.HIGHER");
+        if (calculator == null) {
+            return null;
+        }
+        return PlaceholderAPI.setPlaceholders(p, calculator);
+    }
+    public String getFormulaOutOfBoundWithoutPapiLower(Player p) {
+        String calculator = getConfig().getString(name + ".FORMULA.OUT_OF_BOUNDS.LOWER");
         if (calculator == null) {
             return null;
         }

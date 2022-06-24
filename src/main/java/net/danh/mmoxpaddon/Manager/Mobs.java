@@ -32,8 +32,16 @@ public record Mobs(String name) {
         return PlaceholderAPI.setPlaceholders(p, calculator);
     }
 
-    public String getFormulaOutOfBoundWithoutPapi(Player p) {
-        String calculator = File.getmobfile().getString(name() + ".FORMULA.OUT_OF_BOUNDS");
+    public String getFormulaOutOfBoundWithoutPapiLower(Player p) {
+        String calculator = File.getmobfile().getString(name() + ".FORMULA.OUT_OF_BOUNDS.LOWER");
+        if (calculator == null) {
+            return null;
+        }
+        return PlaceholderAPI.setPlaceholders(p, calculator);
+    }
+
+    public String getFormulaOutOfBoundWithoutPapiHigher(Player p) {
+        String calculator = File.getmobfile().getString(name() + ".FORMULA.OUT_OF_BOUNDS.HIGHER");
         if (calculator == null) {
             return null;
         }
