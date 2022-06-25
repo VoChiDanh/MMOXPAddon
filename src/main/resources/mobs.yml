@@ -17,5 +17,6 @@ EXAMPLE:
     DEFAULT: 1
     MAX: 1
   LEVEL:
+    END: 10
     MAX: 5
     MIN: 1

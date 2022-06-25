@@ -61,10 +61,15 @@ public class API {
         debug("Level min: " + level_min);
         int level_max = mob.getLevelMax();
         debug("Level max: " + level_max);
+        int level_end = mob.getLevelEnd();
+        debug("Level end: " + level_end);
         int mob_level = (int) e.getMobLevel();
         debug("Mob level: " + mob_level);
         int player_level = PlayerData.get(p).getLevel();
         debug("Player level: " + player_level);
+        if (player_level >= level_end) {
+            return;
+        }
         if (player_level >= level_min && player_level <= level_max) {
             if (use_command) {
                 for (String cmd : cmd_within_limit) {
@@ -172,10 +177,15 @@ public class API {
         debug("Level min: " + level_min);
         int level_max = mob.getLevelMax();
         debug("Level max: " + level_max);
+        int level_end = mob.getLevelEnd();
+        debug("Level end: " + level_end);
         int mob_level = (int) e.getMobLevel();
         debug("Mob level: " + mob_level);
         int player_level = PlayerData.get(p).getLevel();
         debug("Player level: " + player_level);
+        if (player_level >= level_end) {
+            return;
+        }
         if (player_level >= level_min && player_level <= level_max) {
             if (use_command) {
                 for (String cmd : cmd_within_limit) {

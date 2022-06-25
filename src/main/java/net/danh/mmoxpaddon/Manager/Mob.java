@@ -57,12 +57,17 @@ public class Mob {
                 config.set(name + ".XP.MAX", 1);
                 config.set(name + ".LEVEL.MAX", 5);
                 config.set(name + ".LEVEL.MIN", 1);
+                config.set(name + ".LEVEL.END", 1);
                 config.save(file);
                 MMOXPAddon.getInstance().getLogger().log(Level.INFO, "Create new file mob " + name + " complete!");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public int getLevelEnd() {
+        return getConfig().getInt(name + ".LEVEL.END");
     }
 
     public int getLevelMax() {
@@ -96,6 +101,7 @@ public class Mob {
         }
         return PlaceholderAPI.setPlaceholders(p, calculator);
     }
+
     public String getFormulaOutOfBoundWithoutPapiLower(Player p) {
         String calculator = getConfig().getString(name + ".FORMULA.OUT_OF_BOUNDS.LOWER");
         if (calculator == null) {

@@ -8,6 +8,10 @@ import java.util.List;
 
 public record Mobs(String name) {
 
+    public int getLevelEnd() {
+        return File.getmobfile().getInt(name() + ".LEVEL.END");
+    }
+
     public int getLevelMax() {
         return File.getmobfile().getInt(name() + ".LEVEL.MAX");
     }
