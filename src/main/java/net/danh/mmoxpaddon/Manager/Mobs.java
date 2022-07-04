@@ -64,6 +64,10 @@ public record Mobs(String name) {
         return File.getmobfile().getBoolean(name() + ".USE.COMMAND");
     }
 
+    public boolean useLevelEnd() {
+        return File.getmobfile().getBoolean(name() + ".USE.LEVEL_END");
+    }
+
     public boolean useLimitedXP() {
         return File.getmobfile().getBoolean(name() + ".USE.LIMITED_XP");
     }

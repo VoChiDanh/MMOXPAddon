@@ -23,6 +23,8 @@ public class API {
         debug("Use Formula: " + use_formula);
         boolean use_limited_xp = mob.useLimitedXP();
         debug("Use limited xp: " + use_limited_xp);
+        boolean use_level_end = mob.useLevelEnd();
+        debug("Use level end: " + use_level_end);
         boolean use_command = mob.useCommand();
         debug("Use command: " + use_command);
         List<String> cmd_within_limit = mob.getCommandsWithinLimits();
@@ -67,8 +69,10 @@ public class API {
         debug("Mob level: " + mob_level);
         int player_level = PlayerData.get(p).getLevel();
         debug("Player level: " + player_level);
-        if (player_level >= level_end) {
-            return;
+        if (use_level_end) {
+            if (player_level >= level_end) {
+                return;
+            }
         }
         if (player_level >= level_min && player_level <= level_max) {
             if (use_command) {
@@ -139,6 +143,8 @@ public class API {
         debug("Use Formula: " + use_formula);
         boolean use_limited_xp = mob.useLimitedXP();
         debug("Use limited xp: " + use_limited_xp);
+        boolean use_level_end = mob.useLevelEnd();
+        debug("Use level end: " + use_level_end);
         boolean use_command = mob.useCommand();
         debug("Use command: " + use_command);
         List<String> cmd_within_limit = mob.getCommandsWithinLimits();
@@ -183,8 +189,10 @@ public class API {
         debug("Mob level: " + mob_level);
         int player_level = PlayerData.get(p).getLevel();
         debug("Player level: " + player_level);
-        if (player_level >= level_end) {
-            return;
+        if (use_level_end) {
+            if (player_level >= level_end) {
+                return;
+            }
         }
         if (player_level >= level_min && player_level <= level_max) {
             if (use_command) {

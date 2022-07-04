@@ -3,6 +3,7 @@ EXAMPLE:
     FORMULA: true
     LIMITED_XP: false
     COMMAND: false
+    LEVEL_END: true
   COMMAND:
     OUT_OF_BOUNDS:
       - eco give %player_name% 10

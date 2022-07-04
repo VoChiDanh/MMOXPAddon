@@ -46,6 +46,7 @@ public class Mob {
                 config.set(name + ".USE.FORMULA", true);
                 config.set(name + ".USE.LIMITED_XP", false);
                 config.set(name + ".USE.COMMAND", false);
+                config.set(name + ".USE.LEVEL_END", true);
                 command_a.add("eco give %player_name% 1000");
                 command_b.add("eco give %player_name% 10");
                 config.set(name + ".COMMAND.OUT_OF_BOUNDS", command_b);
@@ -128,6 +129,9 @@ public class Mob {
 
     public boolean useFormula() {
         return getConfig().getBoolean(name + ".USE.FORMULA");
+    }
+    public boolean useLevelEnd() {
+        return getConfig().getBoolean(name + ".USE.LEVEL_END");
     }
 
     public String getName() {
