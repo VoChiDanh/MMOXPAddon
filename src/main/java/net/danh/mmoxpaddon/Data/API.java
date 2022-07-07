@@ -93,7 +93,7 @@ public class API {
                         if (papi.contains("#cf_")) {
                             String custom_formula_replace = mob.getCustomFormula(custom_formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
                             String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
-                            papi = papi.replaceAll("#cf_" + custom_formula + "#", Calculator.calculator(custom_formula_papi, 0));
+                            papi = papi.replaceAll("#cf_" + custom_formula + "#", String.valueOf((int) Double.parseDouble(Calculator.calculator(custom_formula_papi, 0))));
                         } else {
                             break;
                         }
@@ -126,7 +126,7 @@ public class API {
                         if (papi.contains("#cf_")) {
                             String custom_formula_replace = mob.getCustomFormula(custom_formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
                             String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
-                            papi = papi.replaceAll("#cf_" + custom_formula + "#", Calculator.calculator(custom_formula_papi, 0));
+                            papi = papi.replaceAll("#cf_" + custom_formula + "#", String.valueOf((int) Double.parseDouble(Calculator.calculator(custom_formula_papi, 0))));
                         } else {
                             break;
                         }
@@ -156,7 +156,7 @@ public class API {
                         if (papi.contains("#cf_")) {
                             String custom_formula_replace = mob.getCustomFormula(custom_formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
                             String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
-                            papi = papi.replaceAll("#cf_" + custom_formula + "#", Calculator.calculator(custom_formula_papi, 0));
+                            papi = papi.replaceAll("#cf_" + custom_formula + "#", String.valueOf((int) Double.parseDouble(Calculator.calculator(custom_formula_papi, 0))));
                         } else {
                             break;
                         }
@@ -254,7 +254,7 @@ public class API {
                         if (papi.contains("#cf_")) {
                             String custom_formula_replace = mob.getCustomFormula(custom_formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
                             String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
-                            papi = papi.replaceAll("#cf_" + custom_formula + "#", Calculator.calculator(custom_formula_papi, 0));
+                            papi = papi.replaceAll("#cf_" + custom_formula + "#", String.valueOf((int) Double.parseDouble(Calculator.calculator(custom_formula_papi, 0))));
                         } else {
                             break;
                         }
@@ -287,7 +287,7 @@ public class API {
                         if (papi.contains("#cf_")) {
                             String custom_formula_replace = mob.getCustomFormula(custom_formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
                             String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
-                            papi = papi.replaceAll("#cf_" + custom_formula + "#", Calculator.calculator(custom_formula_papi, 0));
+                            papi = papi.replaceAll("#cf_" + custom_formula + "#", String.valueOf((int) Double.parseDouble(Calculator.calculator(custom_formula_papi, 0))));
                         } else {
                             break;
                         }
@@ -317,7 +317,7 @@ public class API {
                         if (papi.contains("#cf_")) {
                             String custom_formula_replace = mob.getCustomFormula(custom_formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
                             String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
-                            papi = papi.replaceAll("#cf_" + custom_formula + "#", Calculator.calculator(custom_formula_papi, 0));
+                            papi = papi.replaceAll("#cf_" + custom_formula + "#", String.valueOf((int) Double.parseDouble(Calculator.calculator(custom_formula_papi, 0))));
                         } else {
                             break;
                         }
