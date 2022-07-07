@@ -69,6 +69,16 @@ public class API {
         debug("Mob level: " + mob_level);
         int player_level = PlayerData.get(p).getLevel();
         debug("Player level: " + player_level);
+        debug("Custom formula without placeholder");
+        for (String formula : mob.getListCustomFormula()) {
+            debug(mob.getCustomFormula(formula));
+        }
+        debug("Custom formula");
+        for (String formula : mob.getListCustomFormula()) {
+            String replace = mob.getCustomFormula(formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+            String papi = PlaceholderAPI.setPlaceholders(p, replace);
+            debug(papi);
+        }
         if (use_level_end) {
             if (player_level >= level_end) {
                 return;
@@ -79,14 +89,25 @@ public class API {
                 for (String cmd : cmd_within_limit) {
                     String replace = cmd.replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
                     String papi = PlaceholderAPI.setPlaceholders(p, replace);
+                    for (String custom_formula : mob.getListCustomFormula()) {
+                        if (papi.contains("#cf_")) {
+                            String custom_formula_replace = mob.getCustomFormula(custom_formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                            String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
+                            papi = papi.replaceAll("#cf_" + custom_formula + "#", Calculator.calculator(custom_formula_papi, 0));
+                        } else {
+                            break;
+                        }
+                    }
+                    String finalPapi = papi;
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), papi);
+                            MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), finalPapi);
                         }
                     }.runTask(MMOXPAddon.getInstance());
                 }
             }
+
             if (use_formula) {
                 PlayerData.get(p).giveExperience((int) Double.parseDouble(formula_within_limits) * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
             } else {
@@ -101,10 +122,20 @@ public class API {
                 for (String cmd : cmd_out_of_bound) {
                     String replace = cmd.replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
                     String papi = PlaceholderAPI.setPlaceholders(p, replace);
+                    for (String custom_formula : mob.getListCustomFormula()) {
+                        if (papi.contains("#cf_")) {
+                            String custom_formula_replace = mob.getCustomFormula(custom_formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                            String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
+                            papi = papi.replaceAll("#cf_" + custom_formula + "#", Calculator.calculator(custom_formula_papi, 0));
+                        } else {
+                            break;
+                        }
+                    }
+                    String finalPapi = papi;
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), papi);
+                            MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), finalPapi);
                         }
                     }.runTask(MMOXPAddon.getInstance());
                 }
@@ -121,10 +152,20 @@ public class API {
                 for (String cmd : cmd_out_of_bound) {
                     String replace = cmd.replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
                     String papi = PlaceholderAPI.setPlaceholders(p, replace);
+                    for (String custom_formula : mob.getListCustomFormula()) {
+                        if (papi.contains("#cf_")) {
+                            String custom_formula_replace = mob.getCustomFormula(custom_formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                            String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
+                            papi = papi.replaceAll("#cf_" + custom_formula + "#", Calculator.calculator(custom_formula_papi, 0));
+                        } else {
+                            break;
+                        }
+                    }
+                    String finalPapi = papi;
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), papi);
+                            MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), finalPapi);
                         }
                     }.runTask(MMOXPAddon.getInstance());
                 }
@@ -189,6 +230,16 @@ public class API {
         debug("Mob level: " + mob_level);
         int player_level = PlayerData.get(p).getLevel();
         debug("Player level: " + player_level);
+        debug("Custom formula without placeholder");
+        for (String formula : mob.getListCustomFormula()) {
+            debug(mob.getCustomFormula(formula));
+        }
+        debug("Custom formula");
+        for (String formula : mob.getListCustomFormula()) {
+            String replace = mob.getCustomFormula(formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+            String papi = PlaceholderAPI.setPlaceholders(p, replace);
+            debug(papi);
+        }
         if (use_level_end) {
             if (player_level >= level_end) {
                 return;
@@ -199,14 +250,25 @@ public class API {
                 for (String cmd : cmd_within_limit) {
                     String replace = cmd.replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
                     String papi = PlaceholderAPI.setPlaceholders(p, replace);
+                    for (String custom_formula : mob.getListCustomFormula()) {
+                        if (papi.contains("#cf_")) {
+                            String custom_formula_replace = mob.getCustomFormula(custom_formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                            String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
+                            papi = papi.replaceAll("#cf_" + custom_formula + "#", Calculator.calculator(custom_formula_papi, 0));
+                        } else {
+                            break;
+                        }
+                    }
+                    String finalPapi = papi;
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), papi);
+                            MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), finalPapi);
                         }
                     }.runTask(MMOXPAddon.getInstance());
                 }
             }
+
             if (use_formula) {
                 PlayerData.get(p).giveExperience((int) Double.parseDouble(formula_within_limits) * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
             } else {
@@ -221,10 +283,20 @@ public class API {
                 for (String cmd : cmd_out_of_bound) {
                     String replace = cmd.replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
                     String papi = PlaceholderAPI.setPlaceholders(p, replace);
+                    for (String custom_formula : mob.getListCustomFormula()) {
+                        if (papi.contains("#cf_")) {
+                            String custom_formula_replace = mob.getCustomFormula(custom_formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                            String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
+                            papi = papi.replaceAll("#cf_" + custom_formula + "#", Calculator.calculator(custom_formula_papi, 0));
+                        } else {
+                            break;
+                        }
+                    }
+                    String finalPapi = papi;
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), papi);
+                            MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), finalPapi);
                         }
                     }.runTask(MMOXPAddon.getInstance());
                 }
@@ -241,10 +313,20 @@ public class API {
                 for (String cmd : cmd_out_of_bound) {
                     String replace = cmd.replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
                     String papi = PlaceholderAPI.setPlaceholders(p, replace);
+                    for (String custom_formula : mob.getListCustomFormula()) {
+                        if (papi.contains("#cf_")) {
+                            String custom_formula_replace = mob.getCustomFormula(custom_formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                            String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
+                            papi = papi.replaceAll("#cf_" + custom_formula + "#", Calculator.calculator(custom_formula_papi, 0));
+                        } else {
+                            break;
+                        }
+                    }
+                    String finalPapi = papi;
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), papi);
+                            MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), finalPapi);
                         }
                     }.runTask(MMOXPAddon.getInstance());
                 }

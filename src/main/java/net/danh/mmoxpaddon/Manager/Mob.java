@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.logging.Level;
 
 public class Mob {
@@ -47,7 +49,9 @@ public class Mob {
                 config.set(name + ".USE.LIMITED_XP", false);
                 config.set(name + ".USE.COMMAND", false);
                 config.set(name + ".USE.LEVEL_END", true);
-                command_a.add("eco give %player_name% 1000");
+                config.set(name + ".CUSTOM_FORMULA.EXAMPLE1", "%mob_xp% * 2");
+                config.set(name + ".CUSTOM_FORMULA.EXAMPLE2", "%mob_xp% * 5");
+                command_a.add("eco give %player_name% #cf_example1#");
                 command_b.add("eco give %player_name% 10");
                 config.set(name + ".COMMAND.OUT_OF_BOUNDS", command_b);
                 config.set(name + ".COMMAND.WITHIN_LIMITS", command_a);
@@ -103,6 +107,14 @@ public class Mob {
         return PlaceholderAPI.setPlaceholders(p, calculator);
     }
 
+    public Set<String> getListCustomFormula() {
+        return Objects.requireNonNull(net.danh.mmoxpaddon.Resource.File.getmobfile().getConfigurationSection(name + ".CUSTOM_FORMULA")).getKeys(false);
+    }
+
+    public String getCustomFormula(String formula) {
+        return net.danh.mmoxpaddon.Resource.File.getmobfile().getString(name + ".CUSTOM_FORMULA." + formula);
+    }
+
     public String getFormulaOutOfBoundWithoutPapiLower(Player p) {
         String calculator = getConfig().getString(name + ".FORMULA.OUT_OF_BOUNDS.LOWER");
         if (calculator == null) {
@@ -130,6 +142,7 @@ public class Mob {
     public boolean useFormula() {
         return getConfig().getBoolean(name + ".USE.FORMULA");
     }
+
     public boolean useLevelEnd() {
         return getConfig().getBoolean(name + ".USE.LEVEL_END");
     }

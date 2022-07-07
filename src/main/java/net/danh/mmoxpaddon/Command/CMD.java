@@ -1,7 +1,6 @@
 package net.danh.mmoxpaddon.Command;
 
 import net.danh.dcore.Commands.CMDBase;
-import net.danh.mmoxpaddon.MMOXPAddon;
 import net.danh.mmoxpaddon.Resource.File;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;

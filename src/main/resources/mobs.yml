@@ -4,11 +4,14 @@ EXAMPLE:
     LIMITED_XP: false
     COMMAND: false
     LEVEL_END: true
+  CUSTOM_FORMULA:
+    EXAMPLE1: '%mob_xp% * 2' #Placeholder only apply to command!
+    EXAMPLE2: '%mob_xp% * 5' #cf_example2#
   COMMAND:
     OUT_OF_BOUNDS:
-      - eco give %player_name% 10
+      - 'eco give %player_name% #cf_EXAMPLE1#'
     WITHIN_LIMITS:
-      - eco give %player_name% 1000
+      - 'eco give %player_name% #cf_EXAMPLE2#'
   FORMULA:
     OUT_OF_BOUNDS:
       LOWER: '%mob_xp%'

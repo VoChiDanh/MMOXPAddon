@@ -2,14 +2,21 @@ package net.danh.mmoxpaddon.Manager;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.danh.mmoxpaddon.Resource.File;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 public record Mobs(String name) {
 
     public int getLevelEnd() {
         return File.getmobfile().getInt(name() + ".LEVEL.END");
+    }
+
+    public FileConfiguration getConfig() {
+        return File.getmobfile();
     }
 
     public int getLevelMax() {
@@ -26,6 +33,14 @@ public record Mobs(String name) {
 
     public int getXPDefault() {
         return File.getmobfile().getInt(name() + ".XP.DEFAULT");
+    }
+
+    public Set<String> getListCustomFormula() {
+        return Objects.requireNonNull(File.getmobfile().getConfigurationSection(name + ".CUSTOM_FORMULA")).getKeys(false);
+    }
+
+    public String getCustomFormula(String formula) {
+        return net.danh.mmoxpaddon.Resource.File.getmobfile().getString(name + ".CUSTOM_FORMULA." + formula);
     }
 
     public String getFormulaWithinLimitsWithoutPapi(Player p) {
