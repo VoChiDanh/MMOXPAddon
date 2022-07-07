@@ -13,6 +13,9 @@ public class MMDeath implements Listener {
     @EventHandler
     public void onMythicMobDeath(MythicMobDeathEvent e) {
         if (e.getKiller() instanceof Player p) {
+            if (p.hasMetadata("NPC")) {
+                return;
+            }
             String mob_name = e.getMobType().getInternalName();
             if (File.getconfigfile().getStringList("MOBS").contains(mob_name)) {
                 if (File.getconfigfile().getBoolean("USE_MANY_FILE")) {
