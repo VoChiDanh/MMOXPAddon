@@ -11,8 +11,10 @@ import net.danh.mmoxpaddon.Manager.Mobs;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 import static net.danh.mmoxpaddon.Manager.Debug.debug;
 
@@ -99,12 +101,27 @@ public class API {
                         }
                     }
                     String finalPapi = papi;
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), finalPapi);
+                    if (finalPapi.contains(";")) {
+                        int random = new Random().nextInt(100);
+                        String[] sp = finalPapi.split(";");
+                        String commands = sp[0];
+                        int chance = BigDecimal.valueOf(Long.parseLong(sp[1])).intValue();
+                        if (chance >= random) {
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                                }
+                            }.runTask(MMOXPAddon.getInstance());
                         }
-                    }.runTask(MMOXPAddon.getInstance());
+                    } else {
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), finalPapi);
+                            }
+                        }.runTask(MMOXPAddon.getInstance());
+                    }
                 }
             }
 
@@ -132,12 +149,27 @@ public class API {
                         }
                     }
                     String finalPapi = papi;
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), finalPapi);
+                    if (finalPapi.contains(";")) {
+                        int random = new Random().nextInt(100);
+                        String[] sp = finalPapi.split(";");
+                        String commands = sp[0];
+                        int chance = BigDecimal.valueOf(Long.parseLong(sp[1])).intValue();
+                        if (chance >= random) {
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                                }
+                            }.runTask(MMOXPAddon.getInstance());
                         }
-                    }.runTask(MMOXPAddon.getInstance());
+                    } else {
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), finalPapi);
+                            }
+                        }.runTask(MMOXPAddon.getInstance());
+                    }
                 }
             }
             if (use_formula) {
@@ -162,12 +194,27 @@ public class API {
                         }
                     }
                     String finalPapi = papi;
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), finalPapi);
+                    if (finalPapi.contains(";")) {
+                        int random = new Random().nextInt(100);
+                        String[] sp = finalPapi.split(";");
+                        String commands = sp[0];
+                        int chance = BigDecimal.valueOf(Long.parseLong(sp[1])).intValue();
+                        if (chance >= random) {
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                                }
+                            }.runTask(MMOXPAddon.getInstance());
                         }
-                    }.runTask(MMOXPAddon.getInstance());
+                    } else {
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), finalPapi);
+                            }
+                        }.runTask(MMOXPAddon.getInstance());
+                    }
                 }
             }
             if (use_formula) {
@@ -200,19 +247,19 @@ public class API {
         }
         String formula_out_of_bounds_without_papi_higher = mob.getFormulaOutOfBoundWithoutPapiHigher(p);
         debug("Formula out of bounds higher: " + formula_out_of_bounds_without_papi_higher);
-        String formula_out_of_bounds_without_papi_replaced_higher = PlaceholderAPI.setPlaceholders(p, mob.getFormulaOutOfBoundWithoutPapiHigher(p).replaceAll("%mob_level%", String.valueOf(e.getMobLevel())).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault())));
+        String formula_out_of_bounds_without_papi_replaced_higher = PlaceholderAPI.setPlaceholders(p, Objects.requireNonNull(mob.getFormulaOutOfBoundWithoutPapiHigher(p)).replaceAll("%mob_level%", String.valueOf(e.getMobLevel())).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault())));
         debug("Formula out of bounds replaced higher: " + formula_out_of_bounds_without_papi_replaced_higher);
         String formula_out_of_bounds_higher = Calculator.calculator(formula_out_of_bounds_without_papi_replaced_higher, 0);
         debug("Formula out of bounds higher = " + formula_out_of_bounds_higher);
         String formula_out_of_bounds_without_papi_lower = mob.getFormulaOutOfBoundWithoutPapiLower(p);
         debug("Formula out of bounds lower: " + formula_out_of_bounds_without_papi_lower);
-        String formula_out_of_bounds_without_papi_replaced_lower = PlaceholderAPI.setPlaceholders(p, mob.getFormulaOutOfBoundWithoutPapiLower(p).replaceAll("%mob_level%", String.valueOf(e.getMobLevel())).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault())));
+        String formula_out_of_bounds_without_papi_replaced_lower = PlaceholderAPI.setPlaceholders(p, Objects.requireNonNull(mob.getFormulaOutOfBoundWithoutPapiLower(p)).replaceAll("%mob_level%", String.valueOf(e.getMobLevel())).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault())));
         debug("Formula out of bounds replaced lower: " + formula_out_of_bounds_without_papi_replaced_lower);
         String formula_out_of_bounds_lower = Calculator.calculator(formula_out_of_bounds_without_papi_replaced_lower, 0);
         debug("Formula out of bounds lower = " + formula_out_of_bounds_lower);
         String formula_within = mob.getFormulaWithinLimitsWithoutPapi(p);
         debug("Formula within limits : " + formula_within);
-        String formula_within_limits_without_papi_replaced = PlaceholderAPI.setPlaceholders(p, mob.getFormulaWithinLimitsWithoutPapi(p).replaceAll("%mob_level%", String.valueOf(e.getMobLevel())).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault())));
+        String formula_within_limits_without_papi_replaced = PlaceholderAPI.setPlaceholders(p, Objects.requireNonNull(mob.getFormulaWithinLimitsWithoutPapi(p)).replaceAll("%mob_level%", String.valueOf(e.getMobLevel())).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault())));
         debug("Formula within limits replaced: " + formula_within_limits_without_papi_replaced);
         String formula_within_limits = Calculator.calculator(formula_within_limits_without_papi_replaced, 0);
         debug("Formula within limits = " + formula_within_limits);
@@ -260,12 +307,27 @@ public class API {
                         }
                     }
                     String finalPapi = papi;
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), finalPapi);
+                    if (finalPapi.contains(";")) {
+                        int random = new Random().nextInt(100);
+                        String[] sp = finalPapi.split(";");
+                        String commands = sp[0];
+                        int chance = BigDecimal.valueOf(Long.parseLong(sp[1])).intValue();
+                        if (chance >= random) {
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                                }
+                            }.runTask(MMOXPAddon.getInstance());
                         }
-                    }.runTask(MMOXPAddon.getInstance());
+                    } else {
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), finalPapi);
+                            }
+                        }.runTask(MMOXPAddon.getInstance());
+                    }
                 }
             }
 
@@ -293,12 +355,27 @@ public class API {
                         }
                     }
                     String finalPapi = papi;
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), finalPapi);
+                    if (finalPapi.contains(";")) {
+                        int random = new Random().nextInt(100);
+                        String[] sp = finalPapi.split(";");
+                        String commands = sp[0];
+                        int chance = BigDecimal.valueOf(Long.parseLong(sp[1])).intValue();
+                        if (chance >= random) {
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                                }
+                            }.runTask(MMOXPAddon.getInstance());
                         }
-                    }.runTask(MMOXPAddon.getInstance());
+                    } else {
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), finalPapi);
+                            }
+                        }.runTask(MMOXPAddon.getInstance());
+                    }
                 }
             }
             if (use_formula) {
@@ -323,12 +400,27 @@ public class API {
                         }
                     }
                     String finalPapi = papi;
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), finalPapi);
+                    if (finalPapi.contains(";")) {
+                        int random = new Random().nextInt(100);
+                        String[] sp = finalPapi.split(";");
+                        String commands = sp[0];
+                        int chance = BigDecimal.valueOf(Long.parseLong(sp[1])).intValue();
+                        if (chance >= random) {
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                                }
+                            }.runTask(MMOXPAddon.getInstance());
                         }
-                    }.runTask(MMOXPAddon.getInstance());
+                    } else {
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), finalPapi);
+                            }
+                        }.runTask(MMOXPAddon.getInstance());
+                    }
                 }
             }
             if (use_formula) {

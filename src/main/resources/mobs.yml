@@ -7,9 +7,11 @@ EXAMPLE:
   CUSTOM_FORMULA:
     EXAMPLE1: '%mob_xp% * 2' #Placeholder only apply to command!
     EXAMPLE2: '%mob_xp% * 5' #cf_example2#
+    CHANCE1: '%mob_xp% * 3' #cf_example2#
   COMMAND:
     OUT_OF_BOUNDS:
-      - 'eco give %player_name% #cf_EXAMPLE1#'
+      - 'eco give %player_name% #cf_EXAMPLE1# ; #CHANCE1#' #execute commands with rate If the rate of the config is greater than or equal to the system rate (random 1->100), the command will be executed
+      - 'eco give %player_name% #cf_EXAMPLE1#' #chance = 100%
     WITHIN_LIMITS:
       - 'eco give %player_name% #cf_EXAMPLE2#'
   FORMULA:
