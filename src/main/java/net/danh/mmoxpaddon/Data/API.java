@@ -106,7 +106,7 @@ public class API {
                         String[] sp = finalPapi.split(";");
                         String commands = sp[0];
                         int chance = BigDecimal.valueOf(Long.parseLong(sp[1])).intValue();
-                        if (chance >= random) {
+                        if (chance > random) {
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
@@ -154,7 +154,7 @@ public class API {
                         String[] sp = finalPapi.split(";");
                         String commands = sp[0];
                         int chance = BigDecimal.valueOf(Long.parseLong(sp[1])).intValue();
-                        if (chance >= random) {
+                        if (chance > random) {
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
@@ -199,7 +199,7 @@ public class API {
                         String[] sp = finalPapi.split(";");
                         String commands = sp[0];
                         int chance = BigDecimal.valueOf(Long.parseLong(sp[1])).intValue();
-                        if (chance >= random) {
+                        if (chance > random) {
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
@@ -312,7 +312,7 @@ public class API {
                         String[] sp = finalPapi.split(";");
                         String commands = sp[0];
                         int chance = BigDecimal.valueOf(Long.parseLong(sp[1])).intValue();
-                        if (chance >= random) {
+                        if (chance > random) {
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
@@ -360,7 +360,7 @@ public class API {
                         String[] sp = finalPapi.split(";");
                         String commands = sp[0];
                         int chance = BigDecimal.valueOf(Long.parseLong(sp[1])).intValue();
-                        if (chance >= random) {
+                        if (chance > random) {
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
@@ -405,7 +405,7 @@ public class API {
                         String[] sp = finalPapi.split(";");
                         String commands = sp[0];
                         int chance = BigDecimal.valueOf(Long.parseLong(sp[1])).intValue();
-                        if (chance >= random) {
+                        if (chance > random) {
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
