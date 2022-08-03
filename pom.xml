@@ -6,7 +6,7 @@
 
     <groupId>net.danh</groupId>
     <artifactId>MMOXPAddon</artifactId>
-    <version>1.7.6</version>
+    <version>1.7.6;Build 37</version>
     <packaging>jar</packaging>
 
     <name>MMOXPAddon</name>
@@ -142,7 +142,7 @@
         <dependency>
             <groupId>com.github.D-x-Z</groupId>
             <artifactId>DCore</artifactId>
-            <version>c95ff43791</version>
+            <version>3d4f60cf5d</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

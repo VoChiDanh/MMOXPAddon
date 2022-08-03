@@ -1,13 +1,12 @@
 package net.danh.mmoxpaddon.Resource;
 
+import net.danh.dcore.DCore;
 import net.danh.mmoxpaddon.MMOXPAddon;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.IOException;
-
-import static net.danh.mmoxpaddon.MMOXPAddon.loadMobs;
 
 public class File {
 
@@ -42,7 +41,7 @@ public class File {
         config = YamlConfiguration.loadConfiguration(configFile);
         mob = YamlConfiguration.loadConfiguration(mobFile);
         if (File.getconfigfile().getBoolean("USE_MANY_FILE")) {
-            loadMobs();
+            DCore.dCoreLog("Settings USE_MANY_FILE was removed, edit mob in mobs.yml");
         }
     }
 

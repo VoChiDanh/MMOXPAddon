@@ -2,7 +2,6 @@ package net.danh.mmoxpaddon.Event;
 
 import io.lumine.mythic.bukkit.events.MythicMobDeathEvent;
 import net.danh.mmoxpaddon.Data.API;
-import net.danh.mmoxpaddon.Manager.Mob;
 import net.danh.mmoxpaddon.Manager.Mobs;
 import net.danh.mmoxpaddon.Resource.File;
 import org.bukkit.entity.Player;
@@ -18,13 +17,7 @@ public class MMDeath implements Listener {
             }
             String mob_name = e.getMobType().getInternalName();
             if (File.getconfigfile().getStringList("MOBS").contains(mob_name)) {
-                if (File.getconfigfile().getBoolean("USE_MANY_FILE")) {
-                    Mob mob = new Mob(mob_name);
-                    API.KillMythicMobs(e, p, mob);
-                } else {
-                    Mobs mob = new Mobs(mob_name);
-                    API.KillMythicMobs(e, p, mob);
-                }
+                API.KillMythicMobs(e, p, new Mobs(mob_name));
             }
         }
     }

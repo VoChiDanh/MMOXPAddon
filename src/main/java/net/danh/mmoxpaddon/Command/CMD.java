@@ -1,7 +1,7 @@
 package net.danh.mmoxpaddon.Command;
 
 import net.danh.dcore.Commands.CMDBase;
-import net.danh.mmoxpaddon.MMOXPAddon;
+import net.danh.mmoxpaddon.Manager.Version;
 import net.danh.mmoxpaddon.Resource.File;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -31,10 +31,11 @@ public class CMD extends CMDBase {
                     sendPlayerMessage(p, "&aReloaded");
                 }
                 if (args[0].equalsIgnoreCase("version")) {
-                    sendPlayerMessage(p, "&aOriginal Version: " + MMOXPAddon.VERSION);
-                    sendPlayerMessage(p, "&aDev Build Version: " + MMOXPAddon.DEV_BUILD_VERSION);
-                    sendPlayerMessage(p, "&aDev Build: " + MMOXPAddon.IS_DEV_BUILD);
-                    sendPlayerMessage(p, "&aPremium: " + MMOXPAddon.IS_PREMIUM);
+                    sendPlayerMessage(p, "&aOriginal Version: " + new Version().getOriginalVersion());
+                    sendPlayerMessage(p, "&aDev Build Version: " + new Version().getDevBuildVersion());
+                    sendPlayerMessage(p, "&aDev Build: " + new Version().isDevBuild());
+                    sendPlayerMessage(p, "&aPremium: " + new Version().isPremium());
+                    sendPlayerMessage(p, "&aRelease Link: " + new Version().getReleaseLink());
                 }
             }
         }
@@ -48,10 +49,11 @@ public class CMD extends CMDBase {
                 sendConsoleMessage(c, "&aReloaded");
             }
             if (args[0].equalsIgnoreCase("version")) {
-                sendConsoleMessage(c, "&aOriginal Version: " + MMOXPAddon.VERSION);
-                sendConsoleMessage(c, "&aDev Build Version: " + MMOXPAddon.DEV_BUILD_VERSION);
-                sendConsoleMessage(c, "&aDev Build: " + MMOXPAddon.IS_DEV_BUILD);
-                sendConsoleMessage(c, "&aPremium: " + MMOXPAddon.IS_PREMIUM);
+                sendConsoleMessage(c, "&aOriginal Version: " + new Version().getOriginalVersion());
+                sendConsoleMessage(c, "&aDev Build Version: " + new Version().getDevBuildVersion());
+                sendConsoleMessage(c, "&aDev Build: " + new Version().isDevBuild());
+                sendConsoleMessage(c, "&aPremium: " + new Version().isPremium());
+                sendConsoleMessage(c, "&aRelease Link: " + new Version().getReleaseLink());
             }
         }
     }
