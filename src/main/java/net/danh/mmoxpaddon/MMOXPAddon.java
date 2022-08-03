@@ -14,6 +14,11 @@ import static net.danh.dcore.Utils.File.updateFile;
 
 public final class MMOXPAddon extends JavaPlugin {
 
+    public static final String VERSION = MMOXPAddon.getInstance().getDescription().getVersion();
+    public static final String DEV_BUILD_VERSION = "Build 36";
+    public static final Boolean IS_DEV_BUILD = true;
+    public static final Boolean IS_PREMIUM = true;
+
     private static MMOXPAddon instance;
 
     public static MMOXPAddon getInstance() {
