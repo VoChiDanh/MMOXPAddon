@@ -226,6 +226,7 @@ public class API {
         }
     }
 
+    @Deprecated
     public static void KillMythicMobs(MythicMobDeathEvent e, Player p, Mob mob) {
         boolean use_formula = mob.useFormula();
         debug("Use Formula: " + use_formula);

@@ -1,5 +1,6 @@
 package net.danh.mmoxpaddon;
 
+import net.danh.dcore.DCore;
 import net.danh.mmoxpaddon.Command.CMD;
 import net.danh.mmoxpaddon.Event.MMDeath;
 import net.danh.mmoxpaddon.Manager.Mob;
@@ -20,6 +21,7 @@ public final class MMOXPAddon extends JavaPlugin {
     }
 
     public static void loadMobs() {
+        DCore.dCoreLog("In next version, settings USE_MANY_FILE will be dropped and you can't use multi file anymore");
         for (String mob_name : File.getconfigfile().getStringList("MOBS")) {
             Mob mob = new Mob(mob_name);
             mob.save();

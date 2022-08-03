@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -32,6 +32,23 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.3.0</version>
+                <configuration>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>net/danh/dcore/Utils/Progress*</exclude>
+                                <exclude>net/danh/dcore/Utils/Progress*</exclude>
+                                <exclude>net/danh/dcore/Utils/Items*</exclude>
+                                <exclude>net/danh/dcore/List/Contain*</exclude>
+                                <exclude>net/danh/dcore/Events/EnchantItemEvent*</exclude>
+                                <exclude>net/danh/dcore/Enchant/Lore*</exclude>
+                                <exclude>net/danh/dcore/Indicator/Hologram*</exclude>
+                                <exclude>net/danh/dcore/Indicator/RemoveHolo*</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                </configuration>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -99,20 +116,22 @@
         <dependency>
             <groupId>io.lumine</groupId>
             <artifactId>MythicLib-dist</artifactId>
-            <version>1.3.1</version>
-            <scope>provided</scope>
+            <version>1.3.3</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/MythicLib-1.3.3.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>io.lumine</groupId>
             <artifactId>Mythic-Dist</artifactId>
-            <version>5.1.0</version>
+            <version>5.1.2-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.Indyuce</groupId>
             <artifactId>MMOCore</artifactId>
-            <version>1.9.3</version>
-            <scope>provided</scope>
+            <version>1.9.4</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/MMOCore-1.9.4.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
@@ -123,7 +142,7 @@
         <dependency>
             <groupId>com.github.D-x-Z</groupId>
             <artifactId>DCore</artifactId>
-            <version>09f5b67cf4</version>
+            <version>c95ff43791</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

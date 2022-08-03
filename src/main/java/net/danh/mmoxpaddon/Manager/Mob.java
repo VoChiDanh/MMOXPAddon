@@ -14,6 +14,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 
+@Deprecated
 public class Mob {
     private final String name;
     private File file;
