@@ -33,8 +33,8 @@ public class CMD extends CMDBase {
                 if (args[0].equalsIgnoreCase("version")) {
                     sendPlayerMessage(p, "&aOriginal Version: " + new Version().getOriginalVersion());
                     sendPlayerMessage(p, "&aDev Build Version: " + new Version().getDevBuildVersion());
-                    sendPlayerMessage(p, "&aDev Build: " + new Version().isDevBuild());
-                    sendPlayerMessage(p, "&aPremium: " + new Version().isPremium());
+                    sendPlayerMessage(p, "&aDev Build: " + new Version().isDevBuild().getStatus());
+                    sendPlayerMessage(p, "&aPremium: " + new Version().isPremium().getStatus());
                     sendPlayerMessage(p, "&aRelease Link: " + new Version().getReleaseLink());
                 }
             }
@@ -51,8 +51,8 @@ public class CMD extends CMDBase {
             if (args[0].equalsIgnoreCase("version")) {
                 sendConsoleMessage(c, "&aOriginal Version: " + new Version().getOriginalVersion());
                 sendConsoleMessage(c, "&aDev Build Version: " + new Version().getDevBuildVersion());
-                sendConsoleMessage(c, "&aDev Build: " + new Version().isDevBuild());
-                sendConsoleMessage(c, "&aPremium: " + new Version().isPremium());
+                sendConsoleMessage(c, "&aDev Build: " + new Version().isDevBuild().getStatus());
+                sendConsoleMessage(c, "&aPremium: " + new Version().isPremium().getStatus());
                 sendConsoleMessage(c, "&aRelease Link: " + new Version().getReleaseLink());
             }
         }

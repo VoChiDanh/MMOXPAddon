@@ -2,11 +2,13 @@ package net.danh.mmoxpaddon.Resource;
 
 import net.danh.dcore.DCore;
 import net.danh.mmoxpaddon.MMOXPAddon;
+import net.danh.mmoxpaddon.Manager.Version;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.IOException;
+import java.util.logging.Level;
 
 public class File {
 
@@ -42,6 +44,10 @@ public class File {
         mob = YamlConfiguration.loadConfiguration(mobFile);
         if (File.getconfigfile().getBoolean("USE_MANY_FILE")) {
             DCore.dCoreLog("Settings USE_MANY_FILE was removed, edit mob in mobs.yml");
+        }
+        if (!new Version().isPremium().getType()) {
+            MMOXPAddon.getInstance().getLogger().log(Level.WARNING, "You are using Free version!");
+            MMOXPAddon.getInstance().getLogger().log(Level.WARNING, "Free version limit some features and mob from config");
         }
     }
 

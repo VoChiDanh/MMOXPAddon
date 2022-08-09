@@ -17,13 +17,13 @@ public class Version extends DVersion {
     }
 
     @Override
-    public String isDevBuild() {
-        return Status.TRUE.getStatus();
+    public Status isDevBuild() {
+        return Status.TRUE;
     }
 
     @Override
-    public String isPremium() {
-        return Status.TRUE.getStatus();
+    public Status isPremium() {
+        return Status.TRUE;
     }
 
     @Override
