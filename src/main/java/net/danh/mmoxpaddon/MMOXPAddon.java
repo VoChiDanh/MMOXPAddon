@@ -33,5 +33,6 @@ public final class MMOXPAddon extends JavaPlugin {
     @Override
     public void onDisable() {
         File.saveconfig();
+        File.savemob();
     }
 }

@@ -2,7 +2,6 @@ package net.danh.mmoxpaddon.Manager;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.danh.mmoxpaddon.Resource.File;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -13,10 +12,6 @@ public record Mobs(String name) {
 
     public int getLevelEnd() {
         return File.getmobfile().getInt(name() + ".LEVEL.END");
-    }
-
-    public FileConfiguration getConfig() {
-        return File.getmobfile();
     }
 
     public int getLevelMax() {

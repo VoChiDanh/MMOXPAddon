@@ -12,7 +12,5 @@
 # Percent: "percent # number" ; Ex: 10 # 20 (10% of 20) ➙ 2
 DEBUG: false
 USE_MANY_FILE: false
-#true -> Use MMOXPAddon/Mobs/mobname.yml
-#false -> Use mobs.yml
 MOBS: #List mob, if you don't list here, mob won't give xp
   - EXAMPLE
