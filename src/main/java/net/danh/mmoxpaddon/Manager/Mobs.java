@@ -38,6 +38,18 @@ public record Mobs(String name) {
         return net.danh.mmoxpaddon.Resource.File.getmobfile().getString(name + ".CUSTOM_FORMULA." + formula);
     }
 
+    public Set<String> getListConditions() {
+        return Objects.requireNonNull(File.getmobfile().getConfigurationSection(name + ".CONDITIONS")).getKeys(false);
+    }
+
+    public String getConditions(String conditions) {
+        if (conditions.contains("#")) {
+            return conditions.replaceAll("#", "");
+        } else {
+            return net.danh.mmoxpaddon.Resource.File.getmobfile().getString(name + ".CONDITIONS." + conditions);
+        }
+    }
+
     public String getFormulaWithinLimitsWithoutPapi(Player p) {
         String calculator = File.getmobfile().getString(name() + ".FORMULA.WITHIN_LIMITS");
         if (calculator == null) {

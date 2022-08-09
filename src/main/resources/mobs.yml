@@ -4,6 +4,10 @@ EXAMPLE:
     LIMITED_XP: false
     COMMAND: false
     LEVEL_END: true
+  CONDITIONS:
+    CONDITION1: '%mmocore_level%;>=;5;NUMBER' #you can check by >=, >, <=, <
+    CONDITION2: '%mmocore_is_casting%;==;true;BOOLEAN' #only ==
+    CONDITION3: '%mmocore_class%;==;KNIGHT;STRING' #only ==
   CUSTOM_FORMULA:
     EXAMPLE1: '%mob_xp% * 2' #Placeholder only apply to command!
     EXAMPLE2: '%mob_xp% * 5' #cf_example2#
@@ -12,6 +16,7 @@ EXAMPLE:
     OUT_OF_BOUNDS:
       - 'eco give %player_name% #cf_EXAMPLE1# ;#cf_CHANCE1#' #execute commands with rate If the rate of the config is greater than or equal to the system rate (random 1->100), the command will be executed
       - 'eco give %player_name% #cf_EXAMPLE1#' #chance = 100%
+      - '#CONDITION1#;eco give %player_name% #cf_EXAMPLE2#;#cf_CHANCE1#' #condition
     WITHIN_LIMITS:
       - 'eco give %player_name% #cf_EXAMPLE2#'
   FORMULA:

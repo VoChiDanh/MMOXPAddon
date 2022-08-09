@@ -80,6 +80,16 @@ public class API {
             String papi = PlaceholderAPI.setPlaceholders(p, replace);
             debug(papi);
         }
+        debug("Custom Conditions without placeholder");
+        for (String conditions : mob.getListConditions()) {
+            debug(mob.getConditions(conditions));
+        }
+        debug("Conditions");
+        for (String conditions : mob.getListConditions()) {
+            String cdt = mob.getConditions(conditions).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+            String papi = PlaceholderAPI.setPlaceholders(p, cdt);
+            debug(papi);
+        }
         if (use_level_end) {
             if (player_level >= level_end) {
                 return;
@@ -103,15 +113,91 @@ public class API {
                     if (finalPapi.contains(";")) {
                         int random = new Random().nextInt(100);
                         String[] sp = finalPapi.split(";");
-                        String commands = sp[0];
-                        int chance = BigDecimal.valueOf(Long.parseLong(sp[1])).intValue();
-                        if (chance > random) {
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                        if (sp.length == 2) {
+                            String commands = sp[0];
+                            int chance = BigDecimal.valueOf(Double.parseDouble(sp[1].replaceAll(" ", ""))).intValue();
+                            if (chance > random) {
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                                    }
+                                }.runTask(MMOXPAddon.getInstance());
+                            }
+                        }
+                        if (sp.length == 3) {
+                            String conditions = mob.getConditions(sp[0]);
+                            String papi_conditions = PlaceholderAPI.setPlaceholders(p, conditions);
+                            String[] pp_c = papi_conditions.split(";");
+                            if (pp_c.length == 4) {
+                                if (pp_c[3].equalsIgnoreCase("NUMBER")) {
+                                    int c1 = BigDecimal.valueOf(Double.parseDouble(pp_c[0])).intValue();
+                                    String c2 = pp_c[1];
+                                    int c3 = BigDecimal.valueOf(Double.parseDouble(String.valueOf(pp_c[2]))).intValue();
+                                    boolean status = false;
+                                    if (c2.equalsIgnoreCase(">=")) {
+                                        status = c1 >= c3;
+                                    }
+                                    if (c2.equalsIgnoreCase(">")) {
+                                        status = c1 > c3;
+                                    }
+                                    if (c2.equalsIgnoreCase("<=")) {
+                                        status = c1 <= c3;
+                                    }
+                                    if (c2.equalsIgnoreCase("<")) {
+                                        status = c1 < c3;
+                                    }
+                                    if (status) {
+                                        String commands = sp[1];
+                                        int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
+                                        if (chance > random) {
+                                            new BukkitRunnable() {
+                                                @Override
+                                                public void run() {
+                                                    MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                                                }
+                                            }.runTask(MMOXPAddon.getInstance());
+                                        }
+                                    }
                                 }
-                            }.runTask(MMOXPAddon.getInstance());
+                                if (pp_c[3].equalsIgnoreCase("BOOLEAN")) {
+                                    boolean c1 = Boolean.parseBoolean(pp_c[0]);
+                                    boolean c3 = Boolean.parseBoolean(pp_c[2]);
+                                    boolean status = c1 && c3;
+                                    if (!c1 && !c3) {
+                                        status = true;
+                                    }
+                                    if (status) {
+                                        String commands = sp[1];
+                                        int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
+                                        if (chance > random) {
+                                            new BukkitRunnable() {
+                                                @Override
+                                                public void run() {
+                                                    MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                                                }
+                                            }.runTask(MMOXPAddon.getInstance());
+                                        }
+                                    }
+                                }
+                                if (pp_c[3].equalsIgnoreCase("STRING")) {
+                                    String c1 = String.valueOf(pp_c[0]);
+                                    String c3 = String.valueOf(pp_c[2]);
+                                    boolean status = c1.equalsIgnoreCase(c3);
+                                    if (status) {
+                                        String commands = sp[1];
+                                        int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
+                                        if (chance > random) {
+                                            new BukkitRunnable() {
+                                                @Override
+                                                public void run() {
+                                                    MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                                                }
+                                            }.runTask(MMOXPAddon.getInstance());
+                                        }
+                                    }
+                                }
+                            }
                         }
                     } else {
                         new BukkitRunnable() {
@@ -151,15 +237,91 @@ public class API {
                     if (finalPapi.contains(";")) {
                         int random = new Random().nextInt(100);
                         String[] sp = finalPapi.split(";");
-                        String commands = sp[0];
-                        int chance = BigDecimal.valueOf(Long.parseLong(sp[1])).intValue();
-                        if (chance > random) {
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                        if (sp.length == 2) {
+                            String commands = sp[0];
+                            int chance = BigDecimal.valueOf(Double.parseDouble(sp[1].replaceAll(" ", ""))).intValue();
+                            if (chance > random) {
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                                    }
+                                }.runTask(MMOXPAddon.getInstance());
+                            }
+                        }
+                        if (sp.length == 3) {
+                            String conditions = mob.getConditions(sp[0]);
+                            String papi_conditions = PlaceholderAPI.setPlaceholders(p, conditions);
+                            String[] pp_c = papi_conditions.split(";");
+                            if (pp_c.length == 4) {
+                                if (pp_c[3].equalsIgnoreCase("NUMBER")) {
+                                    int c1 = BigDecimal.valueOf(Double.parseDouble(pp_c[0])).intValue();
+                                    String c2 = pp_c[1];
+                                    int c3 = BigDecimal.valueOf(Double.parseDouble(String.valueOf(pp_c[2]))).intValue();
+                                    boolean status = false;
+                                    if (c2.equalsIgnoreCase(">=")) {
+                                        status = c1 >= c3;
+                                    }
+                                    if (c2.equalsIgnoreCase(">")) {
+                                        status = c1 > c3;
+                                    }
+                                    if (c2.equalsIgnoreCase("<=")) {
+                                        status = c1 <= c3;
+                                    }
+                                    if (c2.equalsIgnoreCase("<")) {
+                                        status = c1 < c3;
+                                    }
+                                    if (status) {
+                                        String commands = sp[1];
+                                        int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
+                                        if (chance > random) {
+                                            new BukkitRunnable() {
+                                                @Override
+                                                public void run() {
+                                                    MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                                                }
+                                            }.runTask(MMOXPAddon.getInstance());
+                                        }
+                                    }
                                 }
-                            }.runTask(MMOXPAddon.getInstance());
+                                if (pp_c[3].equalsIgnoreCase("BOOLEAN")) {
+                                    boolean c1 = Boolean.parseBoolean(pp_c[0]);
+                                    boolean c3 = Boolean.parseBoolean(pp_c[2]);
+                                    boolean status = c1 && c3;
+                                    if (!c1 && !c3) {
+                                        status = true;
+                                    }
+                                    if (status) {
+                                        String commands = sp[1];
+                                        int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
+                                        if (chance > random) {
+                                            new BukkitRunnable() {
+                                                @Override
+                                                public void run() {
+                                                    MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                                                }
+                                            }.runTask(MMOXPAddon.getInstance());
+                                        }
+                                    }
+                                }
+                                if (pp_c[3].equalsIgnoreCase("STRING")) {
+                                    String c1 = String.valueOf(pp_c[0]);
+                                    String c3 = String.valueOf(pp_c[2]);
+                                    boolean status = c1.equalsIgnoreCase(c3);
+                                    if (status) {
+                                        String commands = sp[1];
+                                        int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
+                                        if (chance > random) {
+                                            new BukkitRunnable() {
+                                                @Override
+                                                public void run() {
+                                                    MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                                                }
+                                            }.runTask(MMOXPAddon.getInstance());
+                                        }
+                                    }
+                                }
+                            }
                         }
                     } else {
                         new BukkitRunnable() {
@@ -196,15 +358,91 @@ public class API {
                     if (finalPapi.contains(";")) {
                         int random = new Random().nextInt(100);
                         String[] sp = finalPapi.split(";");
-                        String commands = sp[0];
-                        int chance = BigDecimal.valueOf(Long.parseLong(sp[1])).intValue();
-                        if (chance > random) {
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                        if (sp.length == 2) {
+                            String commands = sp[0];
+                            int chance = BigDecimal.valueOf(Double.parseDouble(sp[1].replaceAll(" ", ""))).intValue();
+                            if (chance > random) {
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                                    }
+                                }.runTask(MMOXPAddon.getInstance());
+                            }
+                        }
+                        if (sp.length == 3) {
+                            String conditions = mob.getConditions(sp[0]);
+                            String papi_conditions = PlaceholderAPI.setPlaceholders(p, conditions);
+                            String[] pp_c = papi_conditions.split(";");
+                            if (pp_c.length == 4) {
+                                if (pp_c[3].equalsIgnoreCase("NUMBER")) {
+                                    int c1 = BigDecimal.valueOf(Double.parseDouble(pp_c[0])).intValue();
+                                    String c2 = pp_c[1];
+                                    int c3 = BigDecimal.valueOf(Double.parseDouble(String.valueOf(pp_c[2]))).intValue();
+                                    boolean status = false;
+                                    if (c2.equalsIgnoreCase(">=")) {
+                                        status = c1 >= c3;
+                                    }
+                                    if (c2.equalsIgnoreCase(">")) {
+                                        status = c1 > c3;
+                                    }
+                                    if (c2.equalsIgnoreCase("<=")) {
+                                        status = c1 <= c3;
+                                    }
+                                    if (c2.equalsIgnoreCase("<")) {
+                                        status = c1 < c3;
+                                    }
+                                    if (status) {
+                                        String commands = sp[1];
+                                        int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
+                                        if (chance > random) {
+                                            new BukkitRunnable() {
+                                                @Override
+                                                public void run() {
+                                                    MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                                                }
+                                            }.runTask(MMOXPAddon.getInstance());
+                                        }
+                                    }
                                 }
-                            }.runTask(MMOXPAddon.getInstance());
+                                if (pp_c[3].equalsIgnoreCase("BOOLEAN")) {
+                                    boolean c1 = Boolean.parseBoolean(pp_c[0]);
+                                    boolean c3 = Boolean.parseBoolean(pp_c[2]);
+                                    boolean status = c1 && c3;
+                                    if (!c1 && !c3) {
+                                        status = true;
+                                    }
+                                    if (status) {
+                                        String commands = sp[1];
+                                        int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
+                                        if (chance > random) {
+                                            new BukkitRunnable() {
+                                                @Override
+                                                public void run() {
+                                                    MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                                                }
+                                            }.runTask(MMOXPAddon.getInstance());
+                                        }
+                                    }
+                                }
+                                if (pp_c[3].equalsIgnoreCase("STRING")) {
+                                    String c1 = String.valueOf(pp_c[0]);
+                                    String c3 = String.valueOf(pp_c[2]);
+                                    boolean status = c1.equalsIgnoreCase(c3);
+                                    if (status) {
+                                        String commands = sp[1];
+                                        int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
+                                        if (chance > random) {
+                                            new BukkitRunnable() {
+                                                @Override
+                                                public void run() {
+                                                    MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                                                }
+                                            }.runTask(MMOXPAddon.getInstance());
+                                        }
+                                    }
+                                }
+                            }
                         }
                     } else {
                         new BukkitRunnable() {
