@@ -6,7 +6,7 @@
 
     <groupId>net.danh</groupId>
     <artifactId>MMOXPAddon</artifactId>
-    <version>1.7.6;Build 38</version>
+    <version>1.7.6;Build 39</version>
     <packaging>jar</packaging>
 
     <name>MMOXPAddon</name>
@@ -114,13 +114,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.lumine</groupId>
-            <artifactId>MythicLib-dist</artifactId>
-            <version>1.3.3</version>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
