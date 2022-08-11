@@ -42,6 +42,10 @@ public record Mobs(String name) {
         return Objects.requireNonNull(File.getmobfile().getConfigurationSection(name + ".CONDITIONS")).getKeys(false);
     }
 
+    public boolean notnullConditions() {
+        return File.getmobfile().getConfigurationSection(name + ".CONDITIONS") != null;
+    }
+
     public String getConditions(String conditions) {
         if (conditions.contains("#")) {
             return conditions.replaceAll("#", "");
