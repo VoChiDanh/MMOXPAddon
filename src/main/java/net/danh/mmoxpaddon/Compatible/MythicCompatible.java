@@ -1,8 +1,8 @@
-package net.danh.mmoxpaddon.compatible;
+package net.danh.mmoxpaddon.Compatible;
 
-import net.danh.mmoxpaddon.compatible.MythicMobs.Events.CReload;
-import net.danh.mmoxpaddon.compatible.MythicMobs.Events.MReload;
-import net.danh.mmoxpaddon.compatible.MythicMobs.Events.PReload;
+import net.danh.mmoxpaddon.Compatible.MythicMobs.Events.CReload;
+import net.danh.mmoxpaddon.Compatible.MythicMobs.Events.MReload;
+import net.danh.mmoxpaddon.Compatible.MythicMobs.Events.PReload;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MythicCompatible {

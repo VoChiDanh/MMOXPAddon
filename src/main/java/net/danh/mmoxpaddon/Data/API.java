@@ -53,20 +53,14 @@ public class API {
         debug("Formula out of bounds higher: " + formula_out_of_bounds_without_papi_higher);
         String formula_out_of_bounds_without_papi_replaced_higher = PlaceholderAPI.setPlaceholders(p, Objects.requireNonNull(mob.getFormulaOutOfBoundWithoutPapiHigher(p)).replaceAll("%mob_level%", String.valueOf(e.getMobLevel())).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault())));
         debug("Formula out of bounds replaced higher: " + formula_out_of_bounds_without_papi_replaced_higher);
-        String formula_out_of_bounds_higher = Calculator.calculator(formula_out_of_bounds_without_papi_replaced_higher, 0);
-        debug("Formula out of bounds higher = " + formula_out_of_bounds_higher);
         String formula_out_of_bounds_without_papi_lower = mob.getFormulaOutOfBoundWithoutPapiLower(p);
         debug("Formula out of bounds lower: " + formula_out_of_bounds_without_papi_lower);
         String formula_out_of_bounds_without_papi_replaced_lower = PlaceholderAPI.setPlaceholders(p, Objects.requireNonNull(mob.getFormulaOutOfBoundWithoutPapiLower(p)).replaceAll("%mob_level%", String.valueOf(e.getMobLevel())).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault())));
         debug("Formula out of bounds replaced lower: " + formula_out_of_bounds_without_papi_replaced_lower);
-        String formula_out_of_bounds_lower = Calculator.calculator(formula_out_of_bounds_without_papi_replaced_lower, 0);
-        debug("Formula out of bounds lower = " + formula_out_of_bounds_lower);
         String formula_within = mob.getFormulaWithinLimitsWithoutPapi(p);
         debug("Formula within limits : " + formula_within);
         String formula_within_limits_without_papi_replaced = PlaceholderAPI.setPlaceholders(p, Objects.requireNonNull(mob.getFormulaWithinLimitsWithoutPapi(p)).replaceAll("%mob_level%", String.valueOf(e.getMobLevel())).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault())));
         debug("Formula within limits replaced: " + formula_within_limits_without_papi_replaced);
-        String formula_within_limits = Calculator.calculator(formula_within_limits_without_papi_replaced, 0);
-        debug("Formula within limits = " + formula_within_limits);
         int xp_default = mob.getXPDefault();
         debug("Xp default: " + xp_default);
         int xp_max = mob.getXPMax();
@@ -229,13 +223,152 @@ public class API {
                     }
                 }
             }
-            if (use_formula) {
-                PlayerData.get(p).giveExperience((int) Double.parseDouble(formula_within_limits) * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
-            } else {
+            if (use_formula && !use_limited_xp) {
+                for (String custom_formula : mob.getListCustomFormula()) {
+                    if (formula_within_limits_without_papi_replaced.contains("#cf_")) {
+                        String custom_formula_replace = mob.getCustomFormula(custom_formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                        String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
+                        formula_within_limits_without_papi_replaced = formula_within_limits_without_papi_replaced.replaceAll("#cf_" + custom_formula + "#", String.valueOf((int) Double.parseDouble(Calculator.calculator(custom_formula_papi, 0))));
+                    } else {
+                        break;
+                    }
+                }
+                if (mob.notnullConditions() && formula_within_limits_without_papi_replaced.contains(";")) {
+                    String[] strings = formula_within_limits_without_papi_replaced.split(";");
+                    if (strings.length == 3) {
+                        String conditions = mob.getConditions(strings[0]);
+                        String papi_conditions = PlaceholderAPI.setPlaceholders(p, conditions);
+                        String[] pp_c = papi_conditions.split(";");
+                        if (pp_c.length == 4) {
+                            boolean status = false;
+                            if (pp_c[3].equalsIgnoreCase("NUMBER")) {
+                                int c1 = BigDecimal.valueOf(Double.parseDouble(pp_c[0])).intValue();
+                                int c3 = BigDecimal.valueOf(Double.parseDouble(pp_c[2])).intValue();
+                                String c2 = pp_c[1];
+                                if (c2.equalsIgnoreCase(">=")) {
+                                    status = c1 >= c3;
+                                }
+                                if (c2.equalsIgnoreCase(">")) {
+                                    status = c1 > c3;
+                                }
+                                if (c2.equalsIgnoreCase("<=")) {
+                                    status = c1 <= c3;
+                                }
+                                if (c2.equalsIgnoreCase("<")) {
+                                    status = c1 < c3;
+                                }
+                            }
+                            if (pp_c[3].equalsIgnoreCase("BOOLEAN")) {
+                                boolean c1 = Boolean.parseBoolean(pp_c[0]);
+                                boolean c3 = Boolean.parseBoolean(pp_c[2]);
+                                if (c1 && c3) {
+                                    status = true;
+                                }
+                                if (!c1 && !c3) {
+                                    status = true;
+                                }
+                                if (c1 && !c3) {
+                                    status = false;
+                                }
+                                if (!c1 && c3) {
+                                    status = false;
+                                }
+                            }
+                            if (pp_c[3].equalsIgnoreCase("STRING")) {
+                                String c1 = String.valueOf(pp_c[0]);
+                                String c3 = String.valueOf(pp_c[2]);
+                                status = c1.equalsIgnoreCase(c3);
+                            }
+                            debug("Formula within limits (in) = " + strings[1]);
+                            debug("Formula within limits (out) = " + strings[2]);
+                            if (status) {
+                                PlayerData.get(p).giveExperience((int) Double.parseDouble(strings[1]) * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                            } else {
+                                PlayerData.get(p).giveExperience((int) Double.parseDouble(strings[2]) * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+
+                            }
+                        }
+                    }
+                } else {
+                    String formula_within_limits = Calculator.calculator(formula_within_limits_without_papi_replaced, 0);
+                    debug("Formula within limits = " + formula_within_limits);
+                    PlayerData.get(p).giveExperience((int) Double.parseDouble(formula_within_limits) * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                }
+            }
+            if (!use_formula && !use_limited_xp) {
                 PlayerData.get(p).giveExperience(xp_default * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
             }
-            if (use_limited_xp) {
-                PlayerData.get(p).giveExperience(Math.min((int) Double.parseDouble(formula_within_limits) * mob_level, xp_max), EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+            if (!use_formula && use_limited_xp) {
+                for (String custom_formula : mob.getListCustomFormula()) {
+                    if (formula_within_limits_without_papi_replaced.contains("#cf_")) {
+                        String custom_formula_replace = mob.getCustomFormula(custom_formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                        String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
+                        formula_within_limits_without_papi_replaced = formula_within_limits_without_papi_replaced.replaceAll("#cf_" + custom_formula + "#", String.valueOf((int) Double.parseDouble(Calculator.calculator(custom_formula_papi, 0))));
+                    } else {
+                        break;
+                    }
+                }
+                if (mob.notnullConditions() && formula_within_limits_without_papi_replaced.contains(";")) {
+                    String[] strings = formula_within_limits_without_papi_replaced.split(";");
+                    if (strings.length == 3) {
+                        String conditions = mob.getConditions(strings[0]);
+                        String papi_conditions = PlaceholderAPI.setPlaceholders(p, conditions);
+                        String[] pp_c = papi_conditions.split(";");
+                        if (pp_c.length == 4) {
+                            boolean status = false;
+                            if (pp_c[3].equalsIgnoreCase("NUMBER")) {
+                                int c1 = BigDecimal.valueOf(Double.parseDouble(pp_c[0])).intValue();
+                                int c3 = BigDecimal.valueOf(Double.parseDouble(pp_c[2])).intValue();
+                                String c2 = pp_c[1];
+                                if (c2.equalsIgnoreCase(">=")) {
+                                    status = c1 >= c3;
+                                }
+                                if (c2.equalsIgnoreCase(">")) {
+                                    status = c1 > c3;
+                                }
+                                if (c2.equalsIgnoreCase("<=")) {
+                                    status = c1 <= c3;
+                                }
+                                if (c2.equalsIgnoreCase("<")) {
+                                    status = c1 < c3;
+                                }
+                            }
+                            if (pp_c[3].equalsIgnoreCase("BOOLEAN")) {
+                                boolean c1 = Boolean.parseBoolean(pp_c[0]);
+                                boolean c3 = Boolean.parseBoolean(pp_c[2]);
+                                if (c1 && c3) {
+                                    status = true;
+                                }
+                                if (!c1 && !c3) {
+                                    status = true;
+                                }
+                                if (c1 && !c3) {
+                                    status = false;
+                                }
+                                if (!c1 && c3) {
+                                    status = false;
+                                }
+                            }
+                            if (pp_c[3].equalsIgnoreCase("STRING")) {
+                                String c1 = String.valueOf(pp_c[0]);
+                                String c3 = String.valueOf(pp_c[2]);
+                                status = c1.equalsIgnoreCase(c3);
+                            }
+                            debug("Formula within limits (in) = " + strings[1]);
+                            debug("Formula within limits (out) = " + strings[2]);
+                            if (status) {
+                                PlayerData.get(p).giveExperience(Math.min((int) Double.parseDouble(strings[1]) * mob_level, xp_max), EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                            } else {
+                                PlayerData.get(p).giveExperience(Math.min((int) Double.parseDouble(strings[2]) * mob_level, xp_max), EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+
+                            }
+                        }
+                    }
+                } else {
+                    String formula_within_limits = Calculator.calculator(formula_within_limits_without_papi_replaced, 0);
+                    debug("Formula within limits = " + formula_within_limits);
+                    PlayerData.get(p).giveExperience(Math.min((int) Double.parseDouble(formula_within_limits) * mob_level, xp_max), EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                }
             }
         }
         if (new Version().isPremium().getType()) {
@@ -355,11 +488,152 @@ public class API {
                         }
                     }
                 }
-                if (use_formula) {
-                    PlayerData.get(p).giveExperience((int) Double.parseDouble(formula_out_of_bounds_lower) * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                if (use_formula && !use_limited_xp) {
+                    for (String custom_formula : mob.getListCustomFormula()) {
+                        if (formula_out_of_bounds_without_papi_replaced_lower.contains("#cf_")) {
+                            String custom_formula_replace = mob.getCustomFormula(custom_formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                            String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
+                            formula_out_of_bounds_without_papi_replaced_lower = formula_out_of_bounds_without_papi_replaced_lower.replaceAll("#cf_" + custom_formula + "#", String.valueOf((int) Double.parseDouble(Calculator.calculator(custom_formula_papi, 0))));
+                        } else {
+                            break;
+                        }
+                    }
+                    if (mob.notnullConditions() && formula_out_of_bounds_without_papi_replaced_lower.contains(";")) {
+                        String[] strings = formula_out_of_bounds_without_papi_replaced_lower.split(";");
+                        if (strings.length == 3) {
+                            String conditions = mob.getConditions(strings[0]);
+                            String papi_conditions = PlaceholderAPI.setPlaceholders(p, conditions);
+                            String[] pp_c = papi_conditions.split(";");
+                            if (pp_c.length == 4) {
+                                boolean status = false;
+                                if (pp_c[3].equalsIgnoreCase("NUMBER")) {
+                                    int c1 = BigDecimal.valueOf(Double.parseDouble(pp_c[0])).intValue();
+                                    int c3 = BigDecimal.valueOf(Double.parseDouble(pp_c[2])).intValue();
+                                    String c2 = pp_c[1];
+                                    if (c2.equalsIgnoreCase(">=")) {
+                                        status = c1 >= c3;
+                                    }
+                                    if (c2.equalsIgnoreCase(">")) {
+                                        status = c1 > c3;
+                                    }
+                                    if (c2.equalsIgnoreCase("<=")) {
+                                        status = c1 <= c3;
+                                    }
+                                    if (c2.equalsIgnoreCase("<")) {
+                                        status = c1 < c3;
+                                    }
+                                }
+                                if (pp_c[3].equalsIgnoreCase("BOOLEAN")) {
+                                    boolean c1 = Boolean.parseBoolean(pp_c[0]);
+                                    boolean c3 = Boolean.parseBoolean(pp_c[2]);
+                                    if (c1 && c3) {
+                                        status = true;
+                                    }
+                                    if (!c1 && !c3) {
+                                        status = true;
+                                    }
+                                    if (c1 && !c3) {
+                                        status = false;
+                                    }
+                                    if (!c1 && c3) {
+                                        status = false;
+                                    }
+                                }
+                                if (pp_c[3].equalsIgnoreCase("STRING")) {
+                                    String c1 = String.valueOf(pp_c[0]);
+                                    String c3 = String.valueOf(pp_c[2]);
+                                    status = c1.equalsIgnoreCase(c3);
+                                }
+                                debug("formula_out_of_bounds_lower (in) = " + strings[1]);
+                                debug("formula_out_of_bounds_lower (out) = " + strings[2]);
+                                if (status) {
+                                    PlayerData.get(p).giveExperience((int) Double.parseDouble(strings[1]) * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                                } else {
+                                    PlayerData.get(p).giveExperience((int) Double.parseDouble(strings[2]) * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+
+                                }
+                            }
+                        }
+                    } else {
+                        String formula_out_of_bounds_lower = Calculator.calculator(formula_out_of_bounds_without_papi_replaced_lower, 0);
+                        debug("formula_out_of_bounds_lower = " + formula_out_of_bounds_lower);
+                        PlayerData.get(p).giveExperience((int) Double.parseDouble(formula_out_of_bounds_lower) * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                    }
                 }
-                if (use_limited_xp) {
-                    PlayerData.get(p).giveExperience(Math.min((int) Double.parseDouble(formula_out_of_bounds_lower) * mob_level, xp_max), EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                if (!use_formula && !use_limited_xp) {
+                    PlayerData.get(p).giveExperience(xp_default * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                }
+                if (!use_formula && use_limited_xp) {
+                    for (String custom_formula : mob.getListCustomFormula()) {
+                        if (formula_out_of_bounds_without_papi_replaced_lower.contains("#cf_")) {
+                            String custom_formula_replace = mob.getCustomFormula(custom_formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                            String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
+                            formula_out_of_bounds_without_papi_replaced_lower = formula_out_of_bounds_without_papi_replaced_lower.replaceAll("#cf_" + custom_formula + "#", String.valueOf((int) Double.parseDouble(Calculator.calculator(custom_formula_papi, 0))));
+                        } else {
+                            break;
+                        }
+                    }
+                    if (mob.notnullConditions() && formula_out_of_bounds_without_papi_replaced_lower.contains(";")) {
+                        String[] strings = formula_out_of_bounds_without_papi_replaced_lower.split(";");
+                        if (strings.length == 3) {
+                            String conditions = mob.getConditions(strings[0]);
+                            String papi_conditions = PlaceholderAPI.setPlaceholders(p, conditions);
+                            String[] pp_c = papi_conditions.split(";");
+                            if (pp_c.length == 4) {
+                                boolean status = false;
+                                if (pp_c[3].equalsIgnoreCase("NUMBER")) {
+                                    int c1 = BigDecimal.valueOf(Double.parseDouble(pp_c[0])).intValue();
+                                    int c3 = BigDecimal.valueOf(Double.parseDouble(pp_c[2])).intValue();
+                                    String c2 = pp_c[1];
+                                    if (c2.equalsIgnoreCase(">=")) {
+                                        status = c1 >= c3;
+                                    }
+                                    if (c2.equalsIgnoreCase(">")) {
+                                        status = c1 > c3;
+                                    }
+                                    if (c2.equalsIgnoreCase("<=")) {
+                                        status = c1 <= c3;
+                                    }
+                                    if (c2.equalsIgnoreCase("<")) {
+                                        status = c1 < c3;
+                                    }
+                                }
+                                if (pp_c[3].equalsIgnoreCase("BOOLEAN")) {
+                                    boolean c1 = Boolean.parseBoolean(pp_c[0]);
+                                    boolean c3 = Boolean.parseBoolean(pp_c[2]);
+                                    if (c1 && c3) {
+                                        status = true;
+                                    }
+                                    if (!c1 && !c3) {
+                                        status = true;
+                                    }
+                                    if (c1 && !c3) {
+                                        status = false;
+                                    }
+                                    if (!c1 && c3) {
+                                        status = false;
+                                    }
+                                }
+                                if (pp_c[3].equalsIgnoreCase("STRING")) {
+                                    String c1 = String.valueOf(pp_c[0]);
+                                    String c3 = String.valueOf(pp_c[2]);
+                                    status = c1.equalsIgnoreCase(c3);
+                                }
+                                debug("Formula within limits (in) = " + strings[1]);
+                                debug("Formula within limits (out) = " + strings[2]);
+                                if (status) {
+                                    PlayerData.get(p).giveExperience(Math.min((int) Double.parseDouble(strings[1]) * mob_level, xp_max), EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                                } else {
+                                    PlayerData.get(p).giveExperience(Math.min((int) Double.parseDouble(strings[2]) * mob_level, xp_max), EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+
+                                }
+                            }
+                        }
+                    } else {
+                        String formula_out_of_bounds_lower = Calculator.calculator(formula_out_of_bounds_without_papi_replaced_lower, 0);
+                        debug("formula_out_of_bounds_lower = " + formula_out_of_bounds_lower);
+                        PlayerData.get(p).giveExperience(Math.min((int) Double.parseDouble(formula_out_of_bounds_lower) * mob_level, xp_max), EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                    }
                 }
             }
             if (player_level > level_max && player_level > level_min) {
@@ -478,11 +752,152 @@ public class API {
                         }
                     }
                 }
-                if (use_formula) {
-                    PlayerData.get(p).giveExperience((int) Double.parseDouble(formula_out_of_bounds_higher) * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                if (use_formula && !use_limited_xp) {
+                    for (String custom_formula : mob.getListCustomFormula()) {
+                        if (formula_out_of_bounds_without_papi_replaced_higher.contains("#cf_")) {
+                            String custom_formula_replace = mob.getCustomFormula(custom_formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                            String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
+                            formula_out_of_bounds_without_papi_replaced_higher = formula_out_of_bounds_without_papi_replaced_higher.replaceAll("#cf_" + custom_formula + "#", String.valueOf((int) Double.parseDouble(Calculator.calculator(custom_formula_papi, 0))));
+                        } else {
+                            break;
+                        }
+                    }
+                    if (mob.notnullConditions() && formula_out_of_bounds_without_papi_replaced_higher.contains(";")) {
+                        String[] strings = formula_out_of_bounds_without_papi_replaced_higher.split(";");
+                        if (strings.length == 3) {
+                            String conditions = mob.getConditions(strings[0]);
+                            String papi_conditions = PlaceholderAPI.setPlaceholders(p, conditions);
+                            String[] pp_c = papi_conditions.split(";");
+                            if (pp_c.length == 4) {
+                                boolean status = false;
+                                if (pp_c[3].equalsIgnoreCase("NUMBER")) {
+                                    int c1 = BigDecimal.valueOf(Double.parseDouble(pp_c[0])).intValue();
+                                    int c3 = BigDecimal.valueOf(Double.parseDouble(pp_c[2])).intValue();
+                                    String c2 = pp_c[1];
+                                    if (c2.equalsIgnoreCase(">=")) {
+                                        status = c1 >= c3;
+                                    }
+                                    if (c2.equalsIgnoreCase(">")) {
+                                        status = c1 > c3;
+                                    }
+                                    if (c2.equalsIgnoreCase("<=")) {
+                                        status = c1 <= c3;
+                                    }
+                                    if (c2.equalsIgnoreCase("<")) {
+                                        status = c1 < c3;
+                                    }
+                                }
+                                if (pp_c[3].equalsIgnoreCase("BOOLEAN")) {
+                                    boolean c1 = Boolean.parseBoolean(pp_c[0]);
+                                    boolean c3 = Boolean.parseBoolean(pp_c[2]);
+                                    if (c1 && c3) {
+                                        status = true;
+                                    }
+                                    if (!c1 && !c3) {
+                                        status = true;
+                                    }
+                                    if (c1 && !c3) {
+                                        status = false;
+                                    }
+                                    if (!c1 && c3) {
+                                        status = false;
+                                    }
+                                }
+                                if (pp_c[3].equalsIgnoreCase("STRING")) {
+                                    String c1 = String.valueOf(pp_c[0]);
+                                    String c3 = String.valueOf(pp_c[2]);
+                                    status = c1.equalsIgnoreCase(c3);
+                                }
+                                debug("formula_out_of_bounds_lower (in) = " + strings[1]);
+                                debug("formula_out_of_bounds_lower (out) = " + strings[2]);
+                                if (status) {
+                                    PlayerData.get(p).giveExperience((int) Double.parseDouble(strings[1]) * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                                } else {
+                                    PlayerData.get(p).giveExperience((int) Double.parseDouble(strings[2]) * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+
+                                }
+                            }
+                        }
+                    } else {
+                        String formula_out_of_bounds_lower = Calculator.calculator(formula_out_of_bounds_without_papi_replaced_higher, 0);
+                        debug("formula_out_of_bounds_lower = " + formula_out_of_bounds_lower);
+                        PlayerData.get(p).giveExperience((int) Double.parseDouble(formula_out_of_bounds_lower) * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                    }
                 }
-                if (use_limited_xp) {
-                    PlayerData.get(p).giveExperience(Math.min((int) Double.parseDouble(formula_out_of_bounds_higher) * mob_level, xp_max), EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                if (!use_formula && !use_limited_xp) {
+                    PlayerData.get(p).giveExperience(xp_default * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                }
+                if (!use_formula && use_limited_xp) {
+                    for (String custom_formula : mob.getListCustomFormula()) {
+                        if (formula_out_of_bounds_without_papi_replaced_higher.contains("#cf_")) {
+                            String custom_formula_replace = mob.getCustomFormula(custom_formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                            String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
+                            formula_out_of_bounds_without_papi_replaced_higher = formula_out_of_bounds_without_papi_replaced_higher.replaceAll("#cf_" + custom_formula + "#", String.valueOf((int) Double.parseDouble(Calculator.calculator(custom_formula_papi, 0))));
+                        } else {
+                            break;
+                        }
+                    }
+                    if (mob.notnullConditions() && formula_out_of_bounds_without_papi_replaced_higher.contains(";")) {
+                        String[] strings = formula_out_of_bounds_without_papi_replaced_higher.split(";");
+                        if (strings.length == 3) {
+                            String conditions = mob.getConditions(strings[0]);
+                            String papi_conditions = PlaceholderAPI.setPlaceholders(p, conditions);
+                            String[] pp_c = papi_conditions.split(";");
+                            if (pp_c.length == 4) {
+                                boolean status = false;
+                                if (pp_c[3].equalsIgnoreCase("NUMBER")) {
+                                    int c1 = BigDecimal.valueOf(Double.parseDouble(pp_c[0])).intValue();
+                                    int c3 = BigDecimal.valueOf(Double.parseDouble(pp_c[2])).intValue();
+                                    String c2 = pp_c[1];
+                                    if (c2.equalsIgnoreCase(">=")) {
+                                        status = c1 >= c3;
+                                    }
+                                    if (c2.equalsIgnoreCase(">")) {
+                                        status = c1 > c3;
+                                    }
+                                    if (c2.equalsIgnoreCase("<=")) {
+                                        status = c1 <= c3;
+                                    }
+                                    if (c2.equalsIgnoreCase("<")) {
+                                        status = c1 < c3;
+                                    }
+                                }
+                                if (pp_c[3].equalsIgnoreCase("BOOLEAN")) {
+                                    boolean c1 = Boolean.parseBoolean(pp_c[0]);
+                                    boolean c3 = Boolean.parseBoolean(pp_c[2]);
+                                    if (c1 && c3) {
+                                        status = true;
+                                    }
+                                    if (!c1 && !c3) {
+                                        status = true;
+                                    }
+                                    if (c1 && !c3) {
+                                        status = false;
+                                    }
+                                    if (!c1 && c3) {
+                                        status = false;
+                                    }
+                                }
+                                if (pp_c[3].equalsIgnoreCase("STRING")) {
+                                    String c1 = String.valueOf(pp_c[0]);
+                                    String c3 = String.valueOf(pp_c[2]);
+                                    status = c1.equalsIgnoreCase(c3);
+                                }
+                                debug("Formula within limits (in) = " + strings[1]);
+                                debug("Formula within limits (out) = " + strings[2]);
+                                if (status) {
+                                    PlayerData.get(p).giveExperience(Math.min((int) Double.parseDouble(strings[1]) * mob_level, xp_max), EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                                } else {
+                                    PlayerData.get(p).giveExperience(Math.min((int) Double.parseDouble(strings[2]) * mob_level, xp_max), EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+
+                                }
+                            }
+                        }
+                    } else {
+                        String formula_out_of_bounds_higher = Calculator.calculator(formula_out_of_bounds_without_papi_replaced_higher, 0);
+                        debug("formula_out_of_bounds_higher = " + formula_out_of_bounds_higher);
+                        PlayerData.get(p).giveExperience(Math.min((int) Double.parseDouble(formula_out_of_bounds_higher) * mob_level, xp_max), EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                    }
                 }
             }
         } else {

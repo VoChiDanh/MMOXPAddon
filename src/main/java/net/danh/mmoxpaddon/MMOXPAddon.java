@@ -6,7 +6,7 @@ import net.danh.mmoxpaddon.Command.CMD;
 import net.danh.mmoxpaddon.Event.MMDeath;
 import net.danh.mmoxpaddon.Manager.Version;
 import net.danh.mmoxpaddon.Resource.File;
-import net.danh.mmoxpaddon.compatible.MythicCompatible;
+import net.danh.mmoxpaddon.Compatible.MythicCompatible;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;

@@ -1,4 +1,4 @@
-package net.danh.mmoxpaddon.compatible.MythicMobs;
+package net.danh.mmoxpaddon.Compatible.MythicMobs;
 
 import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.api.config.MythicLineConfig;

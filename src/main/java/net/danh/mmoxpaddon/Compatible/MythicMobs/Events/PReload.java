@@ -1,4 +1,4 @@
-package net.danh.mmoxpaddon.compatible.MythicMobs.Events;
+package net.danh.mmoxpaddon.Compatible.MythicMobs.Events;
 
 import io.lumine.mythic.bukkit.events.MythicReloadedEvent;
 import org.bukkit.event.EventHandler;

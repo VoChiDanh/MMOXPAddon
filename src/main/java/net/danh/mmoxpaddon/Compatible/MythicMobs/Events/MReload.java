@@ -1,7 +1,7 @@
-package net.danh.mmoxpaddon.compatible.MythicMobs.Events;
+package net.danh.mmoxpaddon.Compatible.MythicMobs.Events;
 
 import io.lumine.mythic.bukkit.events.MythicMechanicLoadEvent;
-import net.danh.mmoxpaddon.compatible.MythicMobs.Mechanics;
+import net.danh.mmoxpaddon.Compatible.MythicMobs.Mechanics;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 

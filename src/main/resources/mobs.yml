@@ -9,7 +9,7 @@ EXAMPLE:
     CONDITION2: '%mmocore_is_casting%;==;true;BOOLEAN' #only ==
     CONDITION3: '%mmocore_class%;==;KNIGHT;STRING' #only ==
   CUSTOM_FORMULA:
-    EXAMPLE1: '%mob_xp% * 2' #Placeholder only apply to command!
+    EXAMPLE1: '%mob_xp% * 2'
     EXAMPLE2: '%mob_xp% * 5' #cf_example2#
     CHANCE1: '%mob_xp% * 3' #cf_example2#
   COMMAND:
@@ -22,8 +22,8 @@ EXAMPLE:
   FORMULA:
     OUT_OF_BOUNDS:
       LOWER: '%mob_xp%'
-      HIGHER: '%mob_xp% * 4'
-    WITHIN_LIMITS: '%mob_xp% * 2'
+      HIGHER: '#CONDITION2#;#cf_CHANCE1#;#cf_EXAMPLE1#'
+    WITHIN_LIMITS: '#CONDITION1#;#cf_EXAMPLE1#;#cf_EXAMPLE2#'
   XP:
     DEFAULT: 1
     MAX: 1
