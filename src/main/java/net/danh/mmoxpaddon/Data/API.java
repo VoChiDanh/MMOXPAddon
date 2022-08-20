@@ -5,6 +5,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.Indyuce.mmocore.api.player.PlayerData;
 import net.Indyuce.mmocore.experience.EXPSource;
 import net.danh.dcore.Calculator.Calculator;
+import net.danh.dcore.Utils.Status;
 import net.danh.mmoxpaddon.MMOXPAddon;
 import net.danh.mmoxpaddon.Manager.Mobs;
 import net.danh.mmoxpaddon.Manager.Version;
@@ -19,6 +20,15 @@ import java.util.Random;
 import static net.danh.mmoxpaddon.Manager.Debug.debug;
 
 public class API {
+
+
+    public static String isRegisteredMythicCompatible() {
+        if (MMOXPAddon.getMythicCompatible() != null) {
+            return Status.TRUE.getSymbol();
+        } else {
+            return Status.FALSE.getSymbol();
+        }
+    }
 
     public static void KillMythicMobs(MythicMobDeathEvent e, Player p, Mobs mob) {
         boolean use_formula = mob.useFormula();
@@ -335,7 +345,7 @@ public class API {
                                     }
                                 }
                             }
-                        }  else {
+                        } else {
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
@@ -458,7 +468,7 @@ public class API {
                                     }
                                 }
                             }
-                        }  else {
+                        } else {
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {

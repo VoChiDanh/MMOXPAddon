@@ -1,6 +1,7 @@
 package net.danh.mmoxpaddon.Command;
 
 import net.danh.dcore.Commands.CMDBase;
+import net.danh.mmoxpaddon.Data.API;
 import net.danh.mmoxpaddon.Manager.Version;
 import net.danh.mmoxpaddon.Resource.File;
 import org.bukkit.command.CommandSender;
@@ -33,9 +34,10 @@ public class CMD extends CMDBase {
                 if (args[0].equalsIgnoreCase("version")) {
                     sendPlayerMessage(p, "&aOriginal Version: " + new Version().getOriginalVersion());
                     sendPlayerMessage(p, "&aDev Build Version: " + new Version().getDevBuildVersion());
-                    sendPlayerMessage(p, "&aDev Build: " + new Version().isDevBuild().getStatus());
-                    sendPlayerMessage(p, "&aPremium: " + new Version().isPremium().getStatus());
+                    sendPlayerMessage(p, "&aDev Build: " + new Version().isDevBuild().getSymbol());
+                    sendPlayerMessage(p, "&aPremium: " + new Version().isPremium().getSymbol());
                     sendPlayerMessage(p, "&aRelease Link: " + new Version().getReleaseLink());
+                    sendPlayerMessage(p, "&aMythicCompatible: " + API.isRegisteredMythicCompatible());
                 }
             }
         }
@@ -54,6 +56,7 @@ public class CMD extends CMDBase {
                 sendConsoleMessage(c, "&aDev Build: " + new Version().isDevBuild().getStatus());
                 sendConsoleMessage(c, "&aPremium: " + new Version().isPremium().getStatus());
                 sendConsoleMessage(c, "&aRelease Link: " + new Version().getReleaseLink());
+                sendConsoleMessage(c, "&aMythicCompatible: " + API.isRegisteredMythicCompatible());
             }
         }
     }

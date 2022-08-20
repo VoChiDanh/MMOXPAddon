@@ -3,7 +3,11 @@ version: '${project.version}'
 main: net.danh.mmoxpaddon.MMOXPAddon
 api-version: 1.13
 authors: [ VoChiDanh ]
-depend: [ MythicMobs, MMOCore ]
+depend: [ MythicMobs, MMOCore, MythicLib ]
 commands:
   mmoxpaddon:
-    description: reload file
+    description: Main command
+permissions:
+  mmoxpaddon.admin:
+    description: Admin permission
+    default: false
