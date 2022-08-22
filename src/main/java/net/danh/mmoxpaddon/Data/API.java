@@ -128,7 +128,7 @@ public class API {
                         if (sp.length == 2) {
                             String commands = sp[0];
                             int chance = BigDecimal.valueOf(Double.parseDouble(sp[1].replaceAll(" ", ""))).intValue();
-                            if (chance > random) {
+                            if (chance >= 100 || chance > random) {
                                 new BukkitRunnable() {
                                     @Override
                                     public void run() {
@@ -163,7 +163,7 @@ public class API {
                                         if (status) {
                                             String commands = sp[1];
                                             int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
-                                            if (chance > random) {
+                                            if (chance >= 100 || chance > random) {
                                                 new BukkitRunnable() {
                                                     @Override
                                                     public void run() {
@@ -183,7 +183,7 @@ public class API {
                                         if (status) {
                                             String commands = sp[1];
                                             int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
-                                            if (chance > random) {
+                                            if (chance >= 100 || chance > random) {
                                                 new BukkitRunnable() {
                                                     @Override
                                                     public void run() {
@@ -200,7 +200,7 @@ public class API {
                                         if (status) {
                                             String commands = sp[1];
                                             int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
-                                            if (chance > random) {
+                                            if (chance >= 100 || chance > random) {
                                                 new BukkitRunnable() {
                                                     @Override
                                                     public void run() {
@@ -393,7 +393,7 @@ public class API {
                             if (sp.length == 2) {
                                 String commands = sp[0];
                                 int chance = BigDecimal.valueOf(Double.parseDouble(sp[1].replaceAll(" ", ""))).intValue();
-                                if (chance > random) {
+                                if (chance >= 100 || chance > random) {
                                     new BukkitRunnable() {
                                         @Override
                                         public void run() {
@@ -428,7 +428,7 @@ public class API {
                                             if (status) {
                                                 String commands = sp[1];
                                                 int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
-                                                if (chance > random) {
+                                                if (chance >= 100 || chance > random) {
                                                     new BukkitRunnable() {
                                                         @Override
                                                         public void run() {
@@ -448,7 +448,7 @@ public class API {
                                             if (status) {
                                                 String commands = sp[1];
                                                 int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
-                                                if (chance > random) {
+                                                if (chance >= 100 || chance > random) {
                                                     new BukkitRunnable() {
                                                         @Override
                                                         public void run() {
@@ -465,7 +465,7 @@ public class API {
                                             if (status) {
                                                 String commands = sp[1];
                                                 int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
-                                                if (chance > random) {
+                                                if (chance >= 100 || chance > random) {
                                                     new BukkitRunnable() {
                                                         @Override
                                                         public void run() {
@@ -657,7 +657,7 @@ public class API {
                             if (sp.length == 2) {
                                 String commands = sp[0];
                                 int chance = BigDecimal.valueOf(Double.parseDouble(sp[1].replaceAll(" ", ""))).intValue();
-                                if (chance > random) {
+                                if (chance >= 100 || chance > random) {
                                     new BukkitRunnable() {
                                         @Override
                                         public void run() {
@@ -692,7 +692,7 @@ public class API {
                                             if (status) {
                                                 String commands = sp[1];
                                                 int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
-                                                if (chance > random) {
+                                                if (chance >= 100 || chance > random) {
                                                     new BukkitRunnable() {
                                                         @Override
                                                         public void run() {
@@ -712,7 +712,7 @@ public class API {
                                             if (status) {
                                                 String commands = sp[1];
                                                 int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
-                                                if (chance > random) {
+                                                if (chance >= 100 || chance > random) {
                                                     new BukkitRunnable() {
                                                         @Override
                                                         public void run() {
@@ -729,7 +729,7 @@ public class API {
                                             if (status) {
                                                 String commands = sp[1];
                                                 int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
-                                                if (chance > random) {
+                                                if (chance >= 100 || chance > random) {
                                                     new BukkitRunnable() {
                                                         @Override
                                                         public void run() {
