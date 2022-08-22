@@ -6,7 +6,7 @@
 
     <groupId>net.danh</groupId>
     <artifactId>MMOXPAddon</artifactId>
-    <version>1.7.6;Build 48</version>
+    <version>1.7.6;Build 49</version>
     <packaging>jar</packaging>
 
     <name>MMOXPAddon</name>
