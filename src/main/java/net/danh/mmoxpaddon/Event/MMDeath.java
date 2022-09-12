@@ -20,7 +20,12 @@ public class MMDeath implements Listener {
                 if (new Version().isPremium().getType()) {
                     if (File.getconfigfile().getStringList("MOBS").contains(e.getMobType().getInternalName())) {
                         Debug.debug("Mob " + e.getMobType().getInternalName() + " in list");
-                        API.KillMythicMobs(e, p, new Mobs(e.getMobType().getInternalName()));
+                        Mobs mobs = new Mobs(e.getMobType().getInternalName());
+                        if (mobs.getFormulaWithinLimitsWithoutPapi(p) != null) {
+                            API.KillMythicMobs(e, p, mobs);
+                        } else {
+                            Debug.debug("Mob " + e.getMobType().getInternalName() + " in list but not in mobs.yml");
+                        }
                     } else {
                         Debug.debug("Mob " + e.getMobType().getInternalName() + " not in list");
                     }
