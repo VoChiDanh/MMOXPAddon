@@ -11,51 +11,51 @@ import java.util.Set;
 public record Mobs(String name) {
 
     public int getLevelEnd() {
-        return File.getmobfile().getInt(name() + ".LEVEL.END");
+        return File.getMob().getInt(name() + ".LEVEL.END");
     }
 
     public int getLevelMax() {
-        return File.getmobfile().getInt(name() + ".LEVEL.MAX");
+        return File.getMob().getInt(name() + ".LEVEL.MAX");
     }
 
     public int getLevelMin() {
-        return File.getmobfile().getInt(name() + ".LEVEL.MIN");
+        return File.getMob().getInt(name() + ".LEVEL.MIN");
     }
 
     public int getXPMax() {
-        return File.getmobfile().getInt(name() + ".XP.MAX");
+        return File.getMob().getInt(name() + ".XP.MAX");
     }
 
     public int getXPDefault() {
-        return File.getmobfile().getInt(name() + ".XP.DEFAULT");
+        return File.getMob().getInt(name() + ".XP.DEFAULT");
     }
 
     public Set<String> getListCustomFormula() {
-        return Objects.requireNonNull(File.getmobfile().getConfigurationSection(name + ".CUSTOM_FORMULA")).getKeys(false);
+        return Objects.requireNonNull(File.getMob().getConfigurationSection(name + ".CUSTOM_FORMULA")).getKeys(false);
     }
 
     public String getCustomFormula(String formula) {
-        return net.danh.mmoxpaddon.Resource.File.getmobfile().getString(name + ".CUSTOM_FORMULA." + formula);
+        return net.danh.mmoxpaddon.Resource.File.getMob().getString(name + ".CUSTOM_FORMULA." + formula);
     }
 
     public Set<String> getListConditions() {
-        return Objects.requireNonNull(File.getmobfile().getConfigurationSection(name + ".CONDITIONS")).getKeys(false);
+        return Objects.requireNonNull(File.getMob().getConfigurationSection(name + ".CONDITIONS")).getKeys(false);
     }
 
     public boolean notnullConditions() {
-        return File.getmobfile().getConfigurationSection(name + ".CONDITIONS") != null;
+        return File.getMob().getConfigurationSection(name + ".CONDITIONS") != null;
     }
 
     public String getConditions(String conditions) {
         if (conditions.contains("#")) {
-            return net.danh.mmoxpaddon.Resource.File.getmobfile().getString(name + ".CONDITIONS." + conditions.replaceAll("#", ""));
+            return net.danh.mmoxpaddon.Resource.File.getMob().getString(name + ".CONDITIONS." + conditions.replaceAll("#", ""));
         } else {
-            return net.danh.mmoxpaddon.Resource.File.getmobfile().getString(name + ".CONDITIONS." + conditions);
+            return net.danh.mmoxpaddon.Resource.File.getMob().getString(name + ".CONDITIONS." + conditions);
         }
     }
 
     public String getFormulaWithinLimitsWithoutPapi(Player p) {
-        String calculator = File.getmobfile().getString(name() + ".FORMULA.WITHIN_LIMITS");
+        String calculator = File.getMob().getString(name() + ".FORMULA.WITHIN_LIMITS");
         if (calculator == null) {
             return null;
         }
@@ -63,7 +63,7 @@ public record Mobs(String name) {
     }
 
     public String getFormulaOutOfBoundWithoutPapiLower(Player p) {
-        String calculator = File.getmobfile().getString(name() + ".FORMULA.OUT_OF_BOUNDS.LOWER");
+        String calculator = File.getMob().getString(name() + ".FORMULA.OUT_OF_BOUNDS.LOWER");
         if (calculator == null) {
             return null;
         }
@@ -71,7 +71,7 @@ public record Mobs(String name) {
     }
 
     public String getFormulaOutOfBoundWithoutPapiHigher(Player p) {
-        String calculator = File.getmobfile().getString(name() + ".FORMULA.OUT_OF_BOUNDS.HIGHER");
+        String calculator = File.getMob().getString(name() + ".FORMULA.OUT_OF_BOUNDS.HIGHER");
         if (calculator == null) {
             return null;
         }
@@ -79,26 +79,26 @@ public record Mobs(String name) {
     }
 
     public List<String> getCommandsOutOfBound() {
-        return File.getmobfile().getStringList(name() + ".COMMAND.OUT_OF_BOUNDS");
+        return File.getMob().getStringList(name() + ".COMMAND.OUT_OF_BOUNDS");
     }
 
     public List<String> getCommandsWithinLimits() {
-        return File.getmobfile().getStringList(name() + ".COMMAND.WITHIN_LIMITS");
+        return File.getMob().getStringList(name() + ".COMMAND.WITHIN_LIMITS");
     }
 
     public boolean useCommand() {
-        return File.getmobfile().getBoolean(name() + ".USE.COMMAND");
+        return File.getMob().getBoolean(name() + ".USE.COMMAND");
     }
 
     public boolean useLevelEnd() {
-        return File.getmobfile().getBoolean(name() + ".USE.LEVEL_END");
+        return File.getMob().getBoolean(name() + ".USE.LEVEL_END");
     }
 
     public boolean useLimitedXP() {
-        return File.getmobfile().getBoolean(name() + ".USE.LIMITED_XP");
+        return File.getMob().getBoolean(name() + ".USE.LIMITED_XP");
     }
 
     public boolean useFormula() {
-        return File.getmobfile().getBoolean(name() + ".USE.FORMULA");
+        return File.getMob().getBoolean(name() + ".USE.FORMULA");
     }
 }

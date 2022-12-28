@@ -18,7 +18,7 @@ public class MMDeath implements Listener {
         if (e.getKiller() instanceof Player p) {
             if (!p.hasMetadata("NPC")) {
                 if (new Version().isPremium().getType()) {
-                    if (File.getconfigfile().getStringList("MOBS").contains(e.getMobType().getInternalName())) {
+                    if (File.getConfig().getStringList("MOBS").contains(e.getMobType().getInternalName())) {
                         Debug.debug("Mob " + e.getMobType().getInternalName() + " in list");
                         Mobs mobs = new Mobs(e.getMobType().getInternalName());
                         if (mobs.getFormulaWithinLimitsWithoutPapi(p) != null) {
@@ -30,7 +30,7 @@ public class MMDeath implements Listener {
                         Debug.debug("Mob " + e.getMobType().getInternalName() + " not in list");
                     }
                 } else {
-                    List<String> mob_list = File.getconfigfile().getStringList("MOBS");
+                    List<String> mob_list = File.getConfig().getStringList("MOBS");
                     String mob_name = e.getMobType().getInternalName();
                     if (mob_list.size() <= 10) {
                         for (int i = 0; i <= 10; i++) {

@@ -1,23 +1,22 @@
 package net.danh.mmoxpaddon;
 
 import io.lumine.mythic.bukkit.MythicBukkit;
-import net.danh.dcore.DCore;
 import net.danh.mmoxpaddon.Command.CMD;
 import net.danh.mmoxpaddon.Compatible.MythicCompatible;
 import net.danh.mmoxpaddon.Event.MMDeath;
 import net.danh.mmoxpaddon.Manager.Version;
 import net.danh.mmoxpaddon.Resource.File;
+import net.xconfig.bukkit.XConfigBukkit;
+import net.xconfig.bukkit.config.BukkitConfigurationModel;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;
-
-import static net.danh.dcore.DCore.RegisterDCore;
-import static net.danh.dcore.Utils.File.updateFile;
 
 public final class MMOXPAddon extends JavaPlugin {
 
     private static MMOXPAddon instance;
     private static MythicCompatible mythicCompatible;
+    private static BukkitConfigurationModel configurationManager;
 
     public static MMOXPAddon getInstance() {
         return instance;
@@ -46,11 +45,15 @@ public final class MMOXPAddon extends JavaPlugin {
         }
     }
 
+    public static BukkitConfigurationModel getConfigurationManager() {
+        return configurationManager;
+    }
+
     @Override
     public void onEnable() {
         instance = this;
-        RegisterDCore(this);
-        new CMD(this);
+        configurationManager = XConfigBukkit.manager(instance);
+        new CMD();
         getServer().getPluginManager().registerEvents(new MMDeath(), this);
         if (new Version().isPremium().getType()) {
             if (getServerType().equals(SERVER_TYPE.PAPER)) {
@@ -65,10 +68,9 @@ public final class MMOXPAddon extends JavaPlugin {
             mythicCompatible = null;
             MythicBukkit.inst().getLogger().log(Level.WARNING, "Free version doesn't support custom mechanic and condition from MMOXPAddon");
         }
-        File.createfiles();
-        updateFile(this, File.getconfigfile(), "config.yml");
-        if (File.getconfigfile().getBoolean("USE_MANY_FILE")) {
-            DCore.dCoreLog("Settings USE_MANY_FILE was removed, edit mob in mobs.yml");
+        File.createFiles();
+        if (File.getConfig().getBoolean("USE_MANY_FILE")) {
+            getLogger().log(Level.WARNING, "Settings USE_MANY_FILE was removed, edit mob in mobs.yml");
         }
         if (!new Version().isPremium().getType()) {
             getLogger().log(Level.WARNING, "You are using Free version!");
@@ -78,13 +80,11 @@ public final class MMOXPAddon extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        File.saveconfig();
-        File.savemob();
+        File.saveConfig();
+        File.saveMob();
     }
 
     public enum SERVER_TYPE {
-        PAPER,
-        SPIGOT,
-        BUKKIT
+        PAPER, SPIGOT, BUKKIT
     }
 }

@@ -7,7 +7,7 @@ import java.util.logging.Level;
 
 public class Debug {
     public static void debug(String msg) {
-        if (File.getconfigfile().getBoolean("DEBUG")) {
+        if (File.getConfig().getBoolean("DEBUG")) {
             MMOXPAddon.getInstance().getLogger().log(Level.WARNING, "[DEBUG] " + msg);
         }
     }

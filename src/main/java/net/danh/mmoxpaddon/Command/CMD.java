@@ -1,62 +1,39 @@
 package net.danh.mmoxpaddon.Command;
 
-import net.danh.dcore.Commands.CMDBase;
+import net.danh.mmoxpaddon.API.Command.CMDBase;
+import net.danh.mmoxpaddon.API.Utils.Chat;
 import net.danh.mmoxpaddon.Data.API;
 import net.danh.mmoxpaddon.Manager.Version;
 import net.danh.mmoxpaddon.Resource.File;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static net.danh.dcore.Utils.Player.sendConsoleMessage;
-import static net.danh.dcore.Utils.Player.sendPlayerMessage;
-
 public class CMD extends CMDBase {
 
-    public CMD(JavaPlugin core) {
-        super(core, "mmoxpaddon");
+    public CMD() {
+        super("mmoxpaddon");
     }
 
     @Override
-    public void playerexecute(Player p, String[] args) {
+    public void execute(CommandSender c, String[] args) {
         if (args.length == 1) {
-            if (p.hasPermission("mmoxpaddon.admin")) {
+            if (c.hasPermission("mmoxpaddon.admin")) {
                 if (args[0].equalsIgnoreCase("reload")) {
-                    File.reloadfiles();
-                    sendPlayerMessage(p, "&aReloaded");
+                    File.reloadFiles();
+                    Chat.sendCommandSenderMessage(c, "&aReloaded");
                 }
                 if (args[0].equalsIgnoreCase("version")) {
-                    sendPlayerMessage(p, "&aOriginal Version: " + new Version().getOriginalVersion());
-                    sendPlayerMessage(p, "&aDev Build Version: " + new Version().getDevBuildVersion());
-                    sendPlayerMessage(p, "&aDev Build: " + new Version().isDevBuild().getSymbol());
-                    sendPlayerMessage(p, "&aPremium: " + new Version().isPremium().getSymbol());
-                    sendPlayerMessage(p, "&aRelease Link: " + new Version().getReleaseLink());
-                    sendPlayerMessage(p, "&aMythicCompatible: " + API.isRegisteredMythicCompatible());
+                    Chat.sendCommandSenderMessage(c, "&aOriginal Version: " + new Version().getOriginalVersion());
+                    Chat.sendCommandSenderMessage(c, "&aDev Build Version: " + new Version().getDevBuildVersion());
+                    Chat.sendCommandSenderMessage(c, "&aDev Build: " + new Version().isDevBuild().getSymbol());
+                    Chat.sendCommandSenderMessage(c, "&aPremium: " + new Version().isPremium().getSymbol());
+                    Chat.sendCommandSenderMessage(c, "&aRelease Link: " + new Version().getReleaseLink());
+                    Chat.sendCommandSenderMessage(c, "&aMythicCompatible: " + API.isRegisteredMythicCompatible());
                 }
-            }
-        }
-    }
-
-    @Override
-    public void consoleexecute(ConsoleCommandSender c, String[] args) {
-        if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("reload")) {
-                File.reloadfiles();
-                sendConsoleMessage(c, "&aReloaded");
-            }
-            if (args[0].equalsIgnoreCase("version")) {
-                sendConsoleMessage(c, "&aOriginal Version: " + new Version().getOriginalVersion());
-                sendConsoleMessage(c, "&aDev Build Version: " + new Version().getDevBuildVersion());
-                sendConsoleMessage(c, "&aDev Build: " + new Version().isDevBuild().getStatus());
-                sendConsoleMessage(c, "&aPremium: " + new Version().isPremium().getStatus());
-                sendConsoleMessage(c, "&aRelease Link: " + new Version().getReleaseLink());
-                sendConsoleMessage(c, "&aMythicCompatible: " + API.isRegisteredMythicCompatible());
             }
         }
     }
