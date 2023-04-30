@@ -9,8 +9,10 @@ import net.danh.mmoxpaddon.API.Version.Status;
 import net.danh.mmoxpaddon.MMOXPAddon;
 import net.danh.mmoxpaddon.Manager.Mobs;
 import net.danh.mmoxpaddon.Manager.Version;
+import net.danh.mmoxpaddon.Resource.File;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -216,6 +218,15 @@ public class API {
         } else {
             return Status.FALSE.getSymbol();
         }
+    }
+
+    @Nullable
+    public static String checkMobs(String InternalName) {
+        if (File.getMob().contains(InternalName)) {
+            if (File.getMob().getString(InternalName + ".same_as") != null) {
+                return File.getMob().getString(InternalName + ".same_as");
+            } else return InternalName;
+        } else return null;
     }
 
     public static void KillMythicMobs(MythicMobDeathEvent e, Player p, Mobs mob) {

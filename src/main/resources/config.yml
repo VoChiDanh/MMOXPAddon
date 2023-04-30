@@ -13,4 +13,4 @@
 DEBUG: false
 USE_MANY_FILE: false
 MOBS: #List mob, if you don't list here, mob won't give xp
-  - EXAMPLE
+  - MYTHICMOBSINTERNALNAME

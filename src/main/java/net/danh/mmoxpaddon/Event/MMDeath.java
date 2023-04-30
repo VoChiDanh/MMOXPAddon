@@ -18,9 +18,10 @@ public class MMDeath implements Listener {
         if (e.getKiller() instanceof Player p) {
             if (!p.hasMetadata("NPC")) {
                 if (new Version().isPremium().getType()) {
-                    if (File.getConfig().getStringList("MOBS").contains(e.getMobType().getInternalName())) {
-                        Debug.debug("Mob " + e.getMobType().getInternalName() + " in list");
-                        Mobs mobs = new Mobs(e.getMobType().getInternalName());
+                    String mob_name = API.checkMobs(e.getMobType().getInternalName());
+                    if (mob_name != null) {
+                        Debug.debug("Mob " + mob_name + " config-ed");
+                        Mobs mobs = new Mobs(mob_name);
                         if (mobs.getFormulaWithinLimitsWithoutPapi(p) != null) {
                             API.KillMythicMobs(e, p, mobs);
                         } else {
@@ -30,10 +31,10 @@ public class MMDeath implements Listener {
                         Debug.debug("Mob " + e.getMobType().getInternalName() + " not in list");
                     }
                 } else {
-                    List<String> mob_list = File.getConfig().getStringList("MOBS");
                     String mob_name = e.getMobType().getInternalName();
+                    List<String> mob_list = File.getConfig().getStringList("MOBS");
                     if (mob_list.size() <= 10) {
-                        for (int i = 0; i <= 10; i++) {
+                        for (int i = 0; i < 10; i++) {
                             if (mob_list.get(i).equalsIgnoreCase(mob_name)) {
                                 API.KillMythicMobs(e, p, new Mobs(mob_name));
                             } else {
