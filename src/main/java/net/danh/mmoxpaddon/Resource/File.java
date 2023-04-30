@@ -8,21 +8,21 @@ import java.util.logging.Level;
 
 public class File {
     public static void createFiles() {
-        MMOXPAddon.getConfigurationManager().build("", "config.yml");
-        MMOXPAddon.getConfigurationManager().build("", "mobs.yml");
+        MMOXPAddon.getConfigurationManager().build("", "config.yml", false);
+        MMOXPAddon.getConfigurationManager().build("", "mobs.yml", false);
     }
 
     public static FileConfiguration getConfig() {
-        return MMOXPAddon.getConfigurationManager().file("", "config.yml");
+        return MMOXPAddon.getConfigurationManager().get("config.yml");
     }
 
     public static FileConfiguration getMob() {
-        return MMOXPAddon.getConfigurationManager().file("", "mobs.yml");
+        return MMOXPAddon.getConfigurationManager().get("mobs.yml");
     }
 
     public static void reloadFiles() {
-        MMOXPAddon.getConfigurationManager().reload("", "config.yml");
-        MMOXPAddon.getConfigurationManager().reload("", "mobs.yml");
+        MMOXPAddon.getConfigurationManager().reload("config.yml");
+        MMOXPAddon.getConfigurationManager().reload("mobs.yml");
         if (File.getConfig().getBoolean("USE_MANY_FILE")) {
             MMOXPAddon.getInstance().getLogger().log(Level.WARNING, "Settings USE_MANY_FILE was removed, edit mob in mobs.yml");
         }

@@ -6,8 +6,7 @@ import net.danh.mmoxpaddon.Compatible.MythicCompatible;
 import net.danh.mmoxpaddon.Event.MMDeath;
 import net.danh.mmoxpaddon.Manager.Version;
 import net.danh.mmoxpaddon.Resource.File;
-import net.xconfig.bukkit.XConfigBukkit;
-import net.xconfig.bukkit.config.BukkitConfigurationModel;
+import net.xconfig.bukkit.model.SimpleConfigurationManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;
@@ -16,7 +15,7 @@ public final class MMOXPAddon extends JavaPlugin {
 
     private static MMOXPAddon instance;
     private static MythicCompatible mythicCompatible;
-    private static BukkitConfigurationModel configurationManager;
+    private static SimpleConfigurationManager simpleConfigurationManager;
 
     public static MMOXPAddon getInstance() {
         return instance;
@@ -45,14 +44,18 @@ public final class MMOXPAddon extends JavaPlugin {
         }
     }
 
-    public static BukkitConfigurationModel getConfigurationManager() {
-        return configurationManager;
+    public static SimpleConfigurationManager getConfigurationManager() {
+        return simpleConfigurationManager;
     }
 
     @Override
     public void onEnable() {
         instance = this;
-        configurationManager = XConfigBukkit.manager(instance);
+        SimpleConfigurationManager.register(instance);
+        if (SimpleConfigurationManager.get() != null) {
+            simpleConfigurationManager = SimpleConfigurationManager.get();
+            getLogger().log(Level.FINE, "Registered XConfig System");
+        }
         new CMD();
         getServer().getPluginManager().registerEvents(new MMDeath(), this);
         if (new Version().isPremium().getType()) {
