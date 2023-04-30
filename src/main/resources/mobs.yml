@@ -23,9 +23,12 @@ MYTHICMOBSINTERNALNAME:
       - 'eco give %player_name% #cf_EXAMPLE2#'
   FORMULA:
     OUT_OF_BOUNDS:
-      LOWER: '%mob_xp%'
-      HIGHER: '#CONDITION2#;#cf_CHANCE1#;#cf_EXAMPLE1#'
-    WITHIN_LIMITS: '#CONDITION1#;#cf_EXAMPLE1#;#cf_EXAMPLE2#'
+      LOWER:
+        - '%mob_xp%'
+      HIGHER:
+        - '#CONDITION2#;#cf_CHANCE1#;#cf_EXAMPLE1#'
+    WITHIN_LIMITS:
+      - '#CONDITION1#;#cf_EXAMPLE1#;#cf_EXAMPLE2#'
   XP:
     DEFAULT: 1
     MAX: 1

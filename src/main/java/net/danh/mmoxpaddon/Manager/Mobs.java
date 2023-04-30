@@ -54,25 +54,25 @@ public record Mobs(String name) {
         }
     }
 
-    public String getFormulaWithinLimitsWithoutPapi(Player p) {
-        String calculator = File.getMob().getString(name() + ".FORMULA.WITHIN_LIMITS");
-        if (calculator == null) {
+    public List<String> getFormulaWithinLimitsWithoutPapi(Player p) {
+        List<String> calculator = File.getMob().getStringList(name() + ".FORMULA.WITHIN_LIMITS");
+        if (calculator.isEmpty()) {
             return null;
         }
         return PlaceholderAPI.setPlaceholders(p, calculator);
     }
 
-    public String getFormulaOutOfBoundWithoutPapiLower(Player p) {
-        String calculator = File.getMob().getString(name() + ".FORMULA.OUT_OF_BOUNDS.LOWER");
-        if (calculator == null) {
+    public List<String> getFormulaOutOfBoundWithoutPapiLower(Player p) {
+        List<String> calculator = File.getMob().getStringList(name() + ".FORMULA.OUT_OF_BOUNDS.LOWER");
+        if (calculator.isEmpty()) {
             return null;
         }
         return PlaceholderAPI.setPlaceholders(p, calculator);
     }
 
-    public String getFormulaOutOfBoundWithoutPapiHigher(Player p) {
-        String calculator = File.getMob().getString(name() + ".FORMULA.OUT_OF_BOUNDS.HIGHER");
-        if (calculator == null) {
+    public List<String> getFormulaOutOfBoundWithoutPapiHigher(Player p) {
+        List<String> calculator = File.getMob().getStringList(name() + ".FORMULA.OUT_OF_BOUNDS.HIGHER");
+        if (calculator.isEmpty()) {
             return null;
         }
         return PlaceholderAPI.setPlaceholders(p, calculator);
