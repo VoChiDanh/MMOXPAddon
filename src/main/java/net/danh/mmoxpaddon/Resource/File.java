@@ -33,11 +33,11 @@ public class File {
     }
 
     public static void saveConfig() {
-        MMOXPAddon.getConfigurationManager().save("", "config.yml");
+        MMOXPAddon.getConfigurationManager().save("config.yml");
     }
 
     public static void saveMob() {
-        MMOXPAddon.getConfigurationManager().save("", "mobs.yml");
+        MMOXPAddon.getConfigurationManager().save("mobs.yml");
     }
 
 }
