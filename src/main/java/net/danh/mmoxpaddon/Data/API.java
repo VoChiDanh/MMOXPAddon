@@ -199,9 +199,9 @@ public class API {
                     debug("Formula (in) = " + strings[1]);
                     debug("Formula (out) = " + strings[2]);
                     if (status) {
-                        PlayerData.get(p).giveExperience(BigDecimal.valueOf(Double.parseDouble(strings[1])).intValue() * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                        PlayerData.get(p).giveExperience(BigDecimal.valueOf(Double.parseDouble(strings[1])).intValue(), EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
                     } else {
-                        PlayerData.get(p).giveExperience(BigDecimal.valueOf(Double.parseDouble(strings[2])).intValue() * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                        PlayerData.get(p).giveExperience(BigDecimal.valueOf(Double.parseDouble(strings[2])).intValue(), EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
 
                     }
                 }
@@ -209,7 +209,7 @@ public class API {
         } else {
             String formula_within_limits = Calculator.calculator(formula_without_papi_replaced, 0);
             debug("Formula = " + formula_within_limits);
-            PlayerData.get(p).giveExperience((int) Double.parseDouble(formula_within_limits) * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+            PlayerData.get(p).giveExperience((int) Double.parseDouble(formula_within_limits), EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
         }
     }
 
@@ -341,7 +341,7 @@ public class API {
                     formula_out_of_bounds_without_papi_replaced_lower.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, e));
                 }
                 if (!use_formula && !use_limited_xp) {
-                    PlayerData.get(p).giveExperience(xp_default * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                    PlayerData.get(p).giveExperience(xp_default, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
                 }
                 if (!use_formula && use_limited_xp) {
                     formula_out_of_bounds_without_papi_replaced_lower.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, e));
@@ -355,7 +355,7 @@ public class API {
                     formula_out_of_bounds_without_papi_replaced_higher.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, e));
                 }
                 if (!use_formula && !use_limited_xp) {
-                    PlayerData.get(p).giveExperience(xp_default * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                    PlayerData.get(p).giveExperience(xp_default, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
                 }
                 if (!use_formula && use_limited_xp) {
                     formula_out_of_bounds_without_papi_replaced_higher.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, e));
