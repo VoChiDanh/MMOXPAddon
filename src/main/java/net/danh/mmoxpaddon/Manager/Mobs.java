@@ -10,24 +10,24 @@ import java.util.Set;
 
 public record Mobs(String name) {
 
-    public int getLevelEnd() {
-        return File.getMob().getInt(name() + ".LEVEL.END");
+    public String getLevelEnd() {
+        return File.getMob().getString(name() + ".LEVEL.END");
     }
 
-    public int getLevelMax() {
-        return File.getMob().getInt(name() + ".LEVEL.MAX");
+    public String getLevelMax() {
+        return File.getMob().getString(name() + ".LEVEL.MAX");
     }
 
-    public int getLevelMin() {
-        return File.getMob().getInt(name() + ".LEVEL.MIN");
+    public String getLevelMin() {
+        return File.getMob().getString(name() + ".LEVEL.MIN");
     }
 
-    public int getXPMax() {
-        return File.getMob().getInt(name() + ".XP.MAX");
+    public String getXPMax() {
+        return File.getMob().getString(name() + ".XP.MAX");
     }
 
-    public int getXPDefault() {
-        return File.getMob().getInt(name() + ".XP.DEFAULT");
+    public String getXPDefault() {
+        return File.getMob().getString(name() + ".XP.DEFAULT");
     }
 
     public Set<String> getListCustomFormula() {

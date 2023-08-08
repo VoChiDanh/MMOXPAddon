@@ -23,7 +23,7 @@ public class MMDeath implements Listener {
                         Debug.debug("Mob " + mob_name + " config-ed");
                         Mobs mobs = new Mobs(mob_name);
                         if (mobs.getFormulaWithinLimitsWithoutPapi(p) != null) {
-                            API.KillMythicMobs(e, p, mobs);
+                            API.KillMythicMobs(p, mobs, (int) e.getMobLevel(), e.getEntity().getLocation());
                         } else {
                             Debug.debug("Mob " + e.getMobType().getInternalName() + " in list but not in mobs.yml");
                         }
@@ -36,7 +36,7 @@ public class MMDeath implements Listener {
                     if (mob_list.size() <= 10) {
                         for (int i = 0; i < 10; i++) {
                             if (mob_list.get(i).equalsIgnoreCase(mob_name)) {
-                                API.KillMythicMobs(e, p, new Mobs(mob_name));
+                                API.KillMythicMobs(p, new Mobs(mob_name), (int) e.getMobLevel(), e.getEntity().getLocation());
                             } else {
                                 Debug.debug("You are using Free version, so you just can config 10 mob name in MOBS (config.yml)");
                                 Debug.debug("You have configured more than 10 mobs &c(" + mob_list.size() + ")");

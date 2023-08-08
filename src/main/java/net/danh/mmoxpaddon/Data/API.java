@@ -1,6 +1,5 @@
 package net.danh.mmoxpaddon.Data;
 
-import io.lumine.mythic.bukkit.events.MythicMobDeathEvent;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.Indyuce.mmocore.api.player.PlayerData;
 import net.Indyuce.mmocore.experience.EXPSource;
@@ -10,6 +9,7 @@ import net.danh.mmoxpaddon.MMOXPAddon;
 import net.danh.mmoxpaddon.Manager.Mobs;
 import net.danh.mmoxpaddon.Manager.Version;
 import net.danh.mmoxpaddon.Resource.File;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
@@ -140,7 +140,7 @@ public class API {
         }
     }
 
-    public static void giveEXP(Player p, Mobs mob, int xp_default, int mob_level, String formula_without_papi_replaced, MythicMobDeathEvent e) {
+    public static void giveEXP(Player p, Mobs mob, int xp_default, int mob_level, String formula_without_papi_replaced, Location location) {
         for (String custom_formula : mob.getListCustomFormula()) {
             if (formula_without_papi_replaced.contains("#cf_")) {
                 String custom_formula_replace = mob.getCustomFormula(custom_formula).replace("%mob_level%", String.valueOf(mob_level)).replace("%mob_xp%", String.valueOf(xp_default));
@@ -199,9 +199,9 @@ public class API {
                     debug("Formula (in) = " + strings[1]);
                     debug("Formula (out) = " + strings[2]);
                     if (status) {
-                        PlayerData.get(p).giveExperience(BigDecimal.valueOf(Double.parseDouble(strings[1])).intValue(), EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                        PlayerData.get(p).giveExperience(BigDecimal.valueOf(Double.parseDouble(strings[1])).intValue(), EXPSource.SOURCE, location.add(0, 1.5, 0), true);
                     } else {
-                        PlayerData.get(p).giveExperience(BigDecimal.valueOf(Double.parseDouble(strings[2])).intValue(), EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                        PlayerData.get(p).giveExperience(BigDecimal.valueOf(Double.parseDouble(strings[2])).intValue(), EXPSource.SOURCE, location.add(0, 1.5, 0), true);
 
                     }
                 }
@@ -209,7 +209,7 @@ public class API {
         } else {
             String formula_within_limits = Calculator.calculator(formula_without_papi_replaced, 0);
             debug("Formula = " + formula_within_limits);
-            PlayerData.get(p).giveExperience((int) Double.parseDouble(formula_within_limits), EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+            PlayerData.get(p).giveExperience((int) Double.parseDouble(formula_within_limits), EXPSource.SOURCE, location.add(0, 1.5, 0), true);
         }
     }
 
@@ -230,7 +230,18 @@ public class API {
         } else return null;
     }
 
-    public static void KillMythicMobs(MythicMobDeathEvent e, Player p, Mobs mob) {
+    public static void KillMythicMobs(Player p, Mobs mob, Integer mob_level, Location location) {
+        debug("Mob level: " + mob_level);
+        int xp_default = Integer.parseInt(PlaceholderAPI.setPlaceholders(p, mob.getXPDefault().replace("%mob_level%", String.valueOf(mob_level))));
+        debug("Xp default: " + xp_default);
+        int xp_max = Integer.parseInt(PlaceholderAPI.setPlaceholders(p, mob.getXPMax().replace("%mob_level%", String.valueOf(mob_level)).replace("%mob_xp%", String.valueOf(mob_level))));
+        debug("Xp max: " + xp_max);
+        int level_min = Integer.parseInt(PlaceholderAPI.setPlaceholders(p, mob.getLevelMin().replace("%mob_level%", String.valueOf(mob_level)).replace("%mob_xp%", String.valueOf(mob_level))));
+        debug("Level min: " + level_min);
+        int level_max = Integer.parseInt(PlaceholderAPI.setPlaceholders(p, mob.getLevelMax().replace("%mob_level%", String.valueOf(mob_level)).replace("%mob_xp%", String.valueOf(mob_level))));
+        debug("Level max: " + level_max);
+        int level_end = Integer.parseInt(PlaceholderAPI.setPlaceholders(p, mob.getLevelEnd().replace("%mob_level%", String.valueOf(mob_level)).replace("%mob_xp%", String.valueOf(mob_level))));
+        debug("Level end: " + level_end);
         boolean use_formula = mob.useFormula();
         debug("Use Formula: " + use_formula);
         boolean use_limited_xp = mob.useLimitedXP();
@@ -251,39 +262,18 @@ public class API {
         }
         List<String> formula_out_of_bounds_without_papi_higher = mob.getFormulaOutOfBoundWithoutPapiHigher(p);
         debug("Formula out of bounds higher: " + formula_out_of_bounds_without_papi_higher);
-        List<String> formula_out_of_bounds_without_papi_replaced_higher = PlaceholderAPI.setPlaceholders(p, Objects.requireNonNull(mob.getFormulaOutOfBoundWithoutPapiHigher(p))
-                .stream().map(s -> s.
-                        replace("%mob_level%", String.valueOf(e.getMobLevel()))
-                        .replace("%mob_xp%", String.valueOf(mob.getXPDefault()))).collect(Collectors.toList()));
-                /*.replace("%mob_level%", String.valueOf(e.getMobLevel()))
-                .replace("%mob_xp%", String.valueOf(mob.getXPDefault())));*/
+        List<String> formula_out_of_bounds_without_papi_replaced_higher = PlaceholderAPI.setPlaceholders(p, Objects.requireNonNull(mob.getFormulaOutOfBoundWithoutPapiHigher(p)).stream().map(s -> s.replace("%mob_level%", String.valueOf(mob_level)).replace("%mob_xp%", String.valueOf(mob_level))).collect(Collectors.toList()));
+                /*.replace("%mob_level%", String.valueOf(mob_level))
+                .replace("%mob_xp%", String.valueOf(mob_level)));*/
         debug("Formula out of bounds replaced higher: " + formula_out_of_bounds_without_papi_replaced_higher);
         List<String> formula_out_of_bounds_without_papi_lower = mob.getFormulaOutOfBoundWithoutPapiLower(p);
         debug("Formula out of bounds lower: " + formula_out_of_bounds_without_papi_lower);
-        List<String> formula_out_of_bounds_without_papi_replaced_lower = PlaceholderAPI.setPlaceholders(p, Objects.requireNonNull(mob.getFormulaOutOfBoundWithoutPapiLower(p))
-                .stream().map(s -> s.
-                        replace("%mob_level%", String.valueOf(e.getMobLevel()))
-                        .replace("%mob_xp%", String.valueOf(mob.getXPDefault()))).collect(Collectors.toList()));
+        List<String> formula_out_of_bounds_without_papi_replaced_lower = PlaceholderAPI.setPlaceholders(p, Objects.requireNonNull(mob.getFormulaOutOfBoundWithoutPapiLower(p)).stream().map(s -> s.replace("%mob_level%", String.valueOf(mob_level)).replace("%mob_xp%", String.valueOf(mob_level))).collect(Collectors.toList()));
         debug("Formula out of bounds replaced lower: " + formula_out_of_bounds_without_papi_replaced_lower);
         List<String> formula_within = mob.getFormulaWithinLimitsWithoutPapi(p);
         debug("Formula within limits : " + formula_within);
-        List<String> formula_within_limits_without_papi_replaced = PlaceholderAPI.setPlaceholders(p, Objects.requireNonNull(mob.getFormulaWithinLimitsWithoutPapi(p))
-                .stream().map(s -> s.
-                        replace("%mob_level%", String.valueOf(e.getMobLevel()))
-                        .replace("%mob_xp%", String.valueOf(mob.getXPDefault()))).collect(Collectors.toList()));
+        List<String> formula_within_limits_without_papi_replaced = PlaceholderAPI.setPlaceholders(p, Objects.requireNonNull(mob.getFormulaWithinLimitsWithoutPapi(p)).stream().map(s -> s.replace("%mob_level%", String.valueOf(mob_level)).replace("%mob_xp%", String.valueOf(mob_level))).collect(Collectors.toList()));
         debug("Formula within limits replaced: " + formula_within_limits_without_papi_replaced);
-        int xp_default = mob.getXPDefault();
-        debug("Xp default: " + xp_default);
-        int xp_max = mob.getXPMax();
-        debug("Xp max: " + xp_max);
-        int level_min = mob.getLevelMin();
-        debug("Level min: " + level_min);
-        int level_max = mob.getLevelMax();
-        debug("Level max: " + level_max);
-        int level_end = mob.getLevelEnd();
-        debug("Level end: " + level_end);
-        int mob_level = (int) e.getMobLevel();
-        debug("Mob level: " + mob_level);
         int player_level = PlayerData.get(p).getLevel();
         debug("Player level: " + player_level);
         debug("Custom formula without placeholder");
@@ -323,13 +313,13 @@ public class API {
                 executeCMDWCondition(p, cmd_within_limit, mob_level, xp_default, mob);
             }
             if (use_formula && !use_limited_xp) {
-                formula_within_limits_without_papi_replaced.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, e));
+                formula_within_limits_without_papi_replaced.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, location));
             }
             if (!use_formula && !use_limited_xp) {
-                PlayerData.get(p).giveExperience(xp_default, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                PlayerData.get(p).giveExperience(xp_default, EXPSource.SOURCE, location.add(0, 1.5, 0), true);
             }
             if (!use_formula && use_limited_xp) {
-                formula_within_limits_without_papi_replaced.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, e));
+                formula_within_limits_without_papi_replaced.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, location));
             }
         }
         if (new Version().isPremium().getType()) {
@@ -338,13 +328,13 @@ public class API {
                     executeCMDWCondition(p, cmd_out_of_bound, mob_level, xp_default, mob);
                 }
                 if (use_formula && !use_limited_xp) {
-                    formula_out_of_bounds_without_papi_replaced_lower.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, e));
+                    formula_out_of_bounds_without_papi_replaced_lower.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, location));
                 }
                 if (!use_formula && !use_limited_xp) {
-                    PlayerData.get(p).giveExperience(xp_default, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                    PlayerData.get(p).giveExperience(xp_default, EXPSource.SOURCE, location.add(0, 1.5, 0), true);
                 }
                 if (!use_formula && use_limited_xp) {
-                    formula_out_of_bounds_without_papi_replaced_lower.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, e));
+                    formula_out_of_bounds_without_papi_replaced_lower.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, location));
                 }
             }
             if (player_level > level_max && player_level > level_min) {
@@ -352,13 +342,13 @@ public class API {
                     executeCMDWCondition(p, cmd_out_of_bound, mob_level, xp_default, mob);
                 }
                 if (use_formula && !use_limited_xp) {
-                    formula_out_of_bounds_without_papi_replaced_higher.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, e));
+                    formula_out_of_bounds_without_papi_replaced_higher.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, location));
                 }
                 if (!use_formula && !use_limited_xp) {
-                    PlayerData.get(p).giveExperience(xp_default, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                    PlayerData.get(p).giveExperience(xp_default, EXPSource.SOURCE, location.add(0, 1.5, 0), true);
                 }
                 if (!use_formula && use_limited_xp) {
-                    formula_out_of_bounds_without_papi_replaced_higher.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, e));
+                    formula_out_of_bounds_without_papi_replaced_higher.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, location));
                 }
             }
         } else {
