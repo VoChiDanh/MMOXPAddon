@@ -326,7 +326,7 @@ public class API {
                 formula_within_limits_without_papi_replaced.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, e));
             }
             if (!use_formula && !use_limited_xp) {
-                PlayerData.get(p).giveExperience(xp_default * mob_level, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
+                PlayerData.get(p).giveExperience(xp_default, EXPSource.SOURCE, e.getEntity().getLocation().add(0, 1.5, 0), true);
             }
             if (!use_formula && use_limited_xp) {
                 formula_within_limits_without_papi_replaced.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, e));
