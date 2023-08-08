@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class Calculator {
     private static boolean isExpresstion(String s) {
-        s = s.replaceAll(" ", "");
+        s = s.replace(" ", "");
         boolean is = true;
         for (int i = 0; i < s.length(); i++) {
             if (!String.valueOf(s.charAt(i)).matches("[\\d+\\-*/%^@{}#().]")) {
@@ -20,7 +20,7 @@ public class Calculator {
     }
 
     private static double parsefirst(String s) {
-        s = s.replaceAll(" ", "");
+        s = s.replace(" ", "");
         if (s.startsWith("@")) {
             int sqrt = 0;
             int open = 0;
@@ -107,7 +107,7 @@ public class Calculator {
     }
 
     private static double parsesecond(String s) {
-        s = s.replaceAll(" ", "");
+        s = s.replace(" ", "");
         if (s.contains("*") || s.contains("/") || s.contains("%")) {
             List<Integer> terms = new ArrayList<>();
             double result = 0;
@@ -146,7 +146,7 @@ public class Calculator {
     }
 
     private static double parsethird(String s) {
-        s = s.replaceAll(" ", "");
+        s = s.replace(" ", "");
         List<Integer> operators = new ArrayList<>();
         double result = 0;
         for (int i = 0; i < s.length(); i++) {
@@ -184,13 +184,13 @@ public class Calculator {
             if (Demical <= -1) {
                 if (!Expression.contains("(") && !Expression.contains(")")) {
                     if (Expression.contains("@{") && Expression.contains("}")) {
-                        Expression = Expression.replaceAll(" ", "");
+                        Expression = Expression.replace(" ", "");
                         final String regex = "(@\\{)([\\d\\s+\\-*/%^.#]+)(})";
                         final Pattern pattern = Pattern.compile(regex);
                         final Matcher matcher = pattern.matcher(Expression);
                         if (matcher.find()) {
                             if (matcher.group(0).substring(2, matcher.group(0).length() - 1).contains("@{") && matcher.group(0).substring(2, matcher.group(0).length() - 1).contains("}")) {
-                                Expression = Expression.replace(matcher.group(0), "@{" + calculator(matcher.group(0).replaceAll("@\\{", "").replaceAll("}", ""), -1) + "}");
+                                Expression = Expression.replace(matcher.group(0), "@{" + calculator(matcher.group(0).replace("@\\{", "").replace("}", ""), -1) + "}");
                             } else {
                                 Expression = Expression.replace(matcher.group(0), String.valueOf(parsefirst(matcher.group(0))));
                             }
@@ -210,25 +210,25 @@ public class Calculator {
                         }
                     }
                 } else {
-                    Expression = Expression.replaceAll(" ", "");
+                    Expression = Expression.replace(" ", "");
                     final String regex = "([(])([\\d\\s+\\-*/%^@{}.#]+)([)])";
                     final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
                     final Matcher matcher = pattern.matcher(Expression);
                     if (matcher.find()) {
-                        Expression = Expression.replaceFirst(regex, calculator(matcher.group(0).replaceAll("\\(", "").replaceAll("\\)", ""), Demical));
+                        Expression = Expression.replaceFirst(regex, calculator(matcher.group(0).replace("\\(", "").replace("\\)", ""), Demical));
                     }
                     return calculator(Expression, Demical);
                 }
             } else {
                 if (!Expression.contains("(") && !Expression.contains(")")) {
                     if (Expression.contains("@{") && Expression.contains("}")) {
-                        Expression = Expression.replaceAll(" ", "");
+                        Expression = Expression.replace(" ", "");
                         final String regex = "(@\\{)([\\d\\s+\\-*/%^.#]+)(})";
                         final Pattern pattern = Pattern.compile(regex);
                         final Matcher matcher = pattern.matcher(Expression);
                         if (matcher.find()) {
                             if (matcher.group(0).substring(2, matcher.group(0).length() - 1).contains("@{") && matcher.group(0).substring(2, matcher.group(0).length() - 1).contains("}")) {
-                                Expression = Expression.replace(matcher.group(0), "@{" + calculator(matcher.group(0).replaceAll("@\\{", "").replaceAll("}", ""), -1) + "}");
+                                Expression = Expression.replace(matcher.group(0), "@{" + calculator(matcher.group(0).replace("@\\{", "").replace("}", ""), -1) + "}");
                             } else {
                                 Expression = Expression.replace(matcher.group(0), String.valueOf(parsefirst(matcher.group(0))));
                             }
@@ -248,12 +248,12 @@ public class Calculator {
                         }
                     }
                 } else {
-                    Expression = Expression.replaceAll(" ", "");
+                    Expression = Expression.replace(" ", "");
                     final String regex = "([(])([\\d\\s+\\-*/%^@{}.#]+)([)])";
                     final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
                     final Matcher matcher = pattern.matcher(Expression);
                     if (matcher.find()) {
-                        Expression = Expression.replaceFirst(regex, calculator(matcher.group(0).replaceAll("\\(", "").replaceAll("\\)", ""), Demical));
+                        Expression = Expression.replaceFirst(regex, calculator(matcher.group(0).replace("\\(", "").replace("\\)", ""), Demical));
                     }
                     return calculator(Expression, Demical);
                 }

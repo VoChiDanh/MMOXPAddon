@@ -26,13 +26,13 @@ public class API {
 
     public static void executeCMDWCondition(Player p, List<String> list_commands, int mob_level, int xp_default, Mobs mob) {
         for (String cmd : list_commands) {
-            String replace = cmd.replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+            String replace = cmd.replace("%mob_level%", String.valueOf(mob_level)).replace("%mob_xp%", String.valueOf(xp_default));
             String papi = PlaceholderAPI.setPlaceholders(p, replace);
             for (String custom_formula : mob.getListCustomFormula()) {
                 if (papi.contains("#cf_")) {
-                    String custom_formula_replace = mob.getCustomFormula(custom_formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                    String custom_formula_replace = mob.getCustomFormula(custom_formula).replace("%mob_level%", String.valueOf(mob_level)).replace("%mob_xp%", String.valueOf(xp_default));
                     String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
-                    papi = papi.replaceAll("#cf_" + custom_formula + "#", String.valueOf((int) Double.parseDouble(Calculator.calculator(custom_formula_papi, 0))));
+                    papi = papi.replace("#cf_" + custom_formula + "#", String.valueOf((int) Double.parseDouble(Calculator.calculator(custom_formula_papi, 0))));
                 } else {
                     break;
                 }
@@ -43,7 +43,7 @@ public class API {
                 String[] sp = finalPapi.split(";");
                 if (sp.length == 2) {
                     String commands = sp[0];
-                    int chance = BigDecimal.valueOf(Double.parseDouble(sp[1].replaceAll(" ", ""))).intValue();
+                    int chance = BigDecimal.valueOf(Double.parseDouble(sp[1].replace(" ", ""))).intValue();
                     if (chance >= 100 || chance > random) {
                         new BukkitRunnable() {
                             @Override
@@ -55,7 +55,7 @@ public class API {
                 }
                 if (mob.notnullConditions()) {
                     if (sp.length == 3) {
-                        String conditions = mob.getConditions(sp[0]);
+                        String conditions = mob.getConditions(sp[0]).replace("%mob_level%", String.valueOf(mob_level)).replace("%mob_xp%", String.valueOf(xp_default));
                         String papi_conditions = PlaceholderAPI.setPlaceholders(p, conditions);
                         String[] pp_c = papi_conditions.split(";");
                         if (pp_c.length == 4) {
@@ -78,7 +78,7 @@ public class API {
                                 }
                                 if (status) {
                                     String commands = sp[1];
-                                    int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
+                                    int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replace(" ", ""))).intValue();
                                     if (chance >= 100 || chance > random) {
                                         new BukkitRunnable() {
                                             @Override
@@ -98,7 +98,7 @@ public class API {
                                 }
                                 if (status) {
                                     String commands = sp[1];
-                                    int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
+                                    int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replace(" ", ""))).intValue();
                                     if (chance >= 100 || chance > random) {
                                         new BukkitRunnable() {
                                             @Override
@@ -115,7 +115,7 @@ public class API {
                                 boolean status = c1.equalsIgnoreCase(c3);
                                 if (status) {
                                     String commands = sp[1];
-                                    int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
+                                    int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replace(" ", ""))).intValue();
                                     if (chance >= 100 || chance > random) {
                                         new BukkitRunnable() {
                                             @Override
@@ -143,9 +143,9 @@ public class API {
     public static void giveEXP(Player p, Mobs mob, int xp_default, int mob_level, String formula_without_papi_replaced, MythicMobDeathEvent e) {
         for (String custom_formula : mob.getListCustomFormula()) {
             if (formula_without_papi_replaced.contains("#cf_")) {
-                String custom_formula_replace = mob.getCustomFormula(custom_formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                String custom_formula_replace = mob.getCustomFormula(custom_formula).replace("%mob_level%", String.valueOf(mob_level)).replace("%mob_xp%", String.valueOf(xp_default));
                 String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
-                formula_without_papi_replaced = formula_without_papi_replaced.replaceAll("#cf_" + custom_formula + "#", String.valueOf((int) Double.parseDouble(Calculator.calculator(custom_formula_papi, 0))));
+                formula_without_papi_replaced = formula_without_papi_replaced.replace("#cf_" + custom_formula + "#", String.valueOf((int) Double.parseDouble(Calculator.calculator(custom_formula_papi, 0))));
             } else {
                 break;
             }
@@ -153,7 +153,7 @@ public class API {
         if (mob.notnullConditions() && formula_without_papi_replaced.contains(";")) {
             String[] strings = formula_without_papi_replaced.split(";");
             if (strings.length == 3) {
-                String conditions = mob.getConditions(strings[0]);
+                String conditions = mob.getConditions(strings[0]).replace("%mob_level%", String.valueOf(mob_level)).replace("%mob_xp%", String.valueOf(xp_default));
                 String papi_conditions = PlaceholderAPI.setPlaceholders(p, conditions);
                 String[] pp_c = papi_conditions.split(";");
                 if (pp_c.length == 4) {
@@ -253,24 +253,24 @@ public class API {
         debug("Formula out of bounds higher: " + formula_out_of_bounds_without_papi_higher);
         List<String> formula_out_of_bounds_without_papi_replaced_higher = PlaceholderAPI.setPlaceholders(p, Objects.requireNonNull(mob.getFormulaOutOfBoundWithoutPapiHigher(p))
                 .stream().map(s -> s.
-                        replaceAll("%mob_level%", String.valueOf(e.getMobLevel()))
-                        .replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault()))).collect(Collectors.toList()));
-                /*.replaceAll("%mob_level%", String.valueOf(e.getMobLevel()))
-                .replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault())));*/
+                        replace("%mob_level%", String.valueOf(e.getMobLevel()))
+                        .replace("%mob_xp%", String.valueOf(mob.getXPDefault()))).collect(Collectors.toList()));
+                /*.replace("%mob_level%", String.valueOf(e.getMobLevel()))
+                .replace("%mob_xp%", String.valueOf(mob.getXPDefault())));*/
         debug("Formula out of bounds replaced higher: " + formula_out_of_bounds_without_papi_replaced_higher);
         List<String> formula_out_of_bounds_without_papi_lower = mob.getFormulaOutOfBoundWithoutPapiLower(p);
         debug("Formula out of bounds lower: " + formula_out_of_bounds_without_papi_lower);
         List<String> formula_out_of_bounds_without_papi_replaced_lower = PlaceholderAPI.setPlaceholders(p, Objects.requireNonNull(mob.getFormulaOutOfBoundWithoutPapiLower(p))
                 .stream().map(s -> s.
-                        replaceAll("%mob_level%", String.valueOf(e.getMobLevel()))
-                        .replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault()))).collect(Collectors.toList()));
+                        replace("%mob_level%", String.valueOf(e.getMobLevel()))
+                        .replace("%mob_xp%", String.valueOf(mob.getXPDefault()))).collect(Collectors.toList()));
         debug("Formula out of bounds replaced lower: " + formula_out_of_bounds_without_papi_replaced_lower);
         List<String> formula_within = mob.getFormulaWithinLimitsWithoutPapi(p);
         debug("Formula within limits : " + formula_within);
         List<String> formula_within_limits_without_papi_replaced = PlaceholderAPI.setPlaceholders(p, Objects.requireNonNull(mob.getFormulaWithinLimitsWithoutPapi(p))
                 .stream().map(s -> s.
-                        replaceAll("%mob_level%", String.valueOf(e.getMobLevel()))
-                        .replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault()))).collect(Collectors.toList()));
+                        replace("%mob_level%", String.valueOf(e.getMobLevel()))
+                        .replace("%mob_xp%", String.valueOf(mob.getXPDefault()))).collect(Collectors.toList()));
         debug("Formula within limits replaced: " + formula_within_limits_without_papi_replaced);
         int xp_default = mob.getXPDefault();
         debug("Xp default: " + xp_default);
@@ -292,7 +292,7 @@ public class API {
         }
         debug("Custom formula");
         for (String formula : mob.getListCustomFormula()) {
-            String replace = mob.getCustomFormula(formula).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+            String replace = mob.getCustomFormula(formula).replace("%mob_level%", String.valueOf(mob_level)).replace("%mob_xp%", String.valueOf(xp_default));
             String papi = PlaceholderAPI.setPlaceholders(p, replace);
             debug(papi);
         }
@@ -303,7 +303,7 @@ public class API {
             }
             debug("Conditions");
             for (String conditions : mob.getListConditions()) {
-                String cdt = mob.getConditions(conditions).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                String cdt = mob.getConditions(conditions).replace("%mob_level%", String.valueOf(mob_level)).replace("%mob_xp%", String.valueOf(xp_default));
                 String papi = PlaceholderAPI.setPlaceholders(p, cdt);
                 debug(papi);
             }
