@@ -253,15 +253,15 @@ public class API {
 
     public static void KillMythicMobs(Player p, Mobs mob, Integer mob_level, Location location) {
         debug("Mob level: " + mob_level);
-        int xp_default = (int) Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getXPDefault().replaceAll("%mob_level%", String.valueOf(mob_level))), 0));
+        int xp_default = (int) Math.abs(Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getXPDefault().replaceAll("%mob_level%", String.valueOf(mob_level))), 0)));
         debug("Xp default: " + xp_default);
-        int xp_max = (int) Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getXPMax().replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob_level))), 0));
+        int xp_max = (int) Math.abs(Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getXPMax().replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob_level))), 0)));
         debug("Xp max: " + xp_max);
-        int level_min = (int) Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getLevelMin().replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob_level))), 0));
+        int level_min = (int) Math.abs(Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getLevelMin().replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob_level))), 0)));
         debug("Level min: " + level_min);
-        int level_max = (int) Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getLevelMax().replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob_level))), 0));
+        int level_max = (int) Math.abs(Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getLevelMax().replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob_level))), 0)));
         debug("Level max: " + level_max);
-        int level_end = (int) Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getLevelEnd().replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob_level))), 0));
+        int level_end = (int) Math.abs(Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getLevelEnd().replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob_level))), 0)));
         debug("Level end: " + level_end);
         boolean use_formula = mob.useFormula();
         debug("Use Formula: " + use_formula);
