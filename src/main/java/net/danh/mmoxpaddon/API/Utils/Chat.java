@@ -88,7 +88,7 @@ public class Chat {
                 builder.append("&").append(c);
             }
 
-            message = message.replace(hexCode, builder.toString());
+            message = message.replaceAll(hexCode, builder.toString());
             matcher = pattern.matcher(message);
         }
         return ChatColor.translateAlternateColorCodes('&', message);
