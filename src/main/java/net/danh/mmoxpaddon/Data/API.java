@@ -61,19 +61,7 @@ public class API {
                                 int c1 = BigDecimal.valueOf(Double.parseDouble(pp_c[0])).intValue();
                                 String c2 = pp_c[1];
                                 int c3 = BigDecimal.valueOf(Double.parseDouble(String.valueOf(pp_c[2]))).intValue();
-                                boolean status = false;
-                                if (c2.equalsIgnoreCase(">=")) {
-                                    status = c1 >= c3;
-                                }
-                                if (c2.equalsIgnoreCase(">")) {
-                                    status = c1 > c3;
-                                }
-                                if (c2.equalsIgnoreCase("<=")) {
-                                    status = c1 <= c3;
-                                }
-                                if (c2.equalsIgnoreCase("<")) {
-                                    status = c1 < c3;
-                                }
+                                boolean status = isStatus(c2, c1, c3);
                                 if (status) {
                                     String commands = sp[1];
                                     int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
@@ -136,6 +124,23 @@ public class API {
                 }.runTask(MMOXPAddon.getInstance());
             }
         }
+    }
+
+    private static boolean isStatus(String c2, int c1, int c3) {
+        boolean status = false;
+        if (c2.equalsIgnoreCase(">=")) {
+            status = c1 >= c3;
+        }
+        if (c2.equalsIgnoreCase(">")) {
+            status = c1 > c3;
+        }
+        if (c2.equalsIgnoreCase("<=")) {
+            status = c1 <= c3;
+        }
+        if (c2.equalsIgnoreCase("<")) {
+            status = c1 < c3;
+        }
+        return status;
     }
 
     public static void giveEXP(Player p, Mobs mob, int xp_default, int mob_level, String formula_without_papi_replaced, Location location) {
