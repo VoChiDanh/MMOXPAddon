@@ -143,6 +143,53 @@ public class API {
         return status;
     }
 
+    public static boolean checkCondition(Player p, Mobs mob, String placeholder, String compare_type, String result, String compare, int xp_default, int mob_level) {
+        if (compare.equalsIgnoreCase("NUMBER")) {
+            int c1 = BigDecimal.valueOf((Math.abs(Double.parseDouble(placeholder)))).intValue();
+            int c3 = BigDecimal.valueOf((Math.abs(Double.parseDouble(result)))).intValue();
+            if (compare_type.equalsIgnoreCase(">=")) {
+                return c1 >= c3;
+            }
+            if (compare_type.equalsIgnoreCase(">")) {
+                return c1 > c3;
+            }
+            if (compare_type.equalsIgnoreCase("<=")) {
+                return c1 <= c3;
+            }
+            if (compare_type.equalsIgnoreCase("<")) {
+                return c1 < c3;
+            }
+        }
+        if (compare.equalsIgnoreCase("BOOLEAN")) {
+            boolean c1 = Boolean.parseBoolean(placeholder);
+            boolean c3 = Boolean.parseBoolean(result);
+            return c1 && c3;
+        }
+        if (compare.equalsIgnoreCase("STRING")) {
+            String c1 = String.valueOf(placeholder);
+            String c3 = String.valueOf(result);
+            return c1.equalsIgnoreCase(c3);
+        }
+        if (compare.equalsIgnoreCase("COMPARE_CONDITIONS")) {
+            String[] placeholder_strings = placeholder.split(";");
+            String[] result_strings = result.split(";");
+            if (placeholder_strings.length == 3 && result_strings.length == 3) {
+                String placeholder_condition = mob.getConditions(placeholder_strings[0]).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                String result_condition = mob.getConditions(result_strings[0]).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                String papi_conditions = PlaceholderAPI.setPlaceholders(p, placeholder_condition);
+                String re_conditions = PlaceholderAPI.setPlaceholders(p, result_condition);
+                String[] pp_c = papi_conditions.split(";");
+                String[] r_c = re_conditions.split(";");
+                if (pp_c.length == 4 && r_c.length == 4) {
+                    boolean placeholder_condition_checked = checkCondition(p, mob, pp_c[0], pp_c[1], pp_c[2], pp_c[3], xp_default, mob_level);
+                    boolean result_condition_checked = checkCondition(p, mob, r_c[0], r_c[1], r_c[2], r_c[3], xp_default, mob_level);
+                    return placeholder_condition_checked && result_condition_checked;
+                }
+            }
+        }
+        return false;
+    }
+
     public static void giveEXP(Player p, Mobs mob, int xp_default, int mob_level, String formula_without_papi_replaced, Location location) {
         for (String custom_formula : mob.getListCustomFormula()) {
             if (formula_without_papi_replaced.contains("#cf_")) {
@@ -158,45 +205,7 @@ public class API {
                 String papi_conditions = PlaceholderAPI.setPlaceholders(p, conditions);
                 String[] pp_c = papi_conditions.split(";");
                 if (pp_c.length == 4) {
-                    boolean status = false;
-                    if (pp_c[3].equalsIgnoreCase("NUMBER")) {
-                        int c1 = BigDecimal.valueOf((Math.abs(Double.parseDouble(pp_c[0])))).intValue();
-                        int c3 = BigDecimal.valueOf((Math.abs(Double.parseDouble(pp_c[2])))).intValue();
-                        String c2 = pp_c[1];
-                        if (c2.equalsIgnoreCase(">=")) {
-                            status = c1 >= c3;
-                        }
-                        if (c2.equalsIgnoreCase(">")) {
-                            status = c1 > c3;
-                        }
-                        if (c2.equalsIgnoreCase("<=")) {
-                            status = c1 <= c3;
-                        }
-                        if (c2.equalsIgnoreCase("<")) {
-                            status = c1 < c3;
-                        }
-                    }
-                    if (pp_c[3].equalsIgnoreCase("BOOLEAN")) {
-                        boolean c1 = Boolean.parseBoolean(pp_c[0]);
-                        boolean c3 = Boolean.parseBoolean(pp_c[2]);
-                        if (c1 && c3) {
-                            status = true;
-                        }
-                        if (!c1 && !c3) {
-                            status = true;
-                        }
-                        if (c1 && !c3) {
-                            status = false;
-                        }
-                        if (!c1 && c3) {
-                            status = false;
-                        }
-                    }
-                    if (pp_c[3].equalsIgnoreCase("STRING")) {
-                        String c1 = String.valueOf(pp_c[0]);
-                        String c3 = String.valueOf(pp_c[2]);
-                        status = c1.equalsIgnoreCase(c3);
-                    }
+                    boolean status = checkCondition(p, mob, pp_c[0], pp_c[1], pp_c[2], pp_c[3], xp_default, mob_level);
                     String in = strings[1];
                     String out = strings[2];
                     for (String custom_formula : mob.getListCustomFormula()) {
@@ -228,15 +237,17 @@ public class API {
                         PlayerData.get(p).giveExperience(BigDecimal.valueOf((Math.abs(Double.parseDouble(in)))).intValue(), EXPSource.SOURCE, location.add(0, 1.5, 0), true);
                     } else {
                         PlayerData.get(p).giveExperience(BigDecimal.valueOf((Math.abs(Double.parseDouble(out)))).intValue(), EXPSource.SOURCE, location.add(0, 1.5, 0), true);
-
                     }
+                    return;
                 }
+                return;
             }
-        } else {
-            String formula_within_limits = Calculator.calculator(formula_without_papi_replaced, 0);
-            debug("Formula = " + formula_within_limits);
-            PlayerData.get(p).giveExperience((Math.abs((int) Double.parseDouble(formula_within_limits))), EXPSource.SOURCE, location.add(0, 1.5, 0), true);
+            return;
         }
+        String formula_within_limits = Calculator.calculator(formula_without_papi_replaced, 0);
+        debug("Formula = " + formula_within_limits);
+        PlayerData.get(p).giveExperience((Math.abs((int) Double.parseDouble(formula_within_limits))), EXPSource.SOURCE, location.add(0, 1.5, 0), true);
+
     }
 
     public static String isRegisteredMythicCompatible() {
@@ -260,13 +271,13 @@ public class API {
         debug("Mob level: " + mob_level);
         int xp_default = (int) Math.abs(Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getXPDefault().replaceAll("%mob_level%", String.valueOf(mob_level))), 0)));
         debug("Xp default: " + xp_default);
-        int xp_max = (int) Math.abs(Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getXPMax().replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob_level))), 0)));
+        int xp_max = (int) Math.abs(Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getXPMax().replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault()))), 0)));
         debug("Xp max: " + xp_max);
-        int level_min = (int) Math.abs(Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getLevelMin().replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob_level))), 0)));
+        int level_min = (int) Math.abs(Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getLevelMin().replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault()))), 0)));
         debug("Level min: " + level_min);
-        int level_max = (int) Math.abs(Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getLevelMax().replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob_level))), 0)));
+        int level_max = (int) Math.abs(Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getLevelMax().replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault()))), 0)));
         debug("Level max: " + level_max);
-        int level_end = (int) Math.abs(Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getLevelEnd().replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob_level))), 0)));
+        int level_end = (int) Math.abs(Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getLevelEnd().replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault()))), 0)));
         debug("Level end: " + level_end);
         boolean use_formula = mob.useFormula();
         debug("Use Formula: " + use_formula);
@@ -288,17 +299,17 @@ public class API {
         }
         List<String> formula_out_of_bounds_without_papi_higher = mob.getFormulaOutOfBoundWithoutPapiHigher(p);
         debug("Formula out of bounds higher: " + formula_out_of_bounds_without_papi_higher);
-        List<String> formula_out_of_bounds_without_papi_replaced_higher = PlaceholderAPI.setPlaceholders(p, Objects.requireNonNull(mob.getFormulaOutOfBoundWithoutPapiHigher(p)).stream().map(s -> s.replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob_level))).collect(Collectors.toList()));
+        List<String> formula_out_of_bounds_without_papi_replaced_higher = PlaceholderAPI.setPlaceholders(p, Objects.requireNonNull(mob.getFormulaOutOfBoundWithoutPapiHigher(p)).stream().map(s -> s.replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault()))).collect(Collectors.toList()));
                 /*.replaceAll("%mob_level%", String.valueOf(mob_level))
-                .replaceAll("%mob_xp%", String.valueOf(mob_level)));*/
+                .replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault())));*/
         debug("Formula out of bounds replaced higher: " + formula_out_of_bounds_without_papi_replaced_higher);
         List<String> formula_out_of_bounds_without_papi_lower = mob.getFormulaOutOfBoundWithoutPapiLower(p);
         debug("Formula out of bounds lower: " + formula_out_of_bounds_without_papi_lower);
-        List<String> formula_out_of_bounds_without_papi_replaced_lower = PlaceholderAPI.setPlaceholders(p, Objects.requireNonNull(mob.getFormulaOutOfBoundWithoutPapiLower(p)).stream().map(s -> s.replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob_level))).collect(Collectors.toList()));
+        List<String> formula_out_of_bounds_without_papi_replaced_lower = PlaceholderAPI.setPlaceholders(p, Objects.requireNonNull(mob.getFormulaOutOfBoundWithoutPapiLower(p)).stream().map(s -> s.replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault()))).collect(Collectors.toList()));
         debug("Formula out of bounds replaced lower: " + formula_out_of_bounds_without_papi_replaced_lower);
         List<String> formula_within = mob.getFormulaWithinLimitsWithoutPapi(p);
         debug("Formula within limits : " + formula_within);
-        List<String> formula_within_limits_without_papi_replaced = PlaceholderAPI.setPlaceholders(p, Objects.requireNonNull(mob.getFormulaWithinLimitsWithoutPapi(p)).stream().map(s -> s.replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob_level))).collect(Collectors.toList()));
+        List<String> formula_within_limits_without_papi_replaced = PlaceholderAPI.setPlaceholders(p, Objects.requireNonNull(mob.getFormulaWithinLimitsWithoutPapi(p)).stream().map(s -> s.replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault()))).collect(Collectors.toList()));
         debug("Formula within limits replaced: " + formula_within_limits_without_papi_replaced);
         int player_level = PlayerData.get(p).getLevel();
         debug("Player level: " + player_level);

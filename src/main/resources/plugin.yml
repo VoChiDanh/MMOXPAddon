@@ -7,7 +7,3 @@ depend: [ MythicMobs, MMOCore, MythicLib ]
 commands:
   mmoxpaddon:
     description: Main command
-permissions:
-  mmoxpaddon.admin:
-    description: Admin permission
-    default: false
