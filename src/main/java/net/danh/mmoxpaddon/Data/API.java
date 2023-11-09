@@ -53,62 +53,65 @@ public class API {
                 }
                 if (mob.notnullConditions()) {
                     if (sp.length == 3) {
-                        String conditions = mob.getConditions(sp[0]).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
-                        String papi_conditions = PlaceholderAPI.setPlaceholders(p, conditions);
-                        String[] pp_c = papi_conditions.split(";");
-                        if (pp_c.length == 4) {
-                            if (pp_c[3].equalsIgnoreCase("NUMBER")) {
-                                int c1 = BigDecimal.valueOf(Double.parseDouble(pp_c[0])).intValue();
-                                String c2 = pp_c[1];
-                                int c3 = BigDecimal.valueOf(Double.parseDouble(String.valueOf(pp_c[2]))).intValue();
-                                boolean status = isStatus(c2, c1, c3);
-                                if (status) {
-                                    String commands = sp[1];
-                                    int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
-                                    if (chance >= 100 || chance > random) {
-                                        new BukkitRunnable() {
-                                            @Override
-                                            public void run() {
-                                                MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
-                                            }
-                                        }.runTask(MMOXPAddon.getInstance());
+                        String cc_c = mob.getConditions(sp[0]);
+                        if (cc_c != null) {
+                            String conditions = cc_c.replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                            String papi_conditions = PlaceholderAPI.setPlaceholders(p, conditions);
+                            String[] pp_c = papi_conditions.split(";");
+                            if (pp_c.length == 4) {
+                                if (pp_c[3].equalsIgnoreCase("NUMBER")) {
+                                    int c1 = BigDecimal.valueOf(Double.parseDouble(pp_c[0])).intValue();
+                                    String c2 = pp_c[1];
+                                    int c3 = BigDecimal.valueOf(Double.parseDouble(String.valueOf(pp_c[2]))).intValue();
+                                    boolean status = isStatus(c2, c1, c3);
+                                    if (status) {
+                                        String commands = sp[1];
+                                        int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
+                                        if (chance >= 100 || chance > random) {
+                                            new BukkitRunnable() {
+                                                @Override
+                                                public void run() {
+                                                    MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                                                }
+                                            }.runTask(MMOXPAddon.getInstance());
+                                        }
                                     }
                                 }
-                            }
-                            if (pp_c[3].equalsIgnoreCase("BOOLEAN")) {
-                                boolean c1 = Boolean.parseBoolean(pp_c[0]);
-                                boolean c3 = Boolean.parseBoolean(pp_c[2]);
-                                boolean status = c1 && c3;
-                                if (!c1 && !c3) {
-                                    status = true;
-                                }
-                                if (status) {
-                                    String commands = sp[1];
-                                    int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
-                                    if (chance >= 100 || chance > random) {
-                                        new BukkitRunnable() {
-                                            @Override
-                                            public void run() {
-                                                MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
-                                            }
-                                        }.runTask(MMOXPAddon.getInstance());
+                                if (pp_c[3].equalsIgnoreCase("BOOLEAN")) {
+                                    boolean c1 = Boolean.parseBoolean(pp_c[0]);
+                                    boolean c3 = Boolean.parseBoolean(pp_c[2]);
+                                    boolean status = c1 && c3;
+                                    if (!c1 && !c3) {
+                                        status = true;
+                                    }
+                                    if (status) {
+                                        String commands = sp[1];
+                                        int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
+                                        if (chance >= 100 || chance > random) {
+                                            new BukkitRunnable() {
+                                                @Override
+                                                public void run() {
+                                                    MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                                                }
+                                            }.runTask(MMOXPAddon.getInstance());
+                                        }
                                     }
                                 }
-                            }
-                            if (pp_c[3].equalsIgnoreCase("STRING")) {
-                                String c1 = String.valueOf(pp_c[0]);
-                                String c3 = String.valueOf(pp_c[2]);
-                                boolean status = c1.equalsIgnoreCase(c3);
-                                if (status) {
-                                    String commands = sp[1];
-                                    int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
-                                    if (chance >= 100 || chance > random) {
-                                        new BukkitRunnable() {
-                                            @Override
-                                            public void run() {
-                                                MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
-                                            }
-                                        }.runTask(MMOXPAddon.getInstance());
+                                if (pp_c[3].equalsIgnoreCase("STRING")) {
+                                    String c1 = String.valueOf(pp_c[0]);
+                                    String c3 = String.valueOf(pp_c[2]);
+                                    boolean status = c1.equalsIgnoreCase(c3);
+                                    if (status) {
+                                        String commands = sp[1];
+                                        int chance = BigDecimal.valueOf(Double.parseDouble(sp[2].replaceAll(" ", ""))).intValue();
+                                        if (chance >= 100 || chance > random) {
+                                            new BukkitRunnable() {
+                                                @Override
+                                                public void run() {
+                                                    MMOXPAddon.getInstance().getServer().dispatchCommand(MMOXPAddon.getInstance().getServer().getConsoleSender(), commands);
+                                                }
+                                            }.runTask(MMOXPAddon.getInstance());
+                                        }
                                     }
                                 }
                             }
@@ -143,47 +146,78 @@ public class API {
         return status;
     }
 
-    public static boolean checkCondition(Player p, Mobs mob, String placeholder, String compare_type, String result, String compare, int xp_default, int mob_level) {
-        if (compare.equalsIgnoreCase("NUMBER")) {
-            int c1 = BigDecimal.valueOf((Math.abs(Double.parseDouble(placeholder)))).intValue();
-            int c3 = BigDecimal.valueOf((Math.abs(Double.parseDouble(result)))).intValue();
-            if (compare_type.equalsIgnoreCase(">=")) {
-                return c1 >= c3;
+    public static boolean checkCondition(Player p, Mobs mob, String condition, int xp_default, int mob_level) {
+        debug(p.getDisplayName() + " " + condition + " " + xp_default + " " + mob_level);
+        String[] condition_split = condition.split(";");
+        String placeholder = condition_split[0];
+        String compare_type = condition_split[1];
+        String result = condition_split[2];
+        String compare = condition_split[3];
+        if (condition_split.length == 4) {
+            if (compare.equalsIgnoreCase("NUMBER")) {
+                int c1 = BigDecimal.valueOf((Math.abs(Double.parseDouble(placeholder)))).intValue();
+                int c3 = BigDecimal.valueOf((Math.abs(Double.parseDouble(result)))).intValue();
+                if (compare_type.equalsIgnoreCase(">=")) {
+                    return c1 >= c3;
+                }
+                if (compare_type.equalsIgnoreCase(">")) {
+                    return c1 > c3;
+                }
+                if (compare_type.equalsIgnoreCase("<=")) {
+                    return c1 <= c3;
+                }
+                if (compare_type.equalsIgnoreCase("<")) {
+                    return c1 < c3;
+                }
             }
-            if (compare_type.equalsIgnoreCase(">")) {
-                return c1 > c3;
+            if (compare.equalsIgnoreCase("BOOLEAN")) {
+                boolean c1 = Boolean.parseBoolean(placeholder);
+                boolean c3 = Boolean.parseBoolean(result);
+                return c1 && c3;
             }
-            if (compare_type.equalsIgnoreCase("<=")) {
-                return c1 <= c3;
+            if (compare.equalsIgnoreCase("STRING")) {
+                String c1 = String.valueOf(placeholder);
+                String c3 = String.valueOf(result);
+                return c1.equalsIgnoreCase(c3);
             }
-            if (compare_type.equalsIgnoreCase("<")) {
-                return c1 < c3;
-            }
-        }
-        if (compare.equalsIgnoreCase("BOOLEAN")) {
-            boolean c1 = Boolean.parseBoolean(placeholder);
-            boolean c3 = Boolean.parseBoolean(result);
-            return c1 && c3;
-        }
-        if (compare.equalsIgnoreCase("STRING")) {
-            String c1 = String.valueOf(placeholder);
-            String c3 = String.valueOf(result);
-            return c1.equalsIgnoreCase(c3);
-        }
-        if (compare.equalsIgnoreCase("COMPARE_CONDITIONS")) {
-            String[] placeholder_strings = placeholder.split(";");
-            String[] result_strings = result.split(";");
-            if (placeholder_strings.length == 3 && result_strings.length == 3) {
-                String placeholder_condition = mob.getConditions(placeholder_strings[0]).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
-                String result_condition = mob.getConditions(result_strings[0]).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
-                String papi_conditions = PlaceholderAPI.setPlaceholders(p, placeholder_condition);
-                String re_conditions = PlaceholderAPI.setPlaceholders(p, result_condition);
-                String[] pp_c = papi_conditions.split(";");
-                String[] r_c = re_conditions.split(";");
-                if (pp_c.length == 4 && r_c.length == 4) {
-                    boolean placeholder_condition_checked = checkCondition(p, mob, pp_c[0], pp_c[1], pp_c[2], pp_c[3], xp_default, mob_level);
-                    boolean result_condition_checked = checkCondition(p, mob, r_c[0], r_c[1], r_c[2], r_c[3], xp_default, mob_level);
-                    return placeholder_condition_checked && result_condition_checked;
+            if (compare.equalsIgnoreCase("COMPARE_CONDITIONS")) {
+                String placeholder_s = mob.getConditions(placeholder);
+                String compare_type_s = mob.getConditions(compare_type);
+                String result_s = mob.getConditions(result);
+                if (placeholder_s != null && compare_type_s != null) {
+                    String placeholder_condition = placeholder_s.replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                    String compare_type_condition = compare_type_s.replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                    String result_condition;
+                    if (result_s != null) {
+                        result_condition = result_s.replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                    } else {
+                        result_condition = result;
+                    }
+                    String papi_conditions = PlaceholderAPI.setPlaceholders(p, placeholder_condition);
+                    String compare_type_conditions = PlaceholderAPI.setPlaceholders(p, compare_type_condition);
+                    String re_conditions = PlaceholderAPI.setPlaceholders(p, result_condition);
+                    if (papi_conditions.contains(";") && compare_type_conditions.contains(";")) {
+                        String[] pp_c = papi_conditions.split(";");
+                        String[] ct_c = compare_type_conditions.split(";");
+                        if (re_conditions.contains(";")) {
+                            String[] r_c = re_conditions.split(";");
+                            if (pp_c.length == 4 && ct_c.length == 4 && r_c.length == 4) {
+                                boolean placeholder_condition_checked = checkCondition(p, mob, papi_conditions, xp_default, mob_level);
+                                boolean compare_type_condition_checked = checkCondition(p, mob, compare_type_conditions, xp_default, mob_level);
+                                boolean result_condition_checked = checkCondition(p, mob, re_conditions, xp_default, mob_level);
+                                debug(condition + " " + placeholder_condition_checked + " " + compare_type_condition_checked + " " + result_condition_checked);
+                                return (placeholder_condition_checked && compare_type_condition_checked && result_condition_checked) || (!placeholder_condition_checked && !compare_type_condition_checked && !result_condition_checked);
+                            }
+                        } else {
+                            if (pp_c.length == 4 && ct_c.length == 4) {
+                                boolean placeholder_condition_checked = checkCondition(p, mob, papi_conditions, xp_default, mob_level);
+                                boolean compare_type_condition_checked = checkCondition(p, mob, compare_type_conditions, xp_default, mob_level);
+                                boolean result_condition_checked = Boolean.parseBoolean(result);
+                                debug(condition + " " + placeholder_condition_checked + " " + compare_type_condition_checked + " " + result_condition_checked);
+                                return (placeholder_condition_checked && compare_type_condition_checked && result_condition_checked) || (!placeholder_condition_checked && !compare_type_condition_checked && !result_condition_checked);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -201,53 +235,54 @@ public class API {
         if (mob.notnullConditions() && formula_without_papi_replaced.contains(";")) {
             String[] strings = formula_without_papi_replaced.split(";");
             if (strings.length == 3) {
-                String conditions = mob.getConditions(strings[0]).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
-                String papi_conditions = PlaceholderAPI.setPlaceholders(p, conditions);
-                String[] pp_c = papi_conditions.split(";");
-                if (pp_c.length == 4) {
-                    boolean status = checkCondition(p, mob, pp_c[0], pp_c[1], pp_c[2], pp_c[3], xp_default, mob_level);
-                    String in = strings[1];
-                    String out = strings[2];
-                    for (String custom_formula : mob.getListCustomFormula()) {
-                        debug(custom_formula.toUpperCase());
-                        debug(in);
-                        if (in.contains("#cf_")) {
+                String cc_c = mob.getConditions(strings[0]);
+                if (cc_c != null) {
+                    String conditions = cc_c.replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                    String papi_conditions = PlaceholderAPI.setPlaceholders(p, conditions);
+                    String[] pp_c = papi_conditions.split(";");
+                    if (pp_c.length == 4) {
+                        boolean status = checkCondition(p, mob, papi_conditions, xp_default, mob_level);
+                        debug(String.valueOf(status));
+                        String in = strings[1];
+                        String out = strings[2];
+                        for (String custom_formula : mob.getListCustomFormula()) {
+                            debug(custom_formula.toUpperCase());
                             debug(in);
-                            String custom_formula_replace = mob.getCustomFormula(custom_formula.toUpperCase()).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
-                            debug(custom_formula_replace);
-                            String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
-                            debug(custom_formula_papi);
-                            in = in.replaceAll("#cf_" + custom_formula.toUpperCase() + "#", String.valueOf((Math.abs((int) Double.parseDouble(Calculator.calculator(custom_formula_papi, 0))))));
-                            debug(in);
+                            if (in.contains("#cf_")) {
+                                debug(in);
+                                String custom_formula_replace = mob.getCustomFormula(custom_formula.toUpperCase()).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                                debug(custom_formula_replace);
+                                String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
+                                debug(custom_formula_papi);
+                                in = in.replaceAll("#cf_" + custom_formula.toUpperCase() + "#", String.valueOf((Math.abs((int) Double.parseDouble(Calculator.calculator(custom_formula_papi, 0))))));
+                                debug(in);
+                            }
+                            debug(out);
+                            if (out.contains("#cf_")) {
+                                debug(out);
+                                String custom_formula_replace = mob.getCustomFormula(custom_formula.toUpperCase()).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                                debug(custom_formula_replace);
+                                String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
+                                debug(custom_formula_papi);
+                                out = out.replaceAll("#cf_" + custom_formula.toUpperCase() + "#", String.valueOf((Math.abs((int) Double.parseDouble(Calculator.calculator(custom_formula_papi, 0))))));
+                                debug(out);
+                            }
                         }
-                        debug(out);
-                        if (out.contains("#cf_")) {
-                            debug(out);
-                            String custom_formula_replace = mob.getCustomFormula(custom_formula.toUpperCase()).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
-                            debug(custom_formula_replace);
-                            String custom_formula_papi = PlaceholderAPI.setPlaceholders(p, custom_formula_replace);
-                            debug(custom_formula_papi);
-                            out = out.replaceAll("#cf_" + custom_formula.toUpperCase() + "#", String.valueOf((Math.abs((int) Double.parseDouble(Calculator.calculator(custom_formula_papi, 0))))));
-                            debug(out);
+                        debug("Formula (in) = " + in);
+                        debug("Formula (out) = " + out);
+                        if (status) {
+                            PlayerData.get(p).giveExperience(BigDecimal.valueOf((Math.abs(Double.parseDouble(in)))).intValue(), EXPSource.SOURCE, location.add(0, 1.5, 0), true);
+                        } else {
+                            PlayerData.get(p).giveExperience(BigDecimal.valueOf((Math.abs(Double.parseDouble(out)))).intValue(), EXPSource.SOURCE, location.add(0, 1.5, 0), true);
                         }
                     }
-                    debug("Formula (in) = " + in);
-                    debug("Formula (out) = " + out);
-                    if (status) {
-                        PlayerData.get(p).giveExperience(BigDecimal.valueOf((Math.abs(Double.parseDouble(in)))).intValue(), EXPSource.SOURCE, location.add(0, 1.5, 0), true);
-                    } else {
-                        PlayerData.get(p).giveExperience(BigDecimal.valueOf((Math.abs(Double.parseDouble(out)))).intValue(), EXPSource.SOURCE, location.add(0, 1.5, 0), true);
-                    }
-                    return;
                 }
-                return;
             }
-            return;
+        } else {
+            String formula_within_limits = Calculator.calculator(formula_without_papi_replaced, 0);
+            debug("Formula = " + formula_within_limits);
+            PlayerData.get(p).giveExperience((Math.abs((int) Double.parseDouble(formula_within_limits))), EXPSource.SOURCE, location.add(0, 1.5, 0), true);
         }
-        String formula_within_limits = Calculator.calculator(formula_without_papi_replaced, 0);
-        debug("Formula = " + formula_within_limits);
-        PlayerData.get(p).giveExperience((Math.abs((int) Double.parseDouble(formula_within_limits))), EXPSource.SOURCE, location.add(0, 1.5, 0), true);
-
     }
 
     public static String isRegisteredMythicCompatible() {
@@ -330,9 +365,12 @@ public class API {
             }
             debug("Conditions");
             for (String conditions : mob.getListConditions()) {
-                String cdt = mob.getConditions(conditions).replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
-                String papi = PlaceholderAPI.setPlaceholders(p, cdt);
-                debug(papi);
+                String cc_c = mob.getConditions(conditions);
+                if (cc_c != null) {
+                    String cdt = cc_c.replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(xp_default));
+                    String papi = PlaceholderAPI.setPlaceholders(p, cdt);
+                    debug(papi);
+                }
             }
         }
         if (use_level_end) {

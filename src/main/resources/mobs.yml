@@ -4,31 +4,43 @@ MYTHICMOBSINTERNALNAME:
   USE:
     FORMULA: true
     LIMITED_XP: false
-    COMMAND: false
+    COMMAND: true
     LEVEL_END: true
   CONDITIONS:
     CONDITION1: '%mmocore_level%;>=;5;NUMBER' #you can check by >=, >, <=, <
     CONDITION2: '%mmocore_is_casting%;==;true;BOOLEAN' #only ==
     CONDITION3: '%mmocore_class%;==;KNIGHT;STRING' #only ==
+    WARRIOR_CLASS: '%mmocore_class%;==;Warrior;STRING' # only ==
+    MAGE_CLASS: '%mmocore_class%;==;Mage;STRING' # only ==
+    BOOSTER2: '%player_has_permission_booster.2%;==;yes;STRING' # Booster x2
+    BOOSTER5: '%player_has_permission_booster.5%;==;yes;STRING' # Booster x5
+    BOOSTER10: '%player_has_permission_booster.10%;==;yes;STRING' # Booster x10
+    CHECK_BOOSTER_2_5: '#BOOSTER2#;#BOOSTER5#;false;COMPARE_CONDITIONS' # #CONDITION_1#;#CONDITION_2#;#CONDITION_3#;COMPARE_CONDITIONS
+    CHECK_BOOSTER_2_10: '#BOOSTER2#;#BOOSTER10#;false;COMPARE_CONDITIONS' # COMPARE_CONDITIONS condition checks if 3 conditions have same values: true true true, false false false
+    CHECK_BOOSTER: '#CHECK_BOOSTER_2_5#;#CHECK_BOOSTER_2_10#;true;COMPARE_CONDITIONS' # #CONDITION_3# can use in CONDITION use use true/false (rcm use true/false for check)
   CUSTOM_FORMULA:
-    EXAMPLE1: '%mob_xp% * 2'
-    EXAMPLE2: '%mob_xp% * 5' #cf_example2#
-    CHANCE1: '%mob_xp% * 3' #cf_example2#
+    NORMAL: '%mob_xp%'
+    BOOSTER2: '%mob_xp% * 2'
+    BOOSTER5: '%mob_xp% * 5'
+    BOOSTER10: '%mob_xp% * 10'
   COMMAND:
     OUT_OF_BOUNDS:
-      - 'eco give %player_name% #cf_EXAMPLE1# ;#cf_CHANCE1#' #execute commands with rate If the rate of the config is greater than or equal to the system rate (random 1->100), the command will be executed
-      - 'eco give %player_name% #cf_EXAMPLE1#' #chance = 100%
-      - '#CONDITION1#;eco give %player_name% #cf_EXAMPLE2#;#cf_CHANCE1#' #condition
+      - '#WARRIOR_CLASS#;mi give MATERIAL FRAGMENTS %player_name% 3 0 100 0 s;1' # If player is class warrior, system will give 3 material (Chance = 1%)
+      - '#MAGE_CLASS#;mi give MATERIAL FRAGMENTS %player_name% 1 0 100 0 s;1' # If player is class mage, system will give 1 material (Chance = 1%)
     WITHIN_LIMITS:
-      - 'eco give %player_name% #cf_EXAMPLE2#'
+      - '#WARRIOR_CLASS#;mi give MATERIAL FRAGMENTS %player_name% 3 0 100 0 s;30' # If player is class warrior, system will give 3 material (Chance = 30%)
+      - '#MAGE_CLASS#;mi give MATERIAL FRAGMENTS %player_name% 1 0 100 0 s;30' # If player is class mage, system will give 1 material (Chance = 30%)
   FORMULA:
     OUT_OF_BOUNDS:
       LOWER:
         - '%mob_xp%'
       HIGHER:
-        - '#CONDITION2#;#cf_CHANCE1#;#cf_EXAMPLE1#'
-    WITHIN_LIMITS:
-      - '#CONDITION1#;#cf_EXAMPLE1#;#cf_EXAMPLE2#'
+        - '0'
+    WITHIN_LIMITS: # If a player has booster x2 and x5, player will receive 7 xp | x2 x10 -> 12 xp | x5 x10 -> 15 xp | x2 x5 x10 -> 17 xp
+      - '#CHECK_BOOSTER#;%mob_xp%;0' # If a player doesn't have any booster, player will receive 1 xp when kill mob -> If a player has any booster, mob gives 0 xp
+      - '#BOOSTER2#;#cf_BOOSTER2#;0' # If a player has booster x2, player will receive 2 xp when kill mob
+      - '#BOOSTER5#;#cf_BOOSTER5#;0' # If a player has booster x5, player will receive 5 xp when kill mob
+      - '#BOOSTER10#;#cf_BOOSTER10#;0' # If a player has booster x10, player will receive 10 xp when kill mob
   XP:
     DEFAULT: 1
     MAX: 1
