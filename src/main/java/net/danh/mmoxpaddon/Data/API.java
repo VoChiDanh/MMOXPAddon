@@ -155,8 +155,8 @@ public class API {
         String compare = condition_split[3];
         if (condition_split.length == 4) {
             if (compare.equalsIgnoreCase("NUMBER")) {
-                int c1 = BigDecimal.valueOf((Math.abs(Double.parseDouble(placeholder)))).intValue();
-                int c3 = BigDecimal.valueOf((Math.abs(Double.parseDouble(result)))).intValue();
+                int c1 = BigDecimal.valueOf((Math.abs(Double.parseDouble(Calculator.calculator(placeholder, 0))))).intValue();
+                int c3 = BigDecimal.valueOf((Math.abs(Double.parseDouble(Calculator.calculator(result, 0))))).intValue();
                 if (compare_type.equalsIgnoreCase(">=")) {
                     return c1 >= c3;
                 }
@@ -168,6 +168,9 @@ public class API {
                 }
                 if (compare_type.equalsIgnoreCase("<")) {
                     return c1 < c3;
+                }
+                if (compare_type.equalsIgnoreCase("==")) {
+                    return c1 == c3;
                 }
             }
             if (compare.equalsIgnoreCase("BOOLEAN")) {
@@ -306,8 +309,6 @@ public class API {
         debug("Mob level: " + mob_level);
         int xp_default = (int) Math.abs(Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getXPDefault().replaceAll("%mob_level%", String.valueOf(mob_level))), 0)));
         debug("Xp default: " + xp_default);
-        int xp_max = (int) Math.abs(Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getXPMax().replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault()))), 0)));
-        debug("Xp max: " + xp_max);
         int level_min = (int) Math.abs(Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getLevelMin().replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault()))), 0)));
         debug("Level min: " + level_min);
         int level_max = (int) Math.abs(Double.parseDouble(Calculator.calculator(PlaceholderAPI.setPlaceholders(p, mob.getLevelMax().replaceAll("%mob_level%", String.valueOf(mob_level)).replaceAll("%mob_xp%", String.valueOf(mob.getXPDefault()))), 0)));

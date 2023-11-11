@@ -3,7 +3,6 @@ MYTHICMOBSINTERNALNAME_2:
 MYTHICMOBSINTERNALNAME:
   USE:
     FORMULA: true
-    LIMITED_XP: false
     COMMAND: true
     LEVEL_END: true
   CONDITIONS:
@@ -43,7 +42,6 @@ MYTHICMOBSINTERNALNAME:
       - '#BOOSTER10#;#cf_BOOSTER10#;0' # If a player has booster x10, player will receive 10 xp when kill mob
   XP:
     DEFAULT: 1
-    MAX: 1
   LEVEL:
     END: 10
     MAX: 5

@@ -22,10 +22,6 @@ public record Mobs(String name) {
         return File.getMob().getString(name() + ".LEVEL.MIN");
     }
 
-    public String getXPMax() {
-        return File.getMob().getString(name() + ".XP.MAX");
-    }
-
     public String getXPDefault() {
         return File.getMob().getString(name() + ".XP.DEFAULT");
     }
