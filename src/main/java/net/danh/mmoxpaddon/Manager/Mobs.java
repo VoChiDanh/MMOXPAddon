@@ -89,10 +89,6 @@ public record Mobs(String name) {
         return File.getMob().getBoolean(name() + ".USE.LEVEL_END");
     }
 
-    public boolean useLimitedXP() {
-        return File.getMob().getBoolean(name() + ".USE.LIMITED_XP");
-    }
-
     public boolean useFormula() {
         return File.getMob().getBoolean(name() + ".USE.FORMULA");
     }

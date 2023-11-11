@@ -317,8 +317,6 @@ public class API {
         debug("Level end: " + level_end);
         boolean use_formula = mob.useFormula();
         debug("Use Formula: " + use_formula);
-        boolean use_limited_xp = mob.useLimitedXP();
-        debug("Use limited xp: " + use_limited_xp);
         boolean use_level_end = mob.useLevelEnd();
         debug("Use level end: " + use_level_end);
         boolean use_command = mob.useCommand();
@@ -388,14 +386,11 @@ public class API {
             if (use_command) {
                 executeCMDWCondition(p, cmd_within_limit, mob_level, xp_default, mob);
             }
-            if (use_formula && !use_limited_xp) {
+            if (use_formula) {
                 formula_within_limits_without_papi_replaced.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, location));
             }
-            if (!use_formula && !use_limited_xp) {
+            if (!use_formula) {
                 PlayerData.get(p).giveExperience(xp_default, EXPSource.SOURCE, location.add(0, 1.5, 0), true);
-            }
-            if (!use_formula && use_limited_xp) {
-                formula_within_limits_without_papi_replaced.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, location));
             }
         }
         if (new Version().isPremium().getType()) {
@@ -403,28 +398,22 @@ public class API {
                 if (use_command) {
                     executeCMDWCondition(p, cmd_out_of_bound, mob_level, xp_default, mob);
                 }
-                if (use_formula && !use_limited_xp) {
+                if (use_formula) {
                     formula_out_of_bounds_without_papi_replaced_lower.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, location));
                 }
-                if (!use_formula && !use_limited_xp) {
+                if (!use_formula) {
                     PlayerData.get(p).giveExperience(xp_default, EXPSource.SOURCE, location.add(0, 1.5, 0), true);
-                }
-                if (!use_formula && use_limited_xp) {
-                    formula_out_of_bounds_without_papi_replaced_lower.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, location));
                 }
             }
             if (player_level > level_max && player_level > level_min) {
                 if (use_command) {
                     executeCMDWCondition(p, cmd_out_of_bound, mob_level, xp_default, mob);
                 }
-                if (use_formula && !use_limited_xp) {
+                if (use_formula) {
                     formula_out_of_bounds_without_papi_replaced_higher.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, location));
                 }
-                if (!use_formula && !use_limited_xp) {
+                if (!use_formula) {
                     PlayerData.get(p).giveExperience(xp_default, EXPSource.SOURCE, location.add(0, 1.5, 0), true);
-                }
-                if (!use_formula && use_limited_xp) {
-                    formula_out_of_bounds_without_papi_replaced_higher.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, location));
                 }
             }
         } else {
