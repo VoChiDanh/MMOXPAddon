@@ -3,6 +3,8 @@ package net.danh.mmoxpaddon.Data;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.Indyuce.mmocore.api.player.PlayerData;
 import net.Indyuce.mmocore.experience.EXPSource;
+import net.danh.mcoreaddon.booster.Boosters;
+import net.danh.mcoreaddon.mythicdrop.MythicXP;
 import net.danh.mmoxpaddon.API.Calculator.Calculator;
 import net.danh.mmoxpaddon.API.Version.Status;
 import net.danh.mmoxpaddon.MMOXPAddon;
@@ -274,9 +276,9 @@ public class API {
                         debug("Formula (in) = " + in);
                         debug("Formula (out) = " + out);
                         if (status) {
-                            PlayerData.get(p).giveExperience(BigDecimal.valueOf((Math.abs(Double.parseDouble(in)))).intValue(), EXPSource.SOURCE, location.add(0, 1.5, 0), true);
+                            giveExperience(p, BigDecimal.valueOf((Math.abs(Double.parseDouble(in)))).intValue(), location.add(0, 1.5, 0));
                         } else {
-                            PlayerData.get(p).giveExperience(BigDecimal.valueOf((Math.abs(Double.parseDouble(out)))).intValue(), EXPSource.SOURCE, location.add(0, 1.5, 0), true);
+                            giveExperience(p, BigDecimal.valueOf((Math.abs(Double.parseDouble(out)))).intValue(), location.add(0, 1.5, 0));
                         }
                     }
                 }
@@ -284,7 +286,7 @@ public class API {
         } else {
             String formula_within_limits = Calculator.calculator(formula_without_papi_replaced, 0);
             debug("Formula = " + formula_within_limits);
-            PlayerData.get(p).giveExperience((Math.abs((int) Double.parseDouble(formula_within_limits))), EXPSource.SOURCE, location.add(0, 1.5, 0), true);
+            giveExperience(p, (Math.abs((int) Double.parseDouble(formula_within_limits))), location.add(0, 1.5, 0));
         }
     }
 
@@ -390,7 +392,7 @@ public class API {
                 formula_within_limits_without_papi_replaced.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, location));
             }
             if (!use_formula) {
-                PlayerData.get(p).giveExperience(xp_default, EXPSource.SOURCE, location.add(0, 1.5, 0), true);
+                giveExperience(p, xp_default, location.add(0, 1.5, 0));
             }
         }
         if (new Version().isPremium().getType()) {
@@ -402,7 +404,7 @@ public class API {
                     formula_out_of_bounds_without_papi_replaced_lower.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, location));
                 }
                 if (!use_formula) {
-                    PlayerData.get(p).giveExperience(xp_default, EXPSource.SOURCE, location.add(0, 1.5, 0), true);
+                    giveExperience(p, xp_default, location.add(0, 1.5, 0));
                 }
             }
             if (player_level > level_max && player_level > level_min) {
@@ -413,11 +415,35 @@ public class API {
                     formula_out_of_bounds_without_papi_replaced_higher.forEach(s -> giveEXP(p, mob, xp_default, mob_level, s, location));
                 }
                 if (!use_formula) {
-                    PlayerData.get(p).giveExperience(xp_default, EXPSource.SOURCE, location.add(0, 1.5, 0), true);
+                    giveExperience(p, xp_default, location.add(0, 1.5, 0));
                 }
             }
         } else {
             debug("Only premium version can use OUT_OF_BOUNDS features");
+        }
+    }
+
+    private static void giveExperience(Player p, int xp, Location location) {
+        if (MMOXPAddon.getInstance().getServer().getPluginManager().getPlugin("MCoreAddon") != null) {
+            if (File.getConfig().getString("BOOSTER_OPTIONS") != null) {
+                if (Objects.requireNonNull(File.getConfig().getString("BOOSTER_OPTIONS")).equalsIgnoreCase("MCoreAddon")) {
+                    if (MythicXP.booster.containsKey(p)) {
+                        if (MythicXP.booster.get(p) > 1d) {
+                            Boosters.giveExp(p, xp, location);
+                        } else {
+                            PlayerData.get(p).giveExperience(xp, EXPSource.SOURCE, location, true);
+                        }
+                    } else {
+                        PlayerData.get(p).giveExperience(xp, EXPSource.SOURCE, location, true);
+                    }
+                } else {
+                    PlayerData.get(p).giveExperience(xp, EXPSource.SOURCE, location, true);
+                }
+            } else {
+                PlayerData.get(p).giveExperience(xp, EXPSource.SOURCE, location, true);
+            }
+        } else {
+            PlayerData.get(p).giveExperience(xp, EXPSource.SOURCE, location, true);
         }
     }
 }

@@ -4,6 +4,8 @@ main: net.danh.mmoxpaddon.MMOXPAddon
 api-version: 1.13
 authors: [ VoChiDanh ]
 depend: [ MythicMobs, MMOCore, MythicLib ]
+softdepend:
+  - MCoreAddon
 commands:
   mmoxpaddon:
     description: Main command

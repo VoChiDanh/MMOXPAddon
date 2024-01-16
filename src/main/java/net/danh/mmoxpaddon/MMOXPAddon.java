@@ -79,6 +79,9 @@ public final class MMOXPAddon extends JavaPlugin {
             getLogger().log(Level.WARNING, "You are using Free version!");
             getLogger().log(Level.WARNING, "Free version limit some features and mob from config");
         }
+        if (getServer().getPluginManager().getPlugin("MCoreAddon") != null) {
+            getLogger().info("Found MCoreAddon, you can use booster features from MCoreAddon. Check config.yml -> booster_options settings");
+        }
     }
 
     @Override
