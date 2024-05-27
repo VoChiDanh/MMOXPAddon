@@ -44,7 +44,7 @@ public record Mobs(String name) {
 
     public String getConditions(String conditions) {
         if (conditions.contains("#")) {
-            return net.danh.mmoxpaddon.Resource.File.getMob().getString(name + ".CONDITIONS." + conditions.replaceAll("#", ""));
+            return net.danh.mmoxpaddon.Resource.File.getMob().getString(name + ".CONDITIONS." + conditions.replace("#", ""));
         }
         return null;
     }
