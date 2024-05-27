@@ -6,7 +6,7 @@
 	
 	<groupId>net.danh</groupId>
 	<artifactId>MMOXPAddon</artifactId>
-	<version>1.8.4</version>
+	<version>1.8.5-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	
 	<name>MMOXPAddon</name>
@@ -31,7 +31,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.5.2</version>
+				<version>3.5.3</version>
 				<configuration>
 					<relocations>
 						<relocation>
@@ -135,8 +135,9 @@
 		<dependency>
 			<groupId>com.github.VoChiDanh</groupId>
 			<artifactId>MCoreAddon</artifactId>
-			<version>fa0a9954eb</version>
-			<scope>provided</scope>
+			<version>latest</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/libs/MCoreAddon.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>com.github.InitSync</groupId>

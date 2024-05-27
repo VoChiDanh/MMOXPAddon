@@ -62,9 +62,9 @@ public class API {
                             String[] pp_c = papi_conditions.split(";");
                             if (pp_c.length == 4) {
                                 if (pp_c[3].equalsIgnoreCase("NUMBER")) {
-                                    int c1 = BigDecimal.valueOf(Double.parseDouble(pp_c[0])).intValue();
+                                    int c1 = BigDecimal.valueOf(Double.parseDouble(Calculator.calculator(pp_c[0], 0))).intValue();
                                     String c2 = pp_c[1];
-                                    int c3 = BigDecimal.valueOf(Double.parseDouble(String.valueOf(pp_c[2]))).intValue();
+                                    int c3 = BigDecimal.valueOf(Double.parseDouble(Calculator.calculator(String.valueOf(pp_c[2]), 0))).intValue();
                                     boolean status = isStatus(c2, c1, c3);
                                     if (status) {
                                         String commands = sp[1];
